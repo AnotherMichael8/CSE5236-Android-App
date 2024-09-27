@@ -1,5 +1,5 @@
 # CSE5236-Android-App
 
-Read the textbook and find Kotlin tutorials online to test
+Read the textbook and find Kotlin tutorials online to hi
 
 Hello
