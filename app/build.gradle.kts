@@ -34,12 +34,13 @@ android {
         jvmTarget = "1.8"
     }
 }
-
+//So weird, look at the libs.versions.toml file because these are just references to things in there
 dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)

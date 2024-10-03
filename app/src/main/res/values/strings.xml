@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CSE5236 Mobile App</string>
+    <string name="intro_text">Welcome to the Tournament App!</string>
+    <string name="button_to_sign_in_screen">Sign In</string>
 </resources>
