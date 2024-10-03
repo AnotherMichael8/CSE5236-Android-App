@@ -33,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 //So weird, look at the libs.versions.toml file because these are just references to things in there
 dependencies {
