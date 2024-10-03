@@ -16,13 +16,6 @@ class IntroPageFragment : Fragment() {
 
     private lateinit var binding: FragmentIntroPageBinding
 
-    private lateinit var IntroPage:IntroPage
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,11 +24,6 @@ class IntroPageFragment : Fragment() {
         binding =
             FragmentIntroPageBinding.inflate(inflater, container, false)
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
     }
 
 }
