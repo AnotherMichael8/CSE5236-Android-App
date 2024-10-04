@@ -71,6 +71,7 @@
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
+        android:contentDescription="@string/settings_button_desc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_settings_24" />

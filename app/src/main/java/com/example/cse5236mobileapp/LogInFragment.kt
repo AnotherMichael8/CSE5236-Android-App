@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.util.Log;
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,6 +33,7 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
         buttonContinue.setOnClickListener {
             val intent = Intent(requireContext(), HomeScreenActivity::class.java)
             startActivity(intent)
+            Log.i("Success", "Switching to Home Screen")
         }
 
         buttonCreateNew.setOnClickListener {
@@ -39,6 +41,7 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
 
             // Actually replace fragment
             parentFragmentManager.beginTransaction().replace(R.id.frgLoginContainer, CreateAccountFrag).addToBackStack(null).commit()
+            Log.i("Success","Switching to Create Account")
         }
     }
 

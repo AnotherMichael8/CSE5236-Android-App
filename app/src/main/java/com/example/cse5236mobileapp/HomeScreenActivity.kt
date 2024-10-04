@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import android.util.Log;
 
 class HomeScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +24,7 @@ class HomeScreenActivity : AppCompatActivity() {
 
         button_continue.setOnClickListener{
             finish()
+            Log.i("SUCCESS", "Logging Out")
         }
     }
 }

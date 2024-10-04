@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.util.Log;
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +26,7 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
 
         backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
+            Log.i("SUCCESS", "Going to Log In from Create Account")
         }
     }
 
