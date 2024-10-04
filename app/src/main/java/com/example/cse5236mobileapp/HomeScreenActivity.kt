@@ -22,8 +22,7 @@ class HomeScreenActivity : AppCompatActivity() {
         val button_continue = findViewById<Button>(R.id.LogoutButton)
 
         button_continue.setOnClickListener{
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            finish()
         }
     }
 }
