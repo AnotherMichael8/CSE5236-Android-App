@@ -18,12 +18,5 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        val button_continue = findViewById<Button>(R.id.btnLogIn)
-
-        button_continue.setOnClickListener{
-            val intent = Intent(this, HomeScreenActivity::class.java)
-            startActivity(intent)
-        }
     }
 }
