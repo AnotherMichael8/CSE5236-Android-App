@@ -18,5 +18,11 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        if (savedInstanceState == null) {
+            val loginFrag = LogInFragment()
+            supportFragmentManager.beginTransaction().add(R.id.frgLoginContainer, loginFrag).commit()
+        }
+
     }
 }

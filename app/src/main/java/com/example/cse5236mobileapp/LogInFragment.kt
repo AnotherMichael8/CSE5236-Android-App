@@ -26,10 +26,19 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
         // Find the button in the fragment's layout
         val buttonContinue = view.findViewById<Button>(R.id.btnLogIn)
 
+        val buttonCreateNew = view.findViewById<Button>(R.id.btnCreateNew)
+
         // Set the click listener on the button
         buttonContinue.setOnClickListener {
             val intent = Intent(requireContext(), HomeScreenActivity::class.java)
             startActivity(intent)
+        }
+
+        buttonCreateNew.setOnClickListener {
+            val CreateAccountFrag = CreateAccountFragment()
+
+            // Actually replace fragment
+            parentFragmentManager.beginTransaction().replace(R.id.frgLoginContainer, CreateAccountFrag).addToBackStack(null).commit()
         }
     }
 
