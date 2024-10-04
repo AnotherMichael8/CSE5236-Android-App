@@ -20,6 +20,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class LogInFragment : Fragment(R.layout.fragment_log_in) {
+    companion object {
+        private const val TAG = "Log In Fragment"
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,7 +36,7 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
         buttonContinue.setOnClickListener {
             val intent = Intent(requireContext(), HomeScreenActivity::class.java)
             startActivity(intent)
-            Log.i("Success", "Switching to Home Screen")
+            Log.i(TAG, "Switching to Home Screen")
         }
 
         buttonCreateNew.setOnClickListener {
@@ -41,7 +44,7 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
 
             // Actually replace fragment
             parentFragmentManager.beginTransaction().replace(R.id.frgLoginContainer, CreateAccountFrag).addToBackStack(null).commit()
-            Log.i("Success","Switching to Create Account")
+            Log.i(TAG,"Switching to Create Account")
         }
     }
 

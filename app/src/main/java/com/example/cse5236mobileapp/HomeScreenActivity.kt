@@ -10,6 +10,10 @@ import androidx.core.view.WindowInsetsCompat
 import android.util.Log;
 
 class HomeScreenActivity : AppCompatActivity() {
+    companion object {
+        private const val TAG = "Home Screen Activity"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -24,7 +28,7 @@ class HomeScreenActivity : AppCompatActivity() {
 
         button_continue.setOnClickListener{
             finish()
-            Log.i("SUCCESS", "Logging Out")
+            Log.i(TAG, "Logging Out")
         }
     }
 }

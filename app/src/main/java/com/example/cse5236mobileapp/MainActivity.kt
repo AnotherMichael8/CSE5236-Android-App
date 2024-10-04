@@ -11,6 +11,9 @@ import android.util.Log;
 
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        private const val TAG = "Main Activity"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         button_continue.setOnClickListener{
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            Log.i("SUCCESS", "Switching to Log In Screen")
+            Log.i(TAG, "Switching to Log In Screen")
         }
     }
 }

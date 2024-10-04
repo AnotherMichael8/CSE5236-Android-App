@@ -19,6 +19,10 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
+    companion object {
+        private const val TAG = "Create Account Fragment"
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -26,7 +30,7 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
 
         backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
-            Log.i("SUCCESS", "Going to Log In from Create Account")
+            Log.i(TAG, "Going to Log In from Create Account")
         }
     }
 
