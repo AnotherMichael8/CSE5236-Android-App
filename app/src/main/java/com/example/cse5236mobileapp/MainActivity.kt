@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.util.Log;
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         val button_continue = findViewById<Button>(R.id.btnContinue)
 
         button_continue.setOnClickListener{
+            Firebase.analytics.logEvent("ContinueFromHome", null)
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             Log.i(TAG, "Switching to Log In Screen")
