@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.util.Log;
+import android.widget.EditText
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,8 +30,10 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
 
         // Find the button in the fragment's layout
         val buttonContinue = view.findViewById<Button>(R.id.btnLogIn)
-
         val buttonCreateNew = view.findViewById<Button>(R.id.btnCreateNew)
+
+        val usernameField = view.findViewById<EditText>(R.id.ditUsername)
+        val passwordField = view.findViewById<EditText>(R.id.ditUserPassword)
 
         // Set the click listener on the button
         buttonContinue.setOnClickListener {

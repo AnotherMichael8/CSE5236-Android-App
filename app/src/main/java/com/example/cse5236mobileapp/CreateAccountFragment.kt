@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.util.Log;
+import android.widget.EditText
+import android.widget.Toast
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,11 +28,28 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Getting view elements here
         val backButton = view.findViewById<Button>(R.id.btnBack)
+        val createButton = view.findViewById<Button>(R.id.btnCreateAccount)
+        val createUserField = view.findViewById<EditText>(R.id.ditCreateUsername)
+        val createPassword = view.findViewById<EditText>(R.id.ditCreatePassword)
+        val reenterPassword = view.findViewById<EditText>(R.id.ditReenterPassword)
 
         backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
             Log.i(TAG, "Going to Log In from Create Account")
+        }
+
+        createButton.setOnClickListener {
+            // Getting values for email and password
+            var username = createUserField.text.toString()
+            var password = createPassword.text.toString()
+            var reentered = reenterPassword.text.toString()
+
+            // TODO: This toast was made just for testing
+            Toast.makeText(requireContext(), username, Toast.LENGTH_LONG).show()
+
+
         }
     }
 
