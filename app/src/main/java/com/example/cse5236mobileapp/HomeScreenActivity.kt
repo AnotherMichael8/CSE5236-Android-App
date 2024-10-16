@@ -11,6 +11,8 @@ import android.util.Log;
 import android.widget.TextView
 
 class HomeScreenActivity : AppCompatActivity() {
+    lateinit var user: Account
+
     companion object {
         private const val TAG = "Home Screen Activity"
     }
@@ -21,7 +23,10 @@ class HomeScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home_screen)
 
         // Getting username from intent
-        val username = intent.getStringExtra("username")
+
+        user = intent.getSerializableExtra("user") as Account
+        val username = user.username
+
         findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "Welcome: $username"
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

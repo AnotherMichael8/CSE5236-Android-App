@@ -56,8 +56,9 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
                             "Login Success",
                             Toast.LENGTH_SHORT,
                         ).show()
+                        val userAccount = Account(user?.uid, username)
                         val intent = Intent(requireContext(), HomeScreenActivity::class.java).apply {
-                            putExtra ("username", username)
+                            putExtra ("user", userAccount)
                         }
                         startActivity(intent)
                         Log.i(TAG, "Switching to Home Screen")

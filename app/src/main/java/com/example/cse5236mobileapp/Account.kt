@@ -7,8 +7,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.firebase.auth.FirebaseAuth
+import java.io.Serializable
 
-class Account {
+class Account(val uid: String?, val username: String?) : Serializable {
     companion object {
         fun checkCreateUserInfo(context: Context, username: String, password: String, reentered: String): Boolean {
             // Checking the three fields to see if they're empty
