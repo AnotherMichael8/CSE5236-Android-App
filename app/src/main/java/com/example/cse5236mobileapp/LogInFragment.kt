@@ -46,7 +46,7 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
             var password = passwordField.text.toString()
 
             // Checking if login fields are not empty
-            if (checkLoginInputs(username, password)) {
+            if (Account.checkLoginInputs(requireContext(), username, password)) {
                 // Contacting server to login
                 auth.signInWithEmailAndPassword(username, password)
                     .addOnCompleteListener(requireActivity()) { task ->
@@ -89,18 +89,4 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
             Log.i(TAG,"Switching to Create Account")
         }
     }
-
-    fun checkLoginInputs (username: String, password: String): Boolean {
-        // Checking the three fields to see if they're empty
-        if (TextUtils.isEmpty(username)) {
-            Toast.makeText(requireContext(), "Missing Username", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(requireContext(), "Missing Password", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        return true
-    }
-
 }
