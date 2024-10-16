@@ -58,28 +58,21 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
 
             // See if fields are valid
             if (Account.checkCreateUserInfo(requireContext(), username, password, reentered)) {
-                auth.createUserWithEmailAndPassword(username, password)
-                    .addOnCompleteListener(requireActivity()) { task ->
-                        if (task.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success")
-                            val user = auth.currentUser
-                            // TODO: updateUI(user)
-                            Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                            Toast.makeText(
-                                requireContext(),
-                                "Authentication failed.",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                            // TODO: updateUI(null)
-                        }
+                Account.createAccount(auth, requireActivity(), username, password) {success ->
+                    if (success) {
+                        val user = auth.currentUser
+                        // TODO: updateUI(user)
+                        Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
                     }
+                    else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Authentication failed.",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                }
             }
-
-
         }
     }
 }

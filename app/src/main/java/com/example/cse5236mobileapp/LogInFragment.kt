@@ -48,33 +48,28 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
             // Checking if login fields are not empty
             if (Account.checkLoginInputs(requireContext(), username, password)) {
                 // Contacting server to login
-                auth.signInWithEmailAndPassword(username, password)
-                    .addOnCompleteListener(requireActivity()) { task ->
-                        if (task.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success")
-                            val user = auth.currentUser
-                            Toast.makeText(
-                                requireContext(),
-                                "Login Success",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                            val intent = Intent(requireContext(), HomeScreenActivity::class.java).apply {
-                                putExtra ("username", username)
-                            }
-                            startActivity(intent)
-                            Log.i(TAG, "Switching to Home Screen")
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.exception)
-                            Toast.makeText(
-                                requireContext(),
-                                "Login Failed",
-                                Toast.LENGTH_SHORT,
-                            ).show()
-                            // TODO: updateUI(null)
+                Account.login(auth, requireActivity(), username, password) { success ->
+                    if (success) {
+                        val user = auth.currentUser
+                        Toast.makeText(
+                            requireContext(),
+                            "Login Success",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                        val intent = Intent(requireContext(), HomeScreenActivity::class.java).apply {
+                            putExtra ("username", username)
                         }
+                        startActivity(intent)
+                        Log.i(TAG, "Switching to Home Screen")
                     }
+                    else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Login Failed",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                }
             }
             else {
                 Toast.makeText(requireContext(), "Missing fields", Toast.LENGTH_SHORT).show()
