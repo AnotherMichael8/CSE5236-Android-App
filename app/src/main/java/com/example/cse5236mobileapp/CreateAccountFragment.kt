@@ -86,21 +86,21 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
     fun checkUserInfo(username: String, password: String, reentered: String): Boolean {
         // Checking the three fields to see if they're empty
         if (TextUtils.isEmpty(username)) {
-            Toast.makeText(requireContext(), "Missing Username", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Missing Username", Toast.LENGTH_SHORT).show()
             return false
         }
         if (TextUtils.isEmpty(password)) {
-            Toast.makeText(requireContext(), "Missing Password", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Missing Password", Toast.LENGTH_SHORT).show()
             return false
         }
         if (TextUtils.isEmpty(reentered)) {
-            Toast.makeText(requireContext(), "Please Reenter Password", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Please Reenter Password", Toast.LENGTH_SHORT).show()
             return false
         }
 
         // See if passwords match
         if(!TextUtils.equals(password,reentered)) {
-            Toast.makeText(requireContext(), "Passwords do not match", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), "Passwords do not match", Toast.LENGTH_SHORT).show()
             return false
         }
 
