@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
@@ -20,7 +21,7 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
         super.onViewCreated(view, savedInstanceState)
 
         // Creating Firebase reference
-        var user = Firebase.auth.currentUser
+        val user = FirebaseAuth.getInstance().currentUser
 
         // Getting view elements here
         val backButton = view.findViewById<Button>(R.id.settingsBackButton)
@@ -31,7 +32,8 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
         val deleteButton = view.findViewById<Button>(R.id.btnDeleteAccount)
 
         backButton.setOnClickListener(){
-            Toast.makeText(requireContext(), user?.displayName, Toast.LENGTH_LONG).show()
+            val displayName = user?.email ?: "No display name available"
+            Toast.makeText(requireContext(), displayName, Toast.LENGTH_LONG).show()
             parentFragmentManager.beginTransaction().remove(this).commit()
             Log.i(TAG, "Going to Home Screen from Account Settings")
         }
