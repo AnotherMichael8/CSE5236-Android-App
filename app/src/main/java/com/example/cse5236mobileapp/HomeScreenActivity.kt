@@ -10,9 +10,13 @@ import androidx.core.view.WindowInsetsCompat
 import android.util.Log;
 import android.widget.ImageButton
 import android.widget.TextView
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class HomeScreenActivity : AppCompatActivity() {
     lateinit var user: Account
+    lateinit var currentUser: FirebaseUser
 
     companion object {
         private const val TAG = "Home Screen Activity"
@@ -28,6 +32,7 @@ class HomeScreenActivity : AppCompatActivity() {
         user = intent.getSerializableExtra("user") as Account
         val username = user.username
 
+
         findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "Welcome: $username"
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -36,10 +41,11 @@ class HomeScreenActivity : AppCompatActivity() {
             insets
         }
 
-        val button_continue = findViewById<Button>(R.id.LogoutButton)
+        val button_logout = findViewById<Button>(R.id.LogoutButton)
         val settings_button = findViewById<ImageButton>(R.id.settingsButton)
 
-        button_continue.setOnClickListener{
+        button_logout.setOnClickListener{
+            Firebase.auth.signOut()
             finish()
             Log.i(TAG, "Logging Out")
         }
