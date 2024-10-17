@@ -33,6 +33,7 @@ class HomeScreenActivity : AppCompatActivity() {
         val username = user.username
 
 
+
         findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "Welcome: $username"
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
