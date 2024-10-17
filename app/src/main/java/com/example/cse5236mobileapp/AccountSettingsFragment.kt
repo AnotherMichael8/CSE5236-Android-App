@@ -25,9 +25,10 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
         // Getting view elements here
         val backButton = view.findViewById<Button>(R.id.settingsBackButton)
         val submitButton = view.findViewById<Button>(R.id.settingsSubmitButton)
-        val newDisplayName = view.findViewById<EditText>(R.id.settingsEditUsername)
+        val newDisplayNameText = view.findViewById<EditText>(R.id.settingsEditUsername)
         val newPasswordTextField = view.findViewById<EditText>(R.id.settingsEditPassword)
         val reenteredPasswordTextField = view.findViewById<EditText>(R.id.settingsReenterPassword)
+        val deleteButton = view.findViewById<Button>(R.id.btnDeleteAccount)
 
         backButton.setOnClickListener(){
             Toast.makeText(requireContext(), user?.displayName, Toast.LENGTH_LONG).show()
@@ -36,11 +37,36 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
         }
 
         submitButton.setOnClickListener(){
-            var newDisplayName = newDisplayName.text.toString()
+            var newDisplayName = newDisplayNameText.text.toString()
             var newPassword = newPasswordTextField.text.toString()
             var reenteredPassword = reenteredPasswordTextField.text.toString()
 
+            // Check display name field, update if not empty
+            if(newDisplayName.isNotEmpty()) {
+                Account.updateDisplayName(newDisplayName, requireContext()) { success ->
+                    if (success) {
+                        (activity as HomeScreenActivity).updateWelcomeText(newDisplayName)
+                    }
+                }
+            }
 
+            // Check password fields and see if not empty and if match
+            if(newPassword.isNotEmpty()) {
+                if(newPassword.equals(reenteredPassword)) {
+                    Account.updatePassword(newPassword, requireContext())
+                    // TODO: Get it to not crash in this case, will just call finish for now
+                    (activity as HomeScreenActivity).finish()
+                }
+            }
+        }
+
+        deleteButton.setOnClickListener() {
+            Account.deleteAccount { success ->
+                if (success) {
+                    Toast.makeText(requireContext(), "Deleted user, bye bye :(", Toast.LENGTH_LONG).show()
+                    (activity as HomeScreenActivity).finish()
+                }
+            }
         }
 
 

@@ -31,10 +31,14 @@ class HomeScreenActivity : AppCompatActivity() {
 
         user = intent.getSerializableExtra("user") as Account
         val username = user.username
+        val displayName = Firebase.auth.currentUser?.displayName
 
-
-
-        findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "Welcome: $username"
+        if (displayName.isNullOrBlank()) {
+            findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "Welcome: $username"
+        }
+        else {
+            findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "Welcome: $displayName"
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -56,5 +60,9 @@ class HomeScreenActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().add(R.id.frgSettingsContainer, settingsFrag).commit()
             Log.i(TAG, "Going to Settings Fragment")
         }
+    }
+
+    fun updateWelcomeText(displayName: String) {
+        findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "Welcome: $displayName"
     }
 }

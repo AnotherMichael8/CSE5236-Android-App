@@ -4,9 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.ktx.Firebase
 import java.io.Serializable
 
 class Account(val uid: String?, val username: String?) : Serializable {
@@ -72,6 +77,55 @@ class Account(val uid: String?, val username: String?) : Serializable {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(null, "createUserWithEmail:failure", task.exception)
+                        onResult(false)
+                    }
+                }
+        }
+
+        fun updateDisplayName(newDisplayName: String, context: Context, onResult: (Boolean) -> Unit) {
+            val profileUpdate = userProfileChangeRequest {
+                displayName = newDisplayName
+            }
+            val user = Firebase.auth.currentUser
+            user!!.updateProfile(profileUpdate)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(context, "New DisplayName set to $newDisplayName", Toast.LENGTH_LONG).show()
+                        Log.d(null, "User profile updated.")
+                        onResult(true)
+                    }
+                    else {
+                        onResult(false)
+                    }
+                }
+        }
+
+        fun updatePassword(password: String, context: Context) {
+            val user = Firebase.auth.currentUser
+
+            user!!.updatePassword(password)
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful) {
+                        Toast.makeText(context, "Password reset", Toast.LENGTH_LONG).show()
+                        Log.d(null, "User password updated.")
+                    }
+                    else {
+                        Toast.makeText(context, "Password unable to be reset", Toast.LENGTH_LONG).show()
+                        Log.d(null, "User password update failure.")
+                    }
+                }
+        }
+
+        fun deleteAccount(onResult: (Boolean) -> Unit) {
+            val user = Firebase.auth.currentUser
+
+            user!!.delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(null, "Current User Deleted")
+                        onResult(true)
+                    }
+                    else {
                         onResult(false)
                     }
                 }
