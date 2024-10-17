@@ -1,10 +1,15 @@
 package com.example.cse5236mobileapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.cse5236mobileapp.AccountSettingsFragment.Companion
+import com.google.firebase.auth.FirebaseAuth
 
 class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
     companion object {
@@ -24,7 +29,7 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
         val tournamentContainer: LinearLayout = view.findViewById(R.id.tournamentContainer)
 
         for (tournament in todayTournaments) {
-            val tournamentView = TextView(this).apply {
+            val tournamentView = TextView(requireContext()).apply {
                 text = tournament
                 setPadding(16, 16, 16, 16) // Add some padding
                 textSize = 18f // Set text size
@@ -37,6 +42,18 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
             // Add the TextView to the LinearLayout
             tournamentContainer.addView(tournamentView)
         }
+
+        val backButton = view.findViewById<Button>(R.id.viewTournamentBackButton)
+        val user = FirebaseAuth.getInstance().currentUser
+
+        backButton.setOnClickListener(){
+            val displayName = user?.email ?: "No display name available"
+            Toast.makeText(requireContext(), displayName, Toast.LENGTH_LONG).show()
+            parentFragmentManager.beginTransaction().remove(this).commit()
+            Log.i(TAG, "Going to Home Screen from Account Settings")
+        }
+
+
 
     }
 }

@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -52,12 +53,11 @@
             android:id="@+id/tournamentViewScrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toTopOf="@id/viewTournamentsBackButtonHolder"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tournamentChronoLayout"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toBottomOf="@id/tournamentChronoLayout">
 
             <LinearLayout
                 android:id="@+id/tournamentContainer"
@@ -68,6 +68,27 @@
 
             </LinearLayout>
         </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/viewTournamentsBackButtonHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tournamentChronoLayout"
+            app:layout_constraintVertical_bias="1">
+
+            <Button
+                android:id="@+id/viewTournamentBackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/back_button_text">
+
+            </Button>
+
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

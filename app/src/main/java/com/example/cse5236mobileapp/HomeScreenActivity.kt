@@ -1,6 +1,5 @@
 package com.example.cse5236mobileapp
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
@@ -48,6 +47,7 @@ class HomeScreenActivity : AppCompatActivity() {
 
         val button_logout = findViewById<Button>(R.id.LogoutButton)
         val settings_button = findViewById<ImageButton>(R.id.settingsButton)
+        val view_tournament_button = findViewById<Button>(R.id.ViewButton)
 
         button_logout.setOnClickListener{
             Firebase.auth.signOut()
@@ -57,8 +57,14 @@ class HomeScreenActivity : AppCompatActivity() {
 
         settings_button.setOnClickListener{
             val settingsFrag = AccountSettingsFragment()
-            supportFragmentManager.beginTransaction().add(R.id.frgSettingsContainer, settingsFrag).commit()
+            supportFragmentManager.beginTransaction().add(R.id.frgHomeScreenContainer, settingsFrag).commit()
             Log.i(TAG, "Going to Settings Fragment")
+        }
+
+        view_tournament_button.setOnClickListener(){
+            Log.i(TAG, "Going to View Tournaments Fragment")
+            val viewTournamentsFrag = ViewTournamentsFragment()
+            supportFragmentManager.beginTransaction().add(R.id.frgHomeScreenContainer, viewTournamentsFrag).commit()
         }
     }
 
