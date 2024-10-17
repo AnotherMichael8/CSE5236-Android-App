@@ -13,8 +13,12 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.gms.common.internal.Objects
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.ktx.Firebase
+import java.util.UUID
 
 class TournamentCreator : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +32,7 @@ class TournamentCreator : AppCompatActivity() {
         }
 
         val database = FirebaseFirestore.getInstance()
+        val auth = Firebase.auth
 
         val tournamentNameField = findViewById<EditText>(R.id.etTournamentName)
         val numPlayerSpinner = findViewById<Spinner>(R.id.spinnerPlayers)
@@ -80,18 +85,14 @@ class TournamentCreator : AppCompatActivity() {
                     "isPrivate" to currentRadioButton,
                     "Rules" to stringRules
                 )
-                database.collection("Tournaments").add(newTournamentEntry)
+                val uuid = UUID.randomUUID().toString()
+                database.collection("Tournaments").document(uuid).set(newTournamentEntry)
+                val userTournaments = mapOf(uuid to "Today")
+                val user = auth.currentUser
+                val userAccount = user?.email ?: "No email"
+                database.collection("Users").document(userAccount).set(userTournaments, SetOptions.merge())
                 finish()
             }
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        val user = FirebaseAuth.getInstance().currentUser
-        if(user != null)
-        {
         }
     }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,6 +33,7 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
 
         // Creating firebase reference
         var auth = Firebase.auth
+        val database = FirebaseFirestore.getInstance()
 
         // Getting view elements here
         val backButton = view.findViewById<Button>(R.id.tourMakerBackButton)
@@ -57,8 +59,10 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
                 Account.createAccount(auth, requireActivity(), username, password) {success ->
                     if (success) {
                         val user = auth.currentUser
+                        database.collection("Users").document(username).set(mapOf<String,String>())
                         // TODO: updateUI(user)
                         Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
+
                     }
                     else {
                         Toast.makeText(
