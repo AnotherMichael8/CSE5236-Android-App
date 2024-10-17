@@ -63,7 +63,6 @@ class HomeScreenActivity : AppCompatActivity() {
         }
 
         tournamentCreator_button.setOnClickListener{
-            val tourCreator = TournamentCreator()
             val intent = Intent(this, TournamentCreator::class.java)
             startActivity(intent)
         }
