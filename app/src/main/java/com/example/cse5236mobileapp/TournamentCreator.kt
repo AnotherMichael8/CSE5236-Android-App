@@ -3,10 +3,18 @@ package com.example.cse5236mobileapp
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
+import android.widget.RadioGroup
+import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.common.internal.Objects
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 
 class TournamentCreator : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,10 +27,71 @@ class TournamentCreator : AppCompatActivity() {
             insets
         }
 
+        val database = FirebaseFirestore.getInstance()
+
+        val tournamentNameField = findViewById<EditText>(R.id.etTournamentName)
+        val numPlayerSpinner = findViewById<Spinner>(R.id.spinnerPlayers)
+        val eventTypeSpinner = findViewById<Spinner>(R.id.spinnerEventType)
+        val dateNameField = findViewById<EditText>(R.id.etDate)
+        val timeNameField = findViewById<EditText>(R.id.etTime)
+        val addressNameField = findViewById<EditText>(R.id.etAddress)
+        val privateOrPublic = findViewById<RadioGroup>(R.id.rgPublicPrivate)
+        val rulesField = findViewById<EditText>(R.id.etRules)
+
+
         val backButton = findViewById<Button>(R.id.tourMakerBackButton)
+        val submitButton = findViewById<Button>(R.id.tourCreatorBtnSubmit)
+        var currentRadioButton : Boolean? = null
+        privateOrPublic.setOnCheckedChangeListener { radioGroup, idChecked ->
+            when(idChecked)
+            {
+                R.id.rbPublic ->
+                {
+                    currentRadioButton = false
+                }
+                R.id.rbPrivate ->
+                {
+                    currentRadioButton = true
+                }
+            }
+        }
 
         backButton.setOnClickListener {
             finish()
+        }
+        submitButton.setOnClickListener {
+            val stringTournamentName : String = tournamentNameField.text.toString()
+            val stringDate : String = dateNameField.text.toString()
+            val stringTime : String = timeNameField.text.toString()
+            val stringAddress : String = addressNameField.text.toString()
+            val stringRules : String = rulesField.text.toString()
+            val stringAmountPlayers: String = numPlayerSpinner.selectedItem.toString()
+            val stringEventType : String = eventTypeSpinner.selectedItem.toString()
+            if(!(stringTournamentName.isBlank() || stringDate.isBlank() || stringTime.isBlank() || stringAddress.isBlank() || stringRules.isBlank()))
+            {
+                val newTournamentEntry = mapOf(
+                    "TournamentName" to stringTournamentName,
+                    "NumberPlayers" to stringAmountPlayers,
+                    "EventType" to stringEventType,
+                     "Date" to stringDate,
+                    "Time" to stringTime,
+                    "isMorning" to false,
+                    "Address" to stringAddress,
+                    "isPrivate" to currentRadioButton,
+                    "Rules" to stringRules
+                )
+                database.collection("Tournaments").add(newTournamentEntry)
+                finish()
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val user = FirebaseAuth.getInstance().currentUser
+        if(user != null)
+        {
         }
     }
 }
