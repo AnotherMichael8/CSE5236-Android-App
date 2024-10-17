@@ -72,7 +72,7 @@
     <Spinner
         android:id="@+id/spinnerPlayers"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:entries="@array/players_array"
         android:background="@drawable/outline"
@@ -138,7 +138,7 @@
     <EditText
         android:id="@+id/etAddress"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:hint="Address"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
@@ -146,7 +146,7 @@
         android:inputType="textPostalAddress"
         app:layout_constraintStart_toStartOf="@+id/textViewAddress"
         app:layout_constraintTop_toBottomOf="@+id/etDate"
-        app:layout_constraintBottom_toTopOf="@+id/cbUseCurrentAddress"/>
+        app:layout_constraintBottom_toTopOf="@+id/textViewPublicPrivate"/>
 
     <CheckBox
         android:id="@+id/cbUseCurrentAddress"
