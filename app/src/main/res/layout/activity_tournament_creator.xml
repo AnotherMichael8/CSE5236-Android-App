@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewTournamentName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle = "bold"
+        android:text="Tournament Maker"
+        android:layout_marginTop="8dp"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/etTournamentName"
+        app:layout_constraintStart_toStartOf="@+id/etTournamentName"
+        app:layout_constraintTop_toBottomOf="@+id/btnBack"/>
+
+    <EditText
+        android:id="@+id/etTournamentName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Tournament Name"
+        android:gravity="center"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerPlayers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTournamentName"/>
+
+    <TextView
+        android:id="@+id/textViewPlayers"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="Enter Amount of Players"
+        app:layout_constraintTop_toBottomOf="@+id/etTournamentName"
+        app:layout_constraintStart_toStartOf="@+id/etTournamentName"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerPlayers"
+        app:layout_constraintBottom_toTopOf="@+id/textViewEventType"/>
+
+    <TextView
+        android:id="@+id/textViewEventType"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="Enter Event Type"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPlayers"
+        app:layout_constraintStart_toStartOf="@+id/textViewPlayers"/>
+
+    <Spinner
+        android:id="@+id/spinnerPlayers"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:entries="@array/players_array"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerEventType"
+        app:layout_constraintStart_toEndOf="@+id/textViewPlayers"
+        app:layout_constraintTop_toTopOf="@+id/textViewPlayers" />
+
+    <Spinner
+        android:id="@+id/spinnerEventType"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:entries="@array/event_types_array"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewEventType"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerPlayers"
+        app:layout_constraintStart_toEndOf="@+id/textViewPlayers"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPlayers" />
+
+    <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        app:layout_constraintBottom_toTopOf="@+id/etDate"
+        app:layout_constraintStart_toStartOf="@+id/etDate"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEventType" />
+
+
+    <EditText
+        android:id="@+id/etDate"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:inputType="date"
+        android:hint="MM/DD/YY"
+        app:layout_constraintBottom_toBottomOf="@+id/etTime"
+        app:layout_constraintBottom_toTopOf="@+id/textViewAddress"
+        app:layout_constraintEnd_toStartOf="@+id/etTime"
+        app:layout_constraintStart_toStartOf="@+id/textViewDate"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDate"/>
+
+    <EditText
+        android:id="@+id/etTime"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:hint="HH:MM"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/etDate"
+        app:layout_constraintStart_toEndOf="@+id/etDate"
+        app:layout_constraintTop_toTopOf="@+id/etDate"/>
+
+    <TextView
+        android:id="@+id/textViewAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Address"
+        app:layout_constraintStart_toStartOf="@+id/etAddress"
+        app:layout_constraintTop_toBottomOf="@+id/etDate"
+        app:layout_constraintBottom_toTopOf="@+id/etAddress"/>
+
+    <EditText
+        android:id="@+id/etAddress"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Address"
+        android:inputType="textPostalAddress"
+        app:layout_constraintStart_toStartOf="@+id/textViewAddress"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddress"
+        app:layout_constraintBottom_toTopOf="@+id/cbUseCurrentAddress"/>
+
+    <CheckBox
+        android:id="@+id/cbUseCurrentAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Current Address"
+        app:layout_constraintStart_toStartOf="@+id/etAddress"
+        app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+
+    <TextView
+        android:id="@+id/textViewPublicPrivate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Public or Private"
+        app:layout_constraintBottom_toTopOf="@+id/rgPublicPrivate"
+        app:layout_constraintStart_toStartOf="@+id/rgPublicPrivate"
+        app:layout_constraintTop_toBottomOf="@+id/cbUseCurrentAddress"/>
+
+    <TextView
+        android:id="@+id/textViewRules"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rules"
+        app:layout_constraintBottom_toTopOf="@+id/etRules"
+        app:layout_constraintStart_toStartOf="@+id/etRules"
+        app:layout_constraintTop_toBottomOf="@+id/rgPublicPrivate" />
+
+    <EditText
+        android:id="@+id/etRules"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="top"
+        android:hint="Rules"
+        android:inputType="textMultiLine"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRules"
+        app:layout_constraintStart_toStartOf="@+id/textViewRules"
+        app:layout_constraintBottom_toTopOf="@+id/btnSubmit" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/etRules"
+        app:layout_constraintTop_toBottomOf="@+id/etRules"/>
+
+    <RadioGroup
+        android:id="@+id/rgPublicPrivate"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/textViewPublicPrivate"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPublicPrivate">
+
+        <RadioButton
+            android:id="@+id/rbPublic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Public"
+            app:layout_constraintTop_toTopOf="@+id/rgPublicPrivate"
+            app:layout_constraintStart_toStartOf="@+id/rgPublicPrivate"/>
+
+        <RadioButton
+            android:id="@+id/rbPrivate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Private"
+            app:layout_constraintTop_toTopOf="@+id/rgPublicPrivate"
+            app:layout_constraintEnd_toEndOf="@+id/rgPublicPrivate"/>
+    </RadioGroup>
+</androidx.constraintlayout.widget.ConstraintLayout>
