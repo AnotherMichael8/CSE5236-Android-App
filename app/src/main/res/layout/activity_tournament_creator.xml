@@ -36,7 +36,7 @@
     <EditText
         android:id="@+id/etTournamentName"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:hint="Tournament Name"
         android:gravity="center"
         android:inputType="text"
@@ -50,7 +50,7 @@
     <TextView
         android:id="@+id/textViewPlayers"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Enter Amount of Players"
         android:layout_marginStart="12dp"
@@ -62,7 +62,7 @@
     <TextView
         android:id="@+id/textViewEventType"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Enter Event Type"
         app:layout_constraintStart_toStartOf="@+id/textViewPlayers"
@@ -76,19 +76,19 @@
         android:layout_marginStart="12dp"
         android:entries="@array/players_array"
         android:background="@drawable/outline"
-        app:layout_constraintBottom_toTopOf="@+id/spinnerEventType"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewPlayers"
         app:layout_constraintStart_toEndOf="@+id/textViewPlayers"
         app:layout_constraintTop_toTopOf="@+id/textViewPlayers" />
 
     <Spinner
         android:id="@+id/spinnerEventType"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:entries="@array/event_types_array"
         android:background="@drawable/outline"
         app:layout_constraintBottom_toBottomOf="@+id/textViewEventType"
-        app:layout_constraintStart_toStartOf="@+id/spinnerPlayers"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPlayers" />
+        app:layout_constraintTop_toTopOf="@+id/textViewEventType"
+        app:layout_constraintStart_toStartOf="@+id/spinnerPlayers" />
 
     <TextView
         android:id="@+id/textViewDate"
@@ -102,7 +102,7 @@
     <EditText
         android:id="@+id/etDate"
         android:layout_width="200dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:hint="MM/DD/YY"
         android:inputType="date"
@@ -117,7 +117,7 @@
     <EditText
         android:id="@+id/etTime"
         android:layout_width="100dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:hint="HH:MM"
         android:layout_marginStart="12dp"
         android:inputType="time"
@@ -144,6 +144,7 @@
         android:layout_marginEnd="12dp"
         android:background="@drawable/outline"
         android:inputType="textPostalAddress"
+        android:paddingStart="6dp"
         app:layout_constraintStart_toStartOf="@+id/textViewAddress"
         app:layout_constraintTop_toBottomOf="@+id/etDate"
         app:layout_constraintBottom_toTopOf="@+id/textViewPublicPrivate"/>
