@@ -21,4 +21,15 @@
     <string name="log_in">Log In</string>
     <string name="create_account">Create Account</string>
     <string name="delete_account">Delete Account</string>
+    <string-array name="players_array">
+        <item>4</item>
+        <item>8</item>
+        <item>16</item>
+    </string-array>
+
+    <string-array name="event_types_array">
+        <item>Single Elimination</item>
+        <item>Double Elimination</item>
+        <item>Round Robin</item>
+    </string-array>
 </resources>
