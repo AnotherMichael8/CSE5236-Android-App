@@ -11,6 +11,10 @@
     <string name="username_registration_text">Username</string>
     <string name="password_registration_text">Password</string>
     <string name="reenter_password_registration_text">Re-enter Password</string>
-    <string name="submit_button_text">Create</string>
+    <string name="submit_button_text">Submit</string>
     <string name="back_button_text">Back</string>
+    <string name="account_settings_text">Account Settings</string>
+    <string name="new_username_text">New Username</string>
+    <string name="new_password_text">New Password</string>
+    <string name="reenter_new_password_">Re-enter New Password</string>
 </resources>

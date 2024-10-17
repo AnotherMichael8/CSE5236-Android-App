@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.util.Log;
+import android.widget.ImageButton
 import android.widget.TextView
 
 class HomeScreenActivity : AppCompatActivity() {
@@ -36,10 +37,17 @@ class HomeScreenActivity : AppCompatActivity() {
         }
 
         val button_continue = findViewById<Button>(R.id.LogoutButton)
+        val settings_button = findViewById<ImageButton>(R.id.settingsButton)
 
         button_continue.setOnClickListener{
             finish()
             Log.i(TAG, "Logging Out")
+        }
+
+        settings_button.setOnClickListener{
+            val settingsFrag = AccountSettingsFragment()
+            supportFragmentManager.beginTransaction().add(R.id.frgSettingsContainer, settingsFrag).commit()
+            Log.i(TAG, "Going to Settings Fragment")
         }
     }
 }
