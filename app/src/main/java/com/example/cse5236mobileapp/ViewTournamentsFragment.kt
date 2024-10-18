@@ -86,7 +86,6 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
             }
             // Add a HorizontalLinearLayout with the tournament and its games inside to the LinearLayout
             val tournamentAndGameHolder = LinearLayout(requireContext())
-            tournamentAndGameHolder.orientation = LinearLayout.HORIZONTAL
             tournamentAndGameHolder.addView(tournamentView)
             tournamentAndGameHolder.addView(tournamentGames)
             tournamentContainer.addView(tournamentAndGameHolder)
