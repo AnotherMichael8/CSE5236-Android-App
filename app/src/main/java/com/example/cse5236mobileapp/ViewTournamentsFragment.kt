@@ -8,10 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.cse5236mobileapp.AccountSettingsFragment.Companion
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
@@ -21,7 +18,7 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
         private const val TAG = "View Tournaments Fragment"
     }
 
-    var todayTournaments = arrayListOf<Tournament>()
+    var todayTournaments = arrayListOf<TournamentIdentifier>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,9 +37,10 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                 for (document in documents) {
                     Log.d(TAG, "DocumentSnapshot data: ${document.data}")
                     val tournament = document.toObject<Tournament>()
+                    val tournamentId = TournamentIdentifier(document.id, tournament)
 
                     Toast.makeText(requireActivity(), tournament.tournamentName, Toast.LENGTH_LONG).show()
-                    todayTournaments.add(tournament)
+                    todayTournaments.add(tournamentId)
                 }
 
                 updateView(tournamentContainer)
@@ -73,7 +71,7 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
         // Create and add a TextView for each tournament
         for (tournament in todayTournaments) {
             val tournamentView = TextView(requireContext()).apply {
-                text = tournament.tournamentName
+                text = tournament.tournament.tournamentName
                 setPadding(16, 16, 16, 16) // Add some padding
                 textSize = 18f // Set text size
 
