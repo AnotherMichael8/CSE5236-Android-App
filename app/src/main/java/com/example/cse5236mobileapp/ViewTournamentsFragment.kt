@@ -32,39 +32,22 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
 
         // TODO: val docRef = database.collection("Tournaments").document("IDs for Tournaments (Template")
 
-        database.collection("Tournaments").get().addOnSuccessListener { documents ->
-            if (documents != null) {
-                for (document in documents) {
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                    val tournament = document.toObject<Tournament>()
-                    val tournamentId = TournamentIdentifier(document.id, tournament)
-
-                    Toast.makeText(requireActivity(), tournament.tournamentName, Toast.LENGTH_LONG).show()
-                    todayTournaments.add(tournamentId)
-                }
-
-                updateView(tournamentContainer)
-            } else {
-                Log.d(TAG, "No such document")
-            }
-        }
-        .addOnFailureListener { exception ->
-            Log.d(TAG, "get failed with ", exception)
+        Tournament.getTournamentList { tournaments ->
+            todayTournaments = tournaments
+            updateView(tournamentContainer)
         }
 
         val backButton = view.findViewById<Button>(R.id.viewTournamentBackButton)
         val user = FirebaseAuth.getInstance().currentUser
 
         backButton.setOnClickListener(){
-            val displayName = user?.email ?: "No display name available"
-            Toast.makeText(requireContext(), displayName, Toast.LENGTH_LONG).show()
             parentFragmentManager.beginTransaction().remove(this).commit()
             Log.i(TAG, "Going to Home Screen from Account Settings")
         }
     }
 
     // Function to reduce duplication by updating the view with tournament data
-    private fun updateView(tournamentContainer: LinearLayout) {
+    fun updateView(tournamentContainer: LinearLayout) {
         // Clear the container first, to avoid duplicate views on repeated updates
         tournamentContainer.removeAllViews()
 
