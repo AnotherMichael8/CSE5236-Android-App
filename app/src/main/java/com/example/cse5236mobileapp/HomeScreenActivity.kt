@@ -1,5 +1,6 @@
 package com.example.cse5236mobileapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
@@ -61,7 +62,6 @@ class HomeScreenActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().add(R.id.frgHomeScreenContainer, settingsFrag).commit()
             Log.i(TAG, "Going to Settings Fragment")
         }
-
         view_tournament_button.setOnClickListener(){
             Log.i(TAG, "Going to View Tournaments Fragment")
             val viewTournamentsFrag = ViewTournamentsFragment()

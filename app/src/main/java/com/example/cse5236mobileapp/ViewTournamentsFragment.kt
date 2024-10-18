@@ -9,6 +9,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
@@ -29,18 +31,42 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
 
         val tournamentContainer: LinearLayout = view.findViewById(R.id.tournamentContainer)
         val database = Firebase.firestore
+        val user = FirebaseAuth.getInstance().currentUser
+        val dbUser = user?.email ?: "No email"
 
-        // TODO: val docRef = database.collection("Tournaments").document("IDs for Tournaments (Template")
-
+        //This section finds which tournaments the user is in
+        val usersTournaments = mutableSetOf<String>()
+        database.collection("Users").get().addOnSuccessListener { documents ->
+            if (documents != null) {
+                for (document in documents) {
+                    if (document.id.equals(dbUser)) {
+                        // Retrieve the whole document as a map
+                        val data: MutableMap<String, Any> = document.data
+                        for (value in data) {
+                            usersTournaments.add(value.key)
+                            Log.d(TAG, "UUID is ${value.key}")
+                        }
+                        break
+                    }
+                }
+            } else {
+                Log.d(TAG, "No such document")
+            }
+        }.addOnFailureListener { exception ->
+                Log.d(TAG, "get failed with ", exception)
+            }
+        //Gets data for tournaments the user is in
         database.collection("Tournaments").get().addOnSuccessListener { documents ->
             if (documents != null) {
                 for (document in documents) {
-                    Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                    val tournament = document.toObject<Tournament>()
-                    val tournamentId = TournamentIdentifier(document.id, tournament)
+                    if(usersTournaments.contains(document.id)) {
+                        Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                        val tournament = document.toObject<Tournament>()
+                        val tournamentId = TournamentIdentifier(document.id, tournament)
 
-                    Toast.makeText(requireActivity(), tournament.tournamentName, Toast.LENGTH_LONG).show()
-                    todayTournaments.add(tournamentId)
+                        //Toast.makeText(requireActivity(), tournament.tournamentName, Toast.LENGTH_LONG).show()
+                        todayTournaments.add(tournamentId)
+                    }
                 }
 
                 updateView(tournamentContainer)
@@ -53,7 +79,6 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
         }
 
         val backButton = view.findViewById<Button>(R.id.viewTournamentBackButton)
-        val user = FirebaseAuth.getInstance().currentUser
 
         backButton.setOnClickListener(){
             val displayName = user?.email ?: "No display name available"
