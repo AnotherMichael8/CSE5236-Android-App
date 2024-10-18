@@ -49,5 +49,17 @@ class Game (
                 Log.w(null, "Failure to change score")
             }
         }
+
+        fun editPlayerName(gameId: String, newName: String, isTeamOne: Boolean) {
+            val database = Firebase.firestore
+
+            val attributeName = if (isTeamOne) "teamOne" else "teamTwo"
+
+            database.collection("Games").document(gameId).update(attributeName, newName).addOnSuccessListener {
+                Log.d(null, "Changed $attributeName to $newName")
+            }.addOnFailureListener {
+                Log.w(null, "Failure to change score")
+            }
+        }
     }
 }
