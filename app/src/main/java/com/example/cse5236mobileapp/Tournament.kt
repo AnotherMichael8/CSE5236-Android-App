@@ -9,15 +9,15 @@ import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
 
 data class Tournament (
-    @PropertyName("Address") val address: String = "",
-    @PropertyName("Date") val date: String = "",
-    @PropertyName("EventType") val eventType: String = "",
-    @PropertyName("NumberPlayers") val numberPlayers: String = "",
-    @PropertyName("Rules") val rules: String = "",
-    @PropertyName("Time") val time: String = "",
-    @PropertyName("TournamentName") val tournamentName: String = "",
-    @PropertyName("isMorning") val isMorning: Boolean = false,
-    @PropertyName("isPrivate") val isPrivate: Boolean = false
+    @PropertyName("Address") var address: String = "",
+    @PropertyName("Date") var date: String = "",
+    @PropertyName("EventType") var eventType: String = "",
+    @PropertyName("NumberPlayers") var numberPlayers: String = "",
+    @PropertyName("Rules") var rules: String = "",
+    @PropertyName("Time") var time: String = "",
+    @PropertyName("TournamentName") var tournamentName: String = "",
+    @PropertyName("isMorning") var isMorning: Boolean = false,
+    @PropertyName("isPrivate") var isPrivate: Boolean = false
 )
 {
     companion object {
@@ -45,6 +45,37 @@ data class Tournament (
                     Log.d(null, "get failed with ", exception)
                     onResult(tournamentList)
                 }
+        }
+        fun modifyTournament(tournament: TournamentIdentifier, changedPropertyKey: String, newProperty: Any){
+            val database = Firebase.firestore
+            when (changedPropertyKey){
+                "address" -> tournament.tournament.address = newProperty.toString()
+                "date" -> tournament.tournament.date = newProperty.toString()
+                "eventType" -> tournament.tournament.eventType = newProperty.toString()
+                "numberPlayers" -> tournament.tournament.numberPlayers = newProperty.toString()
+                "rules" -> tournament.tournament.rules = newProperty.toString()
+                "time" -> tournament.tournament.time = newProperty.toString()
+                "tournamentName" -> tournament.tournament.tournamentName = newProperty.toString()
+                "isMorning" -> tournament.tournament.isMorning = newProperty.toBoolean()
+                "isPrivate" -> tournament.tournament.isPrivate = newProperty.toBoolean()
+            }
+            database.collection("Tournaments").document(tournament.tournamentId).update(
+                changedPropertyKey, when (changedPropertyKey) {
+                    "isMorning", "isPrivate" -> newProperty.toBoolean()
+                    else -> newProperty.toString()
+                }
+            ).addOnSuccessListener {
+                Log.d(null, tournament.tournament.tournamentName+ " tournament updated successfully")
+            }.addOnFailureListener { e->
+                Log.d(null, tournament.tournament.tournamentName+ " error updating Tournament: $e")
+            }
+        }
+        fun Any?.toBoolean(): Boolean {
+            return when (this) {
+                is Boolean -> this  // Return directly if it's already a Boolean
+                is String -> this.lowercase() in listOf("true", "1")  // Convert string representations of true
+                else -> false  // Return false for all other cases
+            }
         }
     }
 }
