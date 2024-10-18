@@ -33,4 +33,15 @@
     <string name="modify_is_morning_text">Is Morning</string>
     <string name="modify_is_private_text">Is Private</string>
     <string name="delete_tournament_text">Delete Tournament</string>
+    <string-array name="players_array">
+        <item>4</item>
+        <item>8</item>
+        <item>16</item>
+    </string-array>
+
+    <string-array name="event_types_array">
+        <item>Single Elimination</item>
+        <item>Double Elimination</item>
+        <item>Round Robin</item>
+    </string-array>
 </resources>

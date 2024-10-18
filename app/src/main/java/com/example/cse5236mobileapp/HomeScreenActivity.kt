@@ -48,6 +48,7 @@ class HomeScreenActivity : AppCompatActivity() {
         val button_logout = findViewById<Button>(R.id.LogoutButton)
         val settings_button = findViewById<ImageButton>(R.id.settingsButton)
         val view_tournament_button = findViewById<Button>(R.id.ViewButton)
+        val tournamentCreator_button = findViewById<Button>(R.id.CreateButton)
 
         button_logout.setOnClickListener{
             Firebase.auth.signOut()
@@ -65,6 +66,10 @@ class HomeScreenActivity : AppCompatActivity() {
             Log.i(TAG, "Going to View Tournaments Fragment")
             val viewTournamentsFrag = ViewTournamentsFragment()
             supportFragmentManager.beginTransaction().add(R.id.frgHomeScreenContainer, viewTournamentsFrag).commit()
+        }
+        tournamentCreator_button.setOnClickListener{
+            val intent = Intent(this, TournamentCreator::class.java)
+            startActivity(intent)
         }
     }
 

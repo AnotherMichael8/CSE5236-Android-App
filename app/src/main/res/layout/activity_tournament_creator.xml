@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TournamentCreator">
+
+
+    <Button
+        android:id="@+id/tourMakerBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:text="Back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewTournamentName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle = "bold"
+        android:text="Tournament Maker"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/etTournamentName"
+        app:layout_constraintStart_toStartOf="@+id/etTournamentName"
+        app:layout_constraintTop_toBottomOf="@+id/tourMakerBackButton"/>
+
+    <EditText
+        android:id="@+id/etTournamentName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tournament Name"
+        android:gravity="center"
+        android:inputType="text"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerPlayers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTournamentName"/>
+
+    <TextView
+        android:id="@+id/textViewPlayers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Enter Amount of Players"
+        android:layout_marginStart="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/etTournamentName"
+        app:layout_constraintStart_toStartOf="@+id/etTournamentName"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerPlayers"
+        app:layout_constraintBottom_toTopOf="@+id/textViewEventType"/>
+
+    <TextView
+        android:id="@+id/textViewEventType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Enter Event Type"
+        app:layout_constraintStart_toStartOf="@+id/textViewPlayers"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPlayers"
+        app:layout_constraintBottom_toTopOf="@+id/textViewDate"/>
+
+    <Spinner
+        android:id="@+id/spinnerPlayers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:entries="@array/players_array"
+        android:background="@drawable/outline"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewPlayers"
+        app:layout_constraintStart_toEndOf="@+id/textViewPlayers"
+        app:layout_constraintTop_toTopOf="@+id/textViewPlayers" />
+
+    <Spinner
+        android:id="@+id/spinnerEventType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/event_types_array"
+        android:background="@drawable/outline"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewEventType"
+        app:layout_constraintTop_toTopOf="@+id/textViewEventType"
+        app:layout_constraintStart_toStartOf="@+id/spinnerPlayers" />
+
+    <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date and Time"
+        app:layout_constraintBottom_toTopOf="@+id/etDate"
+        app:layout_constraintStart_toStartOf="@+id/etDate" />
+
+
+    <EditText
+        android:id="@+id/etDate"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:hint="MM/DD/YY"
+        android:inputType="date"
+        android:background="@drawable/outline"
+        android:paddingStart="6dp"
+        app:layout_constraintBottom_toBottomOf="@+id/etTime"
+        app:layout_constraintBottom_toTopOf="@+id/textViewAddress"
+        app:layout_constraintEnd_toStartOf="@+id/etTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEventType" />
+
+    <EditText
+        android:id="@+id/etTime"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:hint="HH:MM"
+        android:layout_marginStart="12dp"
+        android:inputType="time"
+        android:background="@drawable/outline"
+        android:paddingStart="6dp"
+        app:layout_constraintBottom_toBottomOf="@+id/etDate"
+        app:layout_constraintStart_toEndOf="@+id/etDate" />
+
+    <TextView
+        android:id="@+id/textViewAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Address"
+        app:layout_constraintStart_toStartOf="@+id/etAddress"
+        app:layout_constraintBottom_toTopOf="@+id/etAddress"/>
+
+    <EditText
+        android:id="@+id/etAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Address"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/outline"
+        android:inputType="textPostalAddress"
+        android:paddingStart="6dp"
+        app:layout_constraintStart_toStartOf="@+id/textViewAddress"
+        app:layout_constraintTop_toBottomOf="@+id/etDate"
+        app:layout_constraintBottom_toTopOf="@+id/textViewPublicPrivate"/>
+
+    <CheckBox
+        android:id="@+id/cbUseCurrentAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Current Address"
+        app:layout_constraintStart_toStartOf="@+id/etAddress"
+        app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+
+    <TextView
+        android:id="@+id/textViewPublicPrivate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Public or Private"
+        app:layout_constraintBottom_toTopOf="@+id/rgPublicPrivate"
+        app:layout_constraintStart_toStartOf="@+id/rgPublicPrivate" />
+
+    <TextView
+        android:id="@+id/textViewRules"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rules"
+        app:layout_constraintBottom_toTopOf="@+id/etRules"
+        app:layout_constraintStart_toStartOf="@+id/etRules" />
+
+    <EditText
+        android:id="@+id/etRules"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="top"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:hint="Rules"
+        android:paddingStart="6dp"
+        android:paddingTop="6dp"
+        android:inputType="textMultiLine"
+        android:background="@drawable/outline"
+        app:layout_constraintTop_toBottomOf="@+id/rgPublicPrivate"
+        app:layout_constraintStart_toStartOf="@+id/textViewRules"
+        app:layout_constraintBottom_toTopOf="@+id/tourCreatorBtnSubmit" />
+
+    <Button
+        android:id="@+id/tourCreatorBtnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/etRules"
+        app:layout_constraintTop_toBottomOf="@+id/etRules" />
+
+    <RadioGroup
+        android:id="@+id/rgPublicPrivate"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="12dp"
+        android:orientation="horizontal"
+        android:background="@drawable/outline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbUseCurrentAddress"
+        app:layout_constraintBottom_toTopOf="@+id/textViewRules">
+
+        <RadioButton
+            android:id="@+id/rbPublic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Public"
+            app:layout_constraintStart_toStartOf="@+id/rgPublicPrivate"
+            app:layout_constraintTop_toTopOf="@+id/rgPublicPrivate" />
+
+        <RadioButton
+            android:id="@+id/rbPrivate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Private"
+            app:layout_constraintEnd_toEndOf="@+id/rgPublicPrivate"
+            app:layout_constraintTop_toTopOf="@+id/rgPublicPrivate" />
+    </RadioGroup>
+</androidx.constraintlayout.widget.ConstraintLayout>
