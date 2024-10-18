@@ -53,7 +53,7 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
 
         // Create and add a TextView for each tournament
         for (tournament in todayTournaments) {
-            val tournamentView = TextView(requireContext()).apply {
+            val tournamentView = Button(requireContext()).apply {
                 text = tournament.tournament.tournamentName
                 setPadding(16, 16, 16, 16) // Add some padding
                 textSize = 18f // Set text size
@@ -61,6 +61,8 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                 // Optional: Set OnClickListener if needed
                 setOnClickListener {
                     // Handle click event
+                    val modifyTournamentFragment = ModifyTournamentsFragment(tournament)
+                    parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, modifyTournamentFragment).commit()
                 }
             }
             // Add the TextView to the LinearLayout

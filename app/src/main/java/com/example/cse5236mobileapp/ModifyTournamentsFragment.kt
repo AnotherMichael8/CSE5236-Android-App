@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 
-class ModifyTournamentsFragment : Fragment(R.layout.fragment_modify_tournaments){
+class ModifyTournamentsFragment(tournamentIdentifier: TournamentIdentifier) : Fragment(R.layout.fragment_modify_tournaments){
     companion object {
         private const val TAG = "Modify Tournaments Fragment"
     }
@@ -37,74 +37,61 @@ class ModifyTournamentsFragment : Fragment(R.layout.fragment_modify_tournaments)
 
         //tournament name button
         modifyTournamentNameButton.setOnClickListener(){
-            changeFragment(false, "@string/modify_tournament_name_text", "Name", container, InputType.TYPE_CLASS_TEXT)
+            changeContainerFragment(false, "Tournament Name: ", "Name", container, InputType.TYPE_CLASS_TEXT)
         }
         //modify number players button
         modifyNumberPlayersButton.setOnClickListener(){
-            changeFragment(false, "@string/modify_number_players_text", "Decimal Number", container,InputType.TYPE_NUMBER_FLAG_DECIMAL)
+            changeContainerFragment(false, "Number Players: ", "Decimal Number", container,InputType.TYPE_NUMBER_FLAG_DECIMAL)
         }
         //modify event type button
         modifyEventTypeButton.setOnClickListener(){
-            changeFragment(false, "@string/modify_event_type_text", "@string/modify_event_type_text", container, InputType.TYPE_CLASS_TEXT)
+            changeContainerFragment(false, "Event Type:", "Event Type", container, InputType.TYPE_CLASS_TEXT)
         }
         //modify date button
         modifyDateButton.setOnClickListener(){
-            changeFragment(false, "@string/modify_date_text", "MM/DD/YY", container, InputType.TYPE_CLASS_TEXT)
+            changeContainerFragment(false, "Date: ", "MM/DD/YY", container, InputType.TYPE_CLASS_TEXT)
         }
         //modify time button
         modifyTimeButton.setOnClickListener(){
-            changeFragment(false, "@string/modify_time_text", "HH:MM", container, InputType.TYPE_DATETIME_VARIATION_TIME)
+            changeContainerFragment(false, "Time: ", "HH:MM", container, InputType.TYPE_DATETIME_VARIATION_TIME)
         }
         //modify address button
         modifyAddressButton.setOnClickListener(){
-            changeFragment(false, "@string/modify_address_text", "@string/modify_address_text", container, InputType.TYPE_CLASS_TEXT)
+            changeContainerFragment(false, "Address: ", "Address", container, InputType.TYPE_CLASS_TEXT)
         }
         //modify is private button
         modifyIsPrivateButton.setOnClickListener(){
-            changeFragment(true, "@string/modify_is_private_text", "None", container, InputType.TYPE_NULL)
+            changeContainerFragment(true, "Is Private: ", "None", container, InputType.TYPE_NULL)
         }
         //modify is morning button
         modifyIsMorningButton.setOnClickListener(){
-            changeFragment(true, "@string/modify_is_morning_text", "None", container, InputType.TYPE_NULL)
+            changeContainerFragment(true, "Is Morning: ", "None", container, InputType.TYPE_NULL)
         }
         //modify rules button
         modifyRulesButton.setOnClickListener(){
-            changeFragment(false, "@string/modify_rules_text", "@string/modify_rules_text", container, InputType.TYPE_CLASS_TEXT)
+            changeContainerFragment(false, "Rules: ", "Rules: ", container, InputType.TYPE_CLASS_TEXT)
+        }
+
+        val backButton = view.findViewById<Button>(R.id.tournamentModifyBackButton)
+        backButton.setOnClickListener(){
+            parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
+
         }
 
     }
 
-    private fun changeFragment(isBoolean: Boolean, newText: String, newHint: String, container: FrameLayout, inputType: Int){
-        removeFragmentIfExists(container.id)
+    private fun changeContainerFragment(isBoolean: Boolean, newText: String, newHint: String, container: FrameLayout, inputType: Int){
         if(!isBoolean) {
-            parentFragmentManager.beginTransaction()
-                .add(R.id.frgHomeScreenContainer, modifyTextFragment).commit()
             modifyTextFragment.updateEditTextText("Modify " + newText)
             modifyTextFragment.updateEditTextHintAndInputType(newHint, inputType)
-        } else {
             parentFragmentManager.beginTransaction()
-                .add(R.id.frgHomeScreenContainer, modifyBooleanFragment).commit()
+                .replace(R.id.modifierContainer, modifyTextFragment).commit()
+        } else {
             modifyBooleanFragment.updateEditBooleanText("Modify " + newText)
             modifyBooleanFragment.updateRadioButtonText(newText)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.modifierContainer, modifyBooleanFragment).commit()
         }
     }
-
-    private fun removeFragmentIfExists(containerId: Int){
-        // Get the FragmentManager
-        val fragmentManager = parentFragmentManager
-
-        // Check if there's a fragment in the given FrameLayout (containerId)
-        val fragment = fragmentManager.findFragmentById(containerId)
-
-        if (fragment != null) {
-            // Fragment exists, so remove it
-            fragmentManager.beginTransaction().remove(fragment).commit()
-            Log.d("FragmentCheck", "Fragment removed from FrameLayout.")
-        } else {
-            // Fragment does not exist
-            Log.d("FragmentCheck", "No fragment found in FrameLayout.")
-        }
-    }
-
 
 }

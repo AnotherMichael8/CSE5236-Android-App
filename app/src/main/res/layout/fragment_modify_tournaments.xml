@@ -4,29 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:textAlignment="center">
+    android:textAlignment="center"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/modifyTournamentsText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="@string/tournament_modify_text"
+        android:textAlignment="center"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <FrameLayout
+        android:id="@+id/modifierContainer"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginBottom="107dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/modifyTournamentsText"
+        app:layout_constraintVertical_bias="0.16000003">
+
+    </FrameLayout>
+
     <ScrollView
         android:id="@+id/modifierScrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="250dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/modifyTournamentsText">
+        app:layout_constraintTop_toBottomOf="@+id/modifierContainer"
+        app:layout_constraintVertical_bias="0.5">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="vertical">
 
             <Button
@@ -85,18 +105,6 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <FrameLayout
-        android:id="@+id/modifierContainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/modifierScrollView"
-        app:layout_constraintVertical_bias="0.44">
-
-    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/modifierLinearLayout"
