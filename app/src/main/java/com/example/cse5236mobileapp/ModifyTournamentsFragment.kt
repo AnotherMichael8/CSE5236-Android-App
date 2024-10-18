@@ -129,6 +129,12 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
             }
         }
 
+        val deleteButton = view.findViewById<Button>(R.id.deleteTournamentButton)
+        deleteButton.setOnClickListener(){
+            Tournament.deleteTournament(tournamentIdentifier)
+            parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
+        }
+
     }
 
     private fun changeContainerFragment(isBoolean: Boolean, newText: String, newHint: String, container: FrameLayout, inputType: Int){
