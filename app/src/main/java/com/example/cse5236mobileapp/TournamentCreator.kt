@@ -44,7 +44,7 @@ class TournamentCreator : AppCompatActivity() {
 
         val backButton = findViewById<Button>(R.id.tourMakerBackButton)
         val submitButton = findViewById<Button>(R.id.tourCreatorBtnSubmit)
-        var currentRadioButton : Boolean? = null
+        var currentRadioButton : Boolean = false
         privateOrPublic.setOnCheckedChangeListener { radioGroup, idChecked ->
             when(idChecked)
             {
