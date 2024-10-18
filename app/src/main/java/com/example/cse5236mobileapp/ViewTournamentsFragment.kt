@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.api.Distribution.BucketOptions.Linear
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
@@ -57,6 +58,13 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                 text = tournament.tournament.tournamentName
                 setPadding(16, 16, 16, 16) // Add some padding
                 textSize = 18f // Set text size
+                // Set layout parameters for width and height
+                layoutParams = LinearLayout.LayoutParams(
+                    0, // Width set to 0dp (for weight-based layouts)
+                    LinearLayout.LayoutParams.WRAP_CONTENT // Height
+                ).apply {
+                    weight = 1f // This ensures equal width distribution
+                }
 
                 // Optional: Set OnClickListener if needed
                 setOnClickListener {
@@ -65,8 +73,22 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                     parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, modifyTournamentFragment).commit()
                 }
             }
-            // Add the TextView to the LinearLayout
-            tournamentContainer.addView(tournamentView)
+            val tournamentGames = Button(requireContext()).apply{
+                text = "Games"
+                setPadding(16, 16, 16, 16) // Add some padding
+                textSize = 18f // Set text size
+                // Optional: Set OnClickListener if needed
+                setOnClickListener {
+                    // Handle click event
+                    parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewGamesFragment(tournament)).commit()
+                }
+
+            }
+            // Add a HorizontalLinearLayout with the tournament and its games inside to the LinearLayout
+            val tournamentAndGameHolder = LinearLayout(requireContext())
+            tournamentAndGameHolder.addView(tournamentView)
+            tournamentAndGameHolder.addView(tournamentGames)
+            tournamentContainer.addView(tournamentAndGameHolder)
         }
     }
 }
