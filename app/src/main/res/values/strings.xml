@@ -22,4 +22,14 @@
     <string name="create_account">Create Account</string>
     <string name="delete_account">Delete Account</string>
     <string name="tournaments_today">Tournaments Today</string>
+    <string name="tournament_modify_text">Select Property to Modify</string>
+    <string name="modify_address_text">Address</string>
+    <string name="modify_date_text">Date</string>
+    <string name="modify_event_type_text">Event Type</string>
+    <string name="modify_number_players_text">Number Players</string>
+    <string name="modify_rules_text">Rules</string>
+    <string name="modify_time_text">Time</string>
+    <string name="modify_tournament_name_text">Tournament Name</string>
+    <string name="modify_is_morning_text">Is Morning</string>
+    <string name="modify_is_private_text">Is Private</string>
 </resources>

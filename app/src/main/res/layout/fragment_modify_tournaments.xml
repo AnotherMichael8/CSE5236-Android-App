@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textAlignment="center">
+
+    <TextView
+        android:id="@+id/modifyTournamentsText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tournament_modify_text"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/modifierScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/modifyTournamentsText">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/modifyTournamentNameButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modify_tournament_name_text" />
+
+            <Button
+                android:id="@+id/modifyNumberPlayersButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modify_number_players_text" />
+
+            <Button
+                android:id="@+id/modifyEventTypeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modify_event_type_text" />
+
+            <Button
+                android:id="@+id/modifyDateButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modify_date_text" />
+
+            <Button
+                android:id="@+id/modifyTimeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modify_time_text" />
+
+            <Button
+                android:id="@+id/modifyAddressButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modify_address_text" />
+
+            <Button
+                android:id="@+id/modifyIsPrivateButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modify_is_private_text" />
+
+            <Button
+                android:id="@+id/modifyIsMorningButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modify_is_morning_text" />
+
+            <Button
+                android:id="@+id/modifyRulesButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/modify_rules_text" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/modifierContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/modifierScrollView"
+        app:layout_constraintVertical_bias="0.44">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/modifierLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/tournamentModifyBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="@string/back_button_text" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
