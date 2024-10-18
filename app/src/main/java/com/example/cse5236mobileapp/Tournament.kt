@@ -49,13 +49,13 @@ data class Tournament (
         fun modifyTournament(tournament: TournamentIdentifier, changedPropertyKey: String, newProperty: Any){
             val database = Firebase.firestore
             when (changedPropertyKey){
-                "address" -> tournament.tournament.address = newProperty.toString()
-                "date" -> tournament.tournament.date = newProperty.toString()
-                "eventType" -> tournament.tournament.eventType = newProperty.toString()
-                "numberPlayers" -> tournament.tournament.numberPlayers = newProperty.toString()
-                "rules" -> tournament.tournament.rules = newProperty.toString()
-                "time" -> tournament.tournament.time = newProperty.toString()
-                "tournamentName" -> tournament.tournament.tournamentName = newProperty.toString()
+                "Address" -> tournament.tournament.address = newProperty.toString()
+                "Date" -> tournament.tournament.date = newProperty.toString()
+                "EventType" -> tournament.tournament.eventType = newProperty.toString()
+                "NumberPlayers" -> tournament.tournament.numberPlayers = newProperty.toString()
+                "Rules" -> tournament.tournament.rules = newProperty.toString()
+                "Time" -> tournament.tournament.time = newProperty.toString()
+                "TournamentName" -> tournament.tournament.tournamentName = newProperty.toString()
                 "isMorning" -> tournament.tournament.isMorning = newProperty.toBoolean()
                 "isPrivate" -> tournament.tournament.isPrivate = newProperty.toBoolean()
             }

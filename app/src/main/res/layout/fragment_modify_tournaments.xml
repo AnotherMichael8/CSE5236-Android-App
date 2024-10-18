@@ -24,21 +24,21 @@
     <FrameLayout
         android:id="@+id/modifierContainer"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_marginBottom="107dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/modifierScrollView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/modifyTournamentsText"
-        app:layout_constraintVertical_bias="0.16000003">
+        app:layout_constraintVertical_bias="0.25">
 
     </FrameLayout>
 
     <ScrollView
         android:id="@+id/modifierScrollView"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/modifierLinearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/modifierContainer"
@@ -121,5 +121,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:text="@string/back_button_text" />
+
+        <Button
+            android:id="@+id/deleteTournamentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="@string/delete_tournament_text" />
+
+        <Button
+            android:id="@+id/modifyTournamentsSubmitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="@string/submit_button_text" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

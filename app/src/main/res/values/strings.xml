@@ -32,4 +32,5 @@
     <string name="modify_tournament_name_text">Tournament Name</string>
     <string name="modify_is_morning_text">Is Morning</string>
     <string name="modify_is_private_text">Is Private</string>
+    <string name="delete_tournament_text">Delete Tournament</string>
 </resources>

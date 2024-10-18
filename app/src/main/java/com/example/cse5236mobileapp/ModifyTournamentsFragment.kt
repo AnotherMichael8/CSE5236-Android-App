@@ -8,15 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 
-class ModifyTournamentsFragment(tournamentIdentifier: TournamentIdentifier) : Fragment(R.layout.fragment_modify_tournaments){
+class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIdentifier) : Fragment(R.layout.fragment_modify_tournaments){
     companion object {
         private const val TAG = "Modify Tournaments Fragment"
     }
     //subfragments
-    private val modifyTextFragment = ModifyTextFragment()
-    private val modifyBooleanFragment = ModifyBooleanFragment()
+    private val modifyTextFragment = ModifyTextFragment(this)
+    private val modifyBooleanFragment = ModifyBooleanFragment(this)
+    // if any changes are made it should update into these variables
+    var updatedBoolean = false
+    var updatedText = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,42 +38,72 @@ class ModifyTournamentsFragment(tournamentIdentifier: TournamentIdentifier) : Fr
         //container
         val container = view.findViewById<FrameLayout>(R.id.modifierContainer)
 
+        // var to keep track of which property is selected
+        var selectedProperty = ""
+
 
         //tournament name button
         modifyTournamentNameButton.setOnClickListener(){
+            Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
+            updatedText = ""
             changeContainerFragment(false, "Tournament Name: ", "Name", container, InputType.TYPE_CLASS_TEXT)
+            selectedProperty = "TournamentName"
         }
         //modify number players button
         modifyNumberPlayersButton.setOnClickListener(){
+            Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
+            updatedText = ""
             changeContainerFragment(false, "Number Players: ", "Decimal Number", container,InputType.TYPE_NUMBER_FLAG_DECIMAL)
+            selectedProperty = "NumberPlayers"
         }
         //modify event type button
         modifyEventTypeButton.setOnClickListener(){
+            Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
+            updatedText = ""
             changeContainerFragment(false, "Event Type:", "Event Type", container, InputType.TYPE_CLASS_TEXT)
+            selectedProperty = "EventType"
         }
         //modify date button
         modifyDateButton.setOnClickListener(){
+            Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
+            updatedText = ""
             changeContainerFragment(false, "Date: ", "MM/DD/YY", container, InputType.TYPE_CLASS_TEXT)
+            selectedProperty = "Date"
         }
         //modify time button
         modifyTimeButton.setOnClickListener(){
+            Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
+            updatedText = ""
             changeContainerFragment(false, "Time: ", "HH:MM", container, InputType.TYPE_DATETIME_VARIATION_TIME)
+            selectedProperty = "Time"
         }
         //modify address button
         modifyAddressButton.setOnClickListener(){
+            Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
+            updatedText = ""
             changeContainerFragment(false, "Address: ", "Address", container, InputType.TYPE_CLASS_TEXT)
+            selectedProperty = "Address"
         }
         //modify is private button
         modifyIsPrivateButton.setOnClickListener(){
+            Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
+            updatedBoolean = false
             changeContainerFragment(true, "Is Private: ", "None", container, InputType.TYPE_NULL)
+            selectedProperty = "isPrivate"
         }
         //modify is morning button
         modifyIsMorningButton.setOnClickListener(){
+            Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
+            updatedBoolean = false
             changeContainerFragment(true, "Is Morning: ", "None", container, InputType.TYPE_NULL)
+            selectedProperty = "isMorning"
         }
         //modify rules button
         modifyRulesButton.setOnClickListener(){
+            Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
+            updatedText = ""
             changeContainerFragment(false, "Rules: ", "Rules: ", container, InputType.TYPE_CLASS_TEXT)
+            selectedProperty = "Rules"
         }
 
         val backButton = view.findViewById<Button>(R.id.tournamentModifyBackButton)
@@ -78,9 +112,27 @@ class ModifyTournamentsFragment(tournamentIdentifier: TournamentIdentifier) : Fr
 
         }
 
+        val submitButton = view.findViewById<Button>(R.id.modifyTournamentsSubmitButton)
+        submitButton.setOnClickListener(){
+            if(selectedProperty != ""){
+                if(selectedProperty != "isMorning" && selectedProperty != "isPrivate") {
+                    Tournament.modifyTournament(tournamentIdentifier, selectedProperty, updatedText)
+                } else {
+                    Tournament.modifyTournament(tournamentIdentifier, selectedProperty, updatedBoolean)
+                }
+            } else {
+                Toast.makeText(
+                requireContext(),
+                "No Property Selected",
+                Toast.LENGTH_SHORT,
+            ).show()
+            }
+        }
+
     }
 
     private fun changeContainerFragment(isBoolean: Boolean, newText: String, newHint: String, container: FrameLayout, inputType: Int){
+
         if(!isBoolean) {
             modifyTextFragment.updateEditTextText("Modify " + newText)
             modifyTextFragment.updateEditTextHintAndInputType(newHint, inputType)
