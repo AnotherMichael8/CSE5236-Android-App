@@ -99,6 +99,15 @@ data class Tournament (
                 Log.d(null, tournament.tournament.tournamentName+ " error updating Tournament: $e")
             }
         }
+        fun deleteTournament(tournament: TournamentIdentifier){
+            val database = Firebase.firestore
+            database.collection("Tournaments").document(tournament.tournamentId).delete(
+            ).addOnSuccessListener {
+                Log.d(null, tournament.tournament.tournamentName + " deleted successfully")
+            }.addOnFailureListener { e->
+                Log.d(null, tournament.tournament.tournamentName + " error deleting Tournament: $e")
+            }
+        }
         fun Any?.toBoolean(): Boolean {
             return when (this) {
                 is Boolean -> this  // Return directly if it's already a Boolean
