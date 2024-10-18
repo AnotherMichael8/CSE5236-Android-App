@@ -12,6 +12,8 @@ import android.util.Log;
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match
