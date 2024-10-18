@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="380dp"
+    android:layout_height="180dp"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/round_corners_big_box"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvPlayerOneScore"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/round_corners_small_box"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:text="0"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPlayerOne"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvPlayerOne" />
+
+    <TextView
+        android:id="@+id/tvPlayerTwoScore"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/round_corners_small_box"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:text="0"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPlayerTwo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvPlayerTwo" />
+
+    <TextView
+        android:id="@+id/tvPlayerOne"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Player One"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:elevation="4dp"
+        android:padding="6dp"
+        android:background="@drawable/round_corners_small_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPlayerTwo"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_corners_small_box"
+        android:elevation="4dp"
+        android:padding="6dp"
+        android:text="Player Two"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlayerOne" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
