@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.PropertyName
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
@@ -23,12 +24,11 @@ data class Tournament (
 {
     companion object {
         private const val TAG = "Tournament Class"
+        private val database = Firebase.firestore
+        private val user = FirebaseAuth.getInstance().currentUser
+        private val dbUser = user?.email ?: "No email"
 
         fun getTournamentList(onResult: (ArrayList<TournamentIdentifier>) -> Unit) {
-            val database = Firebase.firestore
-            val user = FirebaseAuth.getInstance().currentUser
-            val dbUser = user?.email ?: "No email"
-
             //This section finds which tournaments the user is in
             val usersTournaments = mutableSetOf<String>()
             database.collection("Users").get().addOnSuccessListener { documents ->
@@ -76,7 +76,6 @@ data class Tournament (
                 }
         }
         fun modifyTournament(tournament: TournamentIdentifier, changedPropertyKey: String, newProperty: Any){
-            val database = Firebase.firestore
             when (changedPropertyKey){
                 "Address" -> tournament.tournament.address = newProperty.toString()
                 "Date" -> tournament.tournament.date = newProperty.toString()
@@ -100,9 +99,14 @@ data class Tournament (
             }
         }
         fun deleteTournament(tournament: TournamentIdentifier){
-            val database = Firebase.firestore
             database.collection("Tournaments").document(tournament.tournamentId).delete(
             ).addOnSuccessListener {
+                Log.d(null, tournament.tournament.tournamentName + " deleted successfully")
+            }.addOnFailureListener { e->
+                Log.d(null, tournament.tournament.tournamentName + " error deleting Tournament: $e")
+            }
+            database.collection("Users").document(dbUser).update(tournament.tournamentId, FieldValue.delete())
+            .addOnSuccessListener {
                 Log.d(null, tournament.tournament.tournamentName + " deleted successfully")
             }.addOnFailureListener { e->
                 Log.d(null, tournament.tournament.tournamentName + " error deleting Tournament: $e")
