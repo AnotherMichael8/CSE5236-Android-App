@@ -10,42 +10,31 @@
 
     <Button
         android:id="@+id/tourMakerBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
+        android:textSize="12dp"
         android:text="Back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewTournamentName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textStyle = "bold"
-        android:text="Tournament Maker"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/etTournamentName"
-        app:layout_constraintStart_toStartOf="@+id/etTournamentName"
-        app:layout_constraintTop_toBottomOf="@+id/tourMakerBackButton"/>
 
     <EditText
         android:id="@+id/etTournamentName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Tournament Name"
+        android:textSize="30dp"
         android:gravity="center"
+        android:textStyle="bold"
         android:inputType="text"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/spinnerPlayers"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTournamentName"/>
+        app:layout_constraintTop_toBottomOf="@+id/tourMakerBackButton"/>
+
 
     <TextView
         android:id="@+id/textViewPlayers"
@@ -64,10 +53,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginBottom="8dp"
         android:text="Enter Event Type"
+        app:layout_constraintBottom_toTopOf="@+id/textViewDate"
         app:layout_constraintStart_toStartOf="@+id/textViewPlayers"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPlayers"
-        app:layout_constraintBottom_toTopOf="@+id/textViewDate"/>
+        app:layout_constraintTop_toBottomOf="@+id/textViewPlayers" />
 
     <Spinner
         android:id="@+id/spinnerPlayers"
@@ -147,15 +137,18 @@
         android:paddingStart="6dp"
         app:layout_constraintStart_toStartOf="@+id/textViewAddress"
         app:layout_constraintTop_toBottomOf="@+id/etDate"
-        app:layout_constraintBottom_toTopOf="@+id/textViewPublicPrivate"/>
+        app:layout_constraintBottom_toTopOf="@+id/tvPlayers"/>
 
     <CheckBox
         android:id="@+id/cbUseCurrentAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Use Current Address"
+        android:layout_marginBottom="8dp"
         app:layout_constraintStart_toStartOf="@+id/etAddress"
-        app:layout_constraintTop_toBottomOf="@+id/etAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/etAddress"
+        app:layout_constraintBottom_toBottomOf="@id/tvPlayers"
+        app:layout_constraintVertical_bias="0" />
 
     <TextView
         android:id="@+id/textViewPublicPrivate"
@@ -164,6 +157,28 @@
         android:text="Public or Private"
         app:layout_constraintBottom_toTopOf="@+id/rgPublicPrivate"
         app:layout_constraintStart_toStartOf="@+id/rgPublicPrivate" />
+    <TextView
+        android:id="@+id/tvPlayers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Players"
+        app:layout_constraintStart_toStartOf="@+id/etPlayers"
+        app:layout_constraintBottom_toTopOf="@id/etPlayers"/>
+    <EditText
+        android:id="@+id/etPlayers"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:hint="Player 1, Player 2, Player 3, ..."
+        android:paddingStart="6dp"
+        android:paddingTop="6dp"
+        android:background="@drawable/outline"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/textViewPublicPrivate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cbUseCurrentAddress"/>
 
     <TextView
         android:id="@+id/textViewRules"
@@ -207,7 +222,7 @@
         android:orientation="horizontal"
         android:background="@drawable/outline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cbUseCurrentAddress"
+        app:layout_constraintTop_toBottomOf="@+id/etPlayers"
         app:layout_constraintBottom_toTopOf="@+id/textViewRules">
 
         <RadioButton
