@@ -24,5 +24,15 @@ class Game (
                 Log.w(null, "Game unable to create")
             }
         }
+
+        fun deleteGame(gameId: String) {
+            val database = Firebase.firestore
+
+            database.collection("Games").document(gameId).delete().addOnSuccessListener { doc ->
+                Log.d(null, "Game deleted with id: $gameId")
+            }.addOnFailureListener {
+                Log.w(null, "Game not deleted")
+            }
+        }
     }
 }

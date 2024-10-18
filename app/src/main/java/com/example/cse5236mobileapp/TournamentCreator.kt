@@ -46,7 +46,7 @@ class TournamentCreator : AppCompatActivity() {
 
         val backButton = findViewById<Button>(R.id.tourMakerBackButton)
         val submitButton = findViewById<Button>(R.id.tourCreatorBtnSubmit)
-        var currentRadioButton : Boolean? = null
+        var currentRadioButton : Boolean = false
         privateOrPublic.setOnCheckedChangeListener { radioGroup, idChecked ->
             when(idChecked)
             {
@@ -74,18 +74,18 @@ class TournamentCreator : AppCompatActivity() {
             val stringEventType : String = eventTypeSpinner.selectedItem.toString()
             if(!(stringTournamentName.isBlank() || stringDate.isBlank() || stringTime.isBlank() || stringAddress.isBlank() || stringRules.isBlank()))
             {
-                val newTournamentEntry = mapOf(
-                    "TournamentName" to stringTournamentName,
-                    "NumberPlayers" to stringAmountPlayers,
-                    "EventType" to stringEventType,
-                     "Date" to stringDate,
-                    "Time" to stringTime,
-                    "isMorning" to false,
-                    "Address" to stringAddress,
-                    "isPrivate" to currentRadioButton,
-                    "Rules" to stringRules
-                )
-                val uuid = UUID.randomUUID().toString()
+                val newTournamentEntry = Tournament(
+                    stringAddress,
+                    stringDate,
+                    stringEventType,
+                    stringAmountPlayers,
+                    stringRules,
+                    stringTime,
+                    stringTournamentName,
+                    false,
+                    currentRadioButton)
+
+                val uuid = "Tournament${UUID.randomUUID().toString()}"
                 database.collection("Tournaments").document(uuid).set(newTournamentEntry)
                 val userTournaments = mapOf(uuid to "Today")
                 val user = auth.currentUser
