@@ -31,9 +31,6 @@ class TournamentCreator : AppCompatActivity() {
             insets
         }
 
-        val database = FirebaseFirestore.getInstance()
-        val auth = Firebase.auth
-
         val tournamentNameField = findViewById<EditText>(R.id.etTournamentName)
         val numPlayerSpinner = findViewById<Spinner>(R.id.spinnerPlayers)
         val eventTypeSpinner = findViewById<Spinner>(R.id.spinnerEventType)
@@ -42,6 +39,7 @@ class TournamentCreator : AppCompatActivity() {
         val addressNameField = findViewById<EditText>(R.id.etAddress)
         val privateOrPublic = findViewById<RadioGroup>(R.id.rgPublicPrivate)
         val rulesField = findViewById<EditText>(R.id.etRules)
+        val participants = findViewById<EditText>(R.id.etPlayers)
 
 
         val backButton = findViewById<Button>(R.id.tourMakerBackButton)
@@ -71,26 +69,24 @@ class TournamentCreator : AppCompatActivity() {
             val stringAddress : String = addressNameField.text.toString()
             val stringRules : String = rulesField.text.toString()
             val stringAmountPlayers: String = numPlayerSpinner.selectedItem.toString()
-            val stringEventType : String = eventTypeSpinner.selectedItem.toString()
-            if(!(stringTournamentName.isBlank() || stringDate.isBlank() || stringTime.isBlank() || stringAddress.isBlank() || stringRules.isBlank()))
+            val stringParticipants : String = participants.text.toString().trim()
+            val participantsArr = stringParticipants.split(",")
+
+            if(participantsArr.size == stringAmountPlayers.toInt() &&
+                !(stringTournamentName.isBlank() || stringDate.isBlank() || stringTime.isBlank() || stringAddress.isBlank() || stringRules.isBlank()))
             {
-                val newTournamentEntry = mapOf(
-                    "TournamentName" to stringTournamentName,
-                    "NumberPlayers" to stringAmountPlayers,
-                    "EventType" to stringEventType,
-                     "Date" to stringDate,
-                    "Time" to stringTime,
-                    "isMorning" to false,
-                    "Address" to stringAddress,
-                    "isPrivate" to currentRadioButton,
-                    "Rules" to stringRules
-                )
-                val uuid = UUID.randomUUID().toString()
-                database.collection("Tournaments").document(uuid).set(newTournamentEntry)
-                val userTournaments = mapOf(uuid to "Today")
-                val user = auth.currentUser
-                val userAccount = user?.email ?: "No email"
-                database.collection("Users").document(userAccount).set(userTournaments, SetOptions.merge())
+                val tournamentVal = Tournament(
+                    tournamentName = tournamentNameField.text.toString(),
+                    date = dateNameField.text.toString(),
+                    time = timeNameField.text.toString(),
+                    address = addressNameField.text.toString(),
+                    rules = rulesField.text.toString(),
+                    numberPlayers = numPlayerSpinner.selectedItem.toString(),
+                    eventType = eventTypeSpinner.selectedItem.toString(),
+                    isPrivate = currentRadioButton!!,
+                    isMorning = false,
+                    participants = participantsArr)
+                Tournament.addTournamentToDatabase(tournamentVal)
                 finish()
             }
         }

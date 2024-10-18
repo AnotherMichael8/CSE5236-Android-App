@@ -2,13 +2,18 @@ package com.example.cse5236mobileapp
 
 import android.content.Context
 import android.util.Log
+import android.widget.EditText
+import android.widget.RadioGroup
+import android.widget.Spinner
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.PropertyName
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
+import java.util.UUID
 
 data class Tournament (
     @PropertyName("Address") var address: String = "",
@@ -19,7 +24,8 @@ data class Tournament (
     @PropertyName("Time") var time: String = "",
     @PropertyName("TournamentName") var tournamentName: String = "",
     @PropertyName("isMorning") var isMorning: Boolean = false,
-    @PropertyName("isPrivate") var isPrivate: Boolean = false
+    @PropertyName("isPrivate") var isPrivate: Boolean = false,
+    @PropertyName("Participants") var participants: List<String> = listOf()
 )
 {
     companion object {
@@ -74,6 +80,13 @@ data class Tournament (
                     Log.d(null, "get failed with ", exception)
                     onResult(tournamentList)
                 }
+        }
+        fun addTournamentToDatabase(tournament: Tournament) {
+            val uuid = UUID.randomUUID().toString()
+            database.collection("Tournaments").document(uuid).set(tournament)
+            val userTournaments = mapOf(uuid to "Today")
+            //val userAccount = user?.email ?: "No email"
+            database.collection("Users").document(dbUser).set(userTournaments, SetOptions.merge())
         }
         fun modifyTournament(tournament: TournamentIdentifier, changedPropertyKey: String, newProperty: Any){
             when (changedPropertyKey){
