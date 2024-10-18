@@ -30,12 +30,12 @@ data class Tournament (
 {
     companion object {
         private const val TAG = "Tournament Class"
-        private val database = Firebase.firestore
-        private val user = FirebaseAuth.getInstance().currentUser
-        private val dbUser = user?.email ?: "No email"
-
         fun getTournamentList(onResult: (ArrayList<TournamentIdentifier>) -> Unit) {
             //This section finds which tournaments the user is in
+            val database = Firebase.firestore
+            val user = FirebaseAuth.getInstance().currentUser
+            val dbUser = user?.email ?: "No email"
+
             val usersTournaments = mutableSetOf<String>()
             database.collection("Users").get().addOnSuccessListener { documents ->
                 if (documents != null) {
@@ -82,6 +82,10 @@ data class Tournament (
                 }
         }
         fun addTournamentToDatabase(tournament: Tournament) {
+            val user = FirebaseAuth.getInstance().currentUser
+            val dbUser = user?.email ?: "No email"
+
+            val database = Firebase.firestore
             val uuid = UUID.randomUUID().toString()
             database.collection("Tournaments").document(uuid).set(tournament)
             val userTournaments = mapOf(uuid to "Today")
@@ -89,6 +93,7 @@ data class Tournament (
             database.collection("Users").document(dbUser).set(userTournaments, SetOptions.merge())
         }
         fun modifyTournament(tournament: TournamentIdentifier, changedPropertyKey: String, newProperty: Any){
+            val database = Firebase.firestore
             when (changedPropertyKey){
                 "Address" -> tournament.tournament.address = newProperty.toString()
                 "Date" -> tournament.tournament.date = newProperty.toString()
@@ -112,6 +117,10 @@ data class Tournament (
             }
         }
         fun deleteTournament(tournament: TournamentIdentifier){
+            val database = Firebase.firestore
+            val user = FirebaseAuth.getInstance().currentUser
+            val dbUser = user?.email ?: "No email"
+
             database.collection("Tournaments").document(tournament.tournamentId).delete(
             ).addOnSuccessListener {
                 Log.d(null, tournament.tournament.tournamentName + " deleted successfully")
