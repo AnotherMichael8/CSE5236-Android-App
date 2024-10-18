@@ -75,6 +75,13 @@ class TournamentCreator : AppCompatActivity() {
             if(participantsArr.size == stringAmountPlayers.toInt() &&
                 !(stringTournamentName.isBlank() || stringDate.isBlank() || stringTime.isBlank() || stringAddress.isBlank() || stringRules.isBlank()))
             {
+                var gameList = mutableListOf<Game>()
+                for(i in 0 until participantsArr.size/2)
+                {
+                    val playersPos = i * 2
+                    val game = Game(teamOne = participantsArr[playersPos], teamTwo = participantsArr[playersPos + 1])
+                    gameList.add(game)
+                }
                 val tournamentVal = Tournament(
                     tournamentName = tournamentNameField.text.toString(),
                     date = dateNameField.text.toString(),
@@ -83,9 +90,9 @@ class TournamentCreator : AppCompatActivity() {
                     rules = rulesField.text.toString(),
                     numberPlayers = numPlayerSpinner.selectedItem.toString(),
                     eventType = eventTypeSpinner.selectedItem.toString(),
-                    isPrivate = currentRadioButton!!,
+                    isPrivate = currentRadioButton,
                     isMorning = false,
-                    participants = participantsArr)
+                    games = gameList)
                 Tournament.addTournamentToDatabase(tournamentVal)
                 finish()
             }
