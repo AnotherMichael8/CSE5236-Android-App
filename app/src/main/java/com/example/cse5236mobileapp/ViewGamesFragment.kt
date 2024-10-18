@@ -3,6 +3,7 @@ package com.example.cse5236mobileapp
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) : Fragment(R.layout.fragment_view_games) {
@@ -19,5 +20,7 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
             parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
         }
 
+        val gamesTextView = view.findViewById<TextView>(R.id.gameViewText)
+        gamesTextView.text = "Games for " + tournamentIdentifier.tournament.tournamentName
     }
 }

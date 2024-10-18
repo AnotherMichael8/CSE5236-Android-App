@@ -58,6 +58,13 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                 text = tournament.tournament.tournamentName
                 setPadding(16, 16, 16, 16) // Add some padding
                 textSize = 18f // Set text size
+                // Set layout parameters for width and height
+                layoutParams = LinearLayout.LayoutParams(
+                    0, // Width set to 0dp (for weight-based layouts)
+                    LinearLayout.LayoutParams.WRAP_CONTENT // Height
+                ).apply {
+                    weight = 1f // This ensures equal width distribution
+                }
 
                 // Optional: Set OnClickListener if needed
                 setOnClickListener {
