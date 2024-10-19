@@ -26,7 +26,7 @@ data class Tournament (
     @PropertyName("isMorning") var isMorning: Boolean = false,
     @PropertyName("isPrivate") var isPrivate: Boolean = false,
     @PropertyName("Games") var games: List<Game> = listOf(),
-    @PropertyName("GamesID") var gamesIDs: List<String?> = listOf()
+    @PropertyName("GamesID") var gamesIDs: List<String> = listOf()
 )
 {
     companion object {
@@ -133,6 +133,10 @@ data class Tournament (
                 Log.d(null, tournament.tournament.tournamentName + " deleted successfully")
             }.addOnFailureListener { e->
                 Log.d(null, tournament.tournament.tournamentName + " error deleting Tournament: $e")
+            }
+            for(gameID in tournament.tournament.gamesIDs)
+            {
+                Game.deleteGame(gameID)
             }
         }
         fun Any?.toBoolean(): Boolean {

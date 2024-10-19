@@ -15,17 +15,18 @@ class Game (
 )
 {
     companion object {
-        fun createGame(game: Game, onResult: (String?) -> Unit) {
+        fun createGame(game: Game) : String {
             val database = Firebase.firestore
 
             val uuid = "Game" + UUID.randomUUID().toString()
             database.collection("Games").document(uuid).set(game).addOnSuccessListener { document ->
                 Log.d(null, "Game created with id: $uuid")
-                onResult(uuid)
+                //onResult(uuid)
             }.addOnFailureListener {
                 Log.w(null, "Game unable to create")
-                onResult(null)
+                //onResult(null)
             }
+            return uuid
         }
 
         fun deleteGame(gameId: String) {

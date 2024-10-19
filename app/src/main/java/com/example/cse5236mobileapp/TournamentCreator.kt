@@ -84,9 +84,7 @@ class TournamentCreator : AppCompatActivity() {
                         teamTwo = participantsArr[playersPos + 1]
                     )
                     gameList.add(game)
-                    Game.createGame(game) { gameId ->
-                        gameListID.add(gameId!!)
-                    }
+                    gameListID.add(Game.createGame(game))
                 }
                 val tournamentVal = Tournament(
                     tournamentName = tournamentNameField.text.toString(),
