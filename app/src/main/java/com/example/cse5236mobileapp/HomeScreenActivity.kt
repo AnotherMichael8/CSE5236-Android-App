@@ -69,7 +69,7 @@ class HomeScreenActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().add(R.id.frgHomeScreenContainer, viewTournamentsFrag).commit()
         }
         tournamentCreator_button.setOnClickListener{
-            val intent = Intent(this, TournamentCreator::class.java)
+            val intent = Intent(this, TournamentCreatorActivity::class.java)
             startActivity(intent)
         }
     }
