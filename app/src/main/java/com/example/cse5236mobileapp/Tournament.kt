@@ -25,7 +25,8 @@ data class Tournament (
     @PropertyName("TournamentName") var tournamentName: String = "",
     @PropertyName("isMorning") var isMorning: Boolean = false,
     @PropertyName("isPrivate") var isPrivate: Boolean = false,
-    @PropertyName("Games") var games: List<Game> = listOf()
+    @PropertyName("Games") var games: List<Game> = listOf(),
+    @PropertyName("GamesID") var gamesIDs: List<String?> = listOf()
 )
 {
     companion object {
