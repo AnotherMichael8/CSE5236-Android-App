@@ -72,6 +72,7 @@ class TournamentCreatorActivity : AppCompatActivity() {
             if(participantsArr.size == stringAmountPlayers.toInt() &&
                 !(stringTournamentName.isBlank() || stringDate.isBlank() || stringTime.isBlank() || stringAddress.isBlank() || stringRules.isBlank()))
             {
+                // TODO: Have method for generating list of games be in tournament class
                 var gameListID = mutableListOf<String>()
                 var gameList = mutableListOf<Game>()
                 for(i in 0 until participantsArr.size/2) {
