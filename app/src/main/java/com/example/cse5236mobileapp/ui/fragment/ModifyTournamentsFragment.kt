@@ -11,11 +11,15 @@ import androidx.fragment.app.Fragment
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.Tournament
+import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 
 class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIdentifier) : Fragment(R.layout.fragment_modify_tournaments){
     companion object {
         private const val TAG = "Modify Tournaments Fragment"
     }
+    // Viewmodel object
+    private val tournamentViewModel = TournamentViewModel()
+
     //subfragments
     private val modifyTextFragment = ModifyTextFragment(this)
     private val modifyBooleanFragment = ModifyBooleanFragment(this)
@@ -117,9 +121,9 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
         submitButton.setOnClickListener(){
             if(selectedProperty != ""){
                 if(selectedProperty != "isMorning" && selectedProperty != "isPrivate") {
-                    Tournament.modifyTournament(tournamentIdentifier, selectedProperty, updatedText)
+                    tournamentViewModel.modifyTournamentAttribute(tournamentIdentifier, selectedProperty, updatedText)
                 } else {
-                    Tournament.modifyTournament(tournamentIdentifier, selectedProperty, updatedBoolean)
+                    tournamentViewModel.modifyTournamentAttribute(tournamentIdentifier, selectedProperty, updatedBoolean)
                 }
             } else {
                 Toast.makeText(
@@ -132,7 +136,7 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
 
         val deleteButton = view.findViewById<Button>(R.id.deleteTournamentButton)
         deleteButton.setOnClickListener(){
-            Tournament.deleteTournament(tournamentIdentifier)
+            tournamentViewModel.deleteTournament(tournamentIdentifier)
             parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
         }
 

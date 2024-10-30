@@ -76,6 +76,10 @@ class TournamentViewModel : ViewModel() {
         repository.addTournamentToDatabase(tournament)
     }
 
+    // Calling modifyTournamentAttribute from repository
+    fun modifyTournamentAttribute(tournament: TournamentIdentifier, changedPropertyKey: String, newProperty: Any) {
+        repository.modifyTournamentAttribute(tournament,changedPropertyKey, newProperty)
+    }
 
     // Calling deleteTournament from repository
     fun deleteTournament(tournamentId: TournamentIdentifier) {

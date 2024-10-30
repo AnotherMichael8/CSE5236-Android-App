@@ -1,6 +1,7 @@
 package com.example.cse5236mobileapp.model
 
 import android.util.Log
+import com.example.cse5236mobileapp.model.Tournament.Companion.toBoolean
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
@@ -25,6 +26,33 @@ class TournamentRepository {
         //val userAccount = user?.email ?: "No email"
         database.collection("Users").document(dbUser).set(userTournaments, SetOptions.merge())
     }
+
+    // Method to modify tournament attribute
+    fun modifyTournamentAttribute(tournament: TournamentIdentifier, changedPropertyKey: String, newProperty: Any){
+        val database = Firebase.firestore
+        when (changedPropertyKey){
+            "Address" -> tournament.tournament.address = newProperty.toString()
+            "Date" -> tournament.tournament.date = newProperty.toString()
+            "EventType" -> tournament.tournament.eventType = newProperty.toString()
+            "NumberPlayers" -> tournament.tournament.numberPlayers = newProperty.toString()
+            "Rules" -> tournament.tournament.rules = newProperty.toString()
+            "Time" -> tournament.tournament.time = newProperty.toString()
+            "TournamentName" -> tournament.tournament.tournamentName = newProperty.toString()
+            "isMorning" -> tournament.tournament.isMorning = newProperty.toBoolean()
+            "isPrivate" -> tournament.tournament.isPrivate = newProperty.toBoolean()
+        }
+        database.collection("Tournaments").document(tournament.tournamentId).update(
+            changedPropertyKey, when (changedPropertyKey) {
+                "isMorning", "isPrivate" -> newProperty.toBoolean()
+                else -> newProperty.toString()
+            }
+        ).addOnSuccessListener {
+            Log.d(null, tournament.tournament.tournamentName+ " tournament updated successfully")
+        }.addOnFailureListener { e->
+            Log.d(null, tournament.tournament.tournamentName+ " error updating Tournament: $e")
+        }
+    }
+
 
     // Method to delete tournament from database
     fun deleteTournament(tournament: TournamentIdentifier){

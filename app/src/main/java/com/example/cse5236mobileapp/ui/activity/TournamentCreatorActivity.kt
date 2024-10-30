@@ -12,8 +12,12 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.Game
 import com.example.cse5236mobileapp.model.Tournament
+import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 
 class TournamentCreatorActivity : AppCompatActivity() {
+
+    private val tournamentViewModel = TournamentViewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -91,7 +95,7 @@ class TournamentCreatorActivity : AppCompatActivity() {
                     isMorning = false,
                     games = gameList,
                     gamesIDs = gameListID)
-                Tournament.addTournamentToDatabase(tournamentVal)
+                tournamentViewModel.addTournament(tournamentVal)
                 finish()
             }
         }
