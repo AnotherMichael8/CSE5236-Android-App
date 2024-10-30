@@ -1,7 +1,6 @@
-package com.example.cse5236mobileapp
+package com.example.cse5236mobileapp.model
 
 import android.util.Log
-import com.google.android.material.color.utilities.Score
 import com.google.firebase.firestore.PropertyName
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase

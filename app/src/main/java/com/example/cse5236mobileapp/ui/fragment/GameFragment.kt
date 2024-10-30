@@ -1,9 +1,11 @@
-package com.example.cse5236mobileapp
+package com.example.cse5236mobileapp.ui.fragment
 
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.cse5236mobileapp.R
+import com.example.cse5236mobileapp.model.Game
 
 class GameFragment(private val game: Game) : Fragment(R.layout.fragment_game){
 

@@ -1,11 +1,6 @@
-package com.example.cse5236mobileapp
+package com.example.cse5236mobileapp.model
 
-import android.content.Context
 import android.util.Log
-import android.widget.EditText
-import android.widget.RadioGroup
-import android.widget.Spinner
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.PropertyName

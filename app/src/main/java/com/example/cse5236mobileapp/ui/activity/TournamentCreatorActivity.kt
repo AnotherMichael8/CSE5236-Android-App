@@ -1,4 +1,4 @@
-package com.example.cse5236mobileapp
+package com.example.cse5236mobileapp.ui.activity
 
 import android.os.Bundle
 import android.widget.Button
@@ -9,6 +9,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.cse5236mobileapp.R
+import com.example.cse5236mobileapp.model.Game
+import com.example.cse5236mobileapp.model.Tournament
 
 class TournamentCreatorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

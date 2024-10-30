@@ -1,4 +1,4 @@
-package com.example.cse5236mobileapp
+package com.example.cse5236mobileapp.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,10 @@ import androidx.core.view.WindowInsetsCompat
 import android.util.Log;
 import android.widget.ImageButton
 import android.widget.TextView
+import com.example.cse5236mobileapp.ui.fragment.AccountSettingsFragment
+import com.example.cse5236mobileapp.R
+import com.example.cse5236mobileapp.ui.fragment.ViewTournamentsFragment
+import com.example.cse5236mobileapp.model.Account
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

@@ -1,17 +1,16 @@
-package com.example.cse5236mobileapp
+package com.example.cse5236mobileapp.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.api.Distribution.BucketOptions.Linear
+import com.example.cse5236mobileapp.R
+import com.example.cse5236mobileapp.model.TournamentIdentifier
+import com.example.cse5236mobileapp.model.Tournament
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
 
 class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {

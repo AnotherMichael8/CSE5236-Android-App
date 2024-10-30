@@ -1,13 +1,9 @@
-package com.example.cse5236mobileapp
+package com.example.cse5236mobileapp.model
 
 import android.content.Context
-import android.content.Intent
 import android.text.TextUtils
 import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest

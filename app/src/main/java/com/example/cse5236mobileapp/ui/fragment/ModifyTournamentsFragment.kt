@@ -1,15 +1,16 @@
-package com.example.cse5236mobileapp
+package com.example.cse5236mobileapp.ui.fragment
 
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.cse5236mobileapp.R
+import com.example.cse5236mobileapp.model.TournamentIdentifier
+import com.example.cse5236mobileapp.model.Tournament
 
 class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIdentifier) : Fragment(R.layout.fragment_modify_tournaments){
     companion object {

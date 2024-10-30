@@ -1,4 +1,4 @@
-package com.example.cse5236mobileapp
+package com.example.cse5236mobileapp.ui.fragment
 
 import android.os.Bundle
 import android.text.Editable
@@ -7,8 +7,11 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.cse5236mobileapp.R
 
-class ModifyTextFragment(private var modifyTournamentsFragment: ModifyTournamentsFragment) : Fragment(R.layout.fragment_modify_text) {
+class ModifyTextFragment(private var modifyTournamentsFragment: ModifyTournamentsFragment) : Fragment(
+    R.layout.fragment_modify_text
+) {
     companion object {
         private const val TAG = "ModifyTextFragment"
     }

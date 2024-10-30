@@ -1,4 +1,4 @@
-package com.example.cse5236mobileapp
+package com.example.cse5236mobileapp.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -7,10 +7,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.cse5236mobileapp.R
+import com.example.cse5236mobileapp.model.Account
+import com.example.cse5236mobileapp.ui.activity.HomeScreenActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.auth.ktx.userProfileChangeRequest
-import com.google.firebase.ktx.Firebase
 
 class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
     companion object {

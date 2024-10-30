@@ -1,4 +1,4 @@
-package com.example.cse5236mobileapp
+package com.example.cse5236mobileapp.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.util.Log;
+import com.example.cse5236mobileapp.R
 import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 
 

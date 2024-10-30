@@ -1,20 +1,17 @@
-package com.example.cse5236mobileapp
+package com.example.cse5236mobileapp.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.util.Log;
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.example.cse5236mobileapp.R
+import com.example.cse5236mobileapp.model.Account
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -56,15 +53,14 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
 
             // See if fields are valid
             if (Account.checkCreateUserInfo(requireContext(), username, password, reentered)) {
-                Account.createAccount(auth, requireActivity(), username, password) {success ->
+                Account.createAccount(auth, requireActivity(), username, password) { success ->
                     if (success) {
                         val user = auth.currentUser
-                        database.collection("Users").document(username).set(mapOf<String,String>())
+                        database.collection("Users").document(username).set(mapOf<String, String>())
                         // TODO: updateUI(user)
                         Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
 
-                    }
-                    else {
+                    } else {
                         Toast.makeText(
                             requireContext(),
                             "Authentication failed.",
