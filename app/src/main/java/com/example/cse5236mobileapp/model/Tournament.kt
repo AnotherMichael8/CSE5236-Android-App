@@ -46,7 +46,8 @@ data class Tournament (
                 val newTeamTwo = getGameWinner(games[i + 1])
                 val newGame = Game(
                     teamOne = newTeamOne,
-                    teamTwo = newTeamTwo
+                    teamTwo = newTeamTwo,
+                    round = round + 1
                 )
                 newGames.add(newGame)
             }
@@ -60,10 +61,10 @@ data class Tournament (
 
     private fun getGameWinner(game: Game): String {
         if (game.teamTwoScore > game.teamOneScore) {
-            return game.teamOne
+            return game.teamTwo
         }
         else if (game.teamOneScore > game.teamTwoScore) {
-            return game.teamTwo
+            return game.teamOne
         }
         else {
             val randomInt = Random.nextInt(1, 2)
