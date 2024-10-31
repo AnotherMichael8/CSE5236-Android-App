@@ -56,6 +56,7 @@ class TournamentRepository {
         }
     }
 
+    // Used for advancing the tournament
     fun updateGamesAndRounds(tournament: Tournament, tournamentId: String) {
         val dbRef = database.collection("Tournaments").document(tournamentId)
 
