@@ -16,10 +16,14 @@ class TournamentGamesViewModel(private val tournamentId: String) {
     val tournamentLive: MutableLiveData<Tournament> by lazy {
         MutableLiveData<Tournament>()
     }
+    val tournamentGamesLive: MutableLiveData<List<Game>> by lazy {
+        MutableLiveData<List<Game>>()
+    }
 
     init {
         firestore = FirebaseFirestore.getInstance()
         loadTournament()
+        loadGameInTourney()
     }
 
     private fun loadTournament() {
@@ -31,6 +35,20 @@ class TournamentGamesViewModel(private val tournamentId: String) {
 
             if (document != null) {
                 tournamentLive.value = document.toObject<Tournament>()
+            }
+        }
+    }
+    private fun loadGameInTourney()
+    {
+        firestore.collection("Tournaments").document(tournamentId).addSnapshotListener { document, exception ->
+            if (exception != null) {
+                tournamentLive.value = Tournament()
+                return@addSnapshotListener
+            }
+
+            if (document != null) {
+                val tournament = document.toObject<Tournament>()
+                tournamentGamesLive.value = tournament!!.games
             }
         }
     }

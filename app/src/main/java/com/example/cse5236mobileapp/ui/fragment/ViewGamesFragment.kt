@@ -5,13 +5,17 @@ import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.util.Log
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
-import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.Game
+import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.Tournament
+import com.example.cse5236mobileapp.model.ViewGameAdapter
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
 
 class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) : Fragment(R.layout.fragment_view_games) {
@@ -20,19 +24,32 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
     }
     //TODO: all of the game functionality
     private val tournamentGamesViewModel = TournamentGamesViewModel(tournamentIdentifier.tournamentId)
+    private lateinit var viewGameAdapter : ViewGameAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //values for future reference
+        /*
         val gamesContainer = view.findViewById<LinearLayout>(R.id.gamesContainer)
+         */
         val backButton = view.findViewById<Button>(R.id.viewGameBackButton)
         val gamesTextView = view.findViewById<TextView>(R.id.gameViewText)
 
+        val rvGameView = view.findViewById<RecyclerView>(R.id.rvGameView)
+
+        viewGameAdapter = ViewGameAdapter(mutableListOf())
+        rvGameView.adapter = viewGameAdapter
+        rvGameView.layoutManager = LinearLayoutManager(requireContext())
+
+
         // Livedata implementation here
+        tournamentGamesViewModel.tournamentGamesLive.observe(viewLifecycleOwner, Observer { games ->
+            updateGamesContainer(viewGameAdapter, games)
+        })
+
         tournamentGamesViewModel.tournamentLive.observe(viewLifecycleOwner, Observer { tournament ->
             updateName(gamesTextView, tournament)
-            updateGamesContainer(gamesContainer, tournament)
         })
 
         //back button functionality
@@ -41,8 +58,11 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
         }
     }
 
-    fun updateGamesContainer(gamesContainer: LinearLayout, tournament: Tournament) {
-        gamesContainer.removeAllViews()
+    fun updateGamesContainer(viewGameAdapter: ViewGameAdapter, games: List<Game>) {
+        viewGameAdapter.updateGames(games)
+
+        /*
+        viewGameAdapter.removeAllViews()
         for (game in tournament.games) {
             // Setup needed modules to makeup each game
             val gameLayout = FrameLayout(requireContext()).apply {
@@ -57,13 +77,13 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
             }
 
             // Add the FrameLayout to the container
-            gamesContainer.addView(gameLayout)
+            viewGameAdapter.addView(gameLayout)
 
             // Add a fragment for each game using the FrameLayout as its container
             parentFragmentManager.beginTransaction()
                 .replace(gameLayout.id, GameFragment(game))
                 .commit()
-        }
+            */
     }
 
     fun updateName(textView: TextView, tournament: Tournament) {

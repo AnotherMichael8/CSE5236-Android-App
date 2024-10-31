@@ -2,25 +2,26 @@ package com.example.cse5236mobileapp.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.Game
+import com.example.cse5236mobileapp.model.ViewGameAdapter
+import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
 
 class GameFragment(private val game: Game) : Fragment(R.layout.fragment_game){
+
+    private lateinit var viewGameAdapter : ViewGameAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val team1TextView = view.findViewById<TextView>(R.id.team1TextView)
-        val team2TextView = view.findViewById<TextView>(R.id.team2TextView)
-        val team1ScoreTextView = view.findViewById<TextView>(R.id.team1ScoreTextView)
-        val team2ScoreTextView = view.findViewById<TextView>(R.id.team2ScoreTextView)
+        val rvGameView = view.findViewById<RecyclerView>(R.id.rvGameView)
 
-        team1TextView.text = game.teamOne
-        team2TextView.text = game.teamTwo
-        team1ScoreTextView.text = "Score: " + game.teamOneScore.toString()
-        team2ScoreTextView.text = "Score: " + game.teamTwoScore.toString()
+        viewGameAdapter = ViewGameAdapter(mutableListOf())
+        rvGameView.adapter = viewGameAdapter
+        //rvGameView.layoutManager = LinearLayoutManager(this)
 
     }
 }

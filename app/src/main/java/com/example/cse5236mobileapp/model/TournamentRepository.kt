@@ -50,9 +50,9 @@ class TournamentRepository {
                 else -> newProperty.toString()
             }
         ).addOnSuccessListener {
-            Log.d(null, tournament.tournament.tournamentName+ " tournament updated successfully")
+            Log.d(TAG, tournament.tournament.tournamentName+ " tournament updated successfully")
         }.addOnFailureListener { e->
-            Log.d(null, tournament.tournament.tournamentName+ " error updating Tournament: $e")
+            Log.d(TAG, tournament.tournament.tournamentName+ " error updating Tournament: $e")
         }
     }
 
