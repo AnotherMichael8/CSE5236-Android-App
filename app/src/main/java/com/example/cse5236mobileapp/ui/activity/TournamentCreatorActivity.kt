@@ -72,18 +72,18 @@ class TournamentCreatorActivity : AppCompatActivity() {
             if(participantsArr.size == stringAmountPlayers.toInt() &&
                 !(stringTournamentName.isBlank() || stringDate.isBlank() || stringTime.isBlank() || stringAddress.isBlank() || stringRules.isBlank()))
             {
-                // TODO: Have method for generating list of games be in tournament class
-                var gameListID = mutableListOf<String>()
-                var gameList = mutableListOf<Game>()
-                for(i in 0 until participantsArr.size/2) {
-                    val playersPos = i * 2
-                    val game = Game(
-                        teamOne = participantsArr[playersPos],
-                        teamTwo = participantsArr[playersPos + 1]
-                    )
-                    gameList.add(game)
-                    gameListID.add(Game.createGame(game))
-                }
+//                // TODO: Have method for generating list of games be in tournament class
+//                var gameListID = mutableListOf<String>()
+//                var gameList = mutableListOf<Game>()
+//                for(i in 0 until participantsArr.size/2) {
+//                    val playersPos = i * 2
+//                    val game = Game(
+//                        teamOne = participantsArr[playersPos],
+//                        teamTwo = participantsArr[playersPos + 1]
+//                    )
+//                    gameList.add(game)
+//                    gameListID.add(Game.createGame(game))
+//                }
                 val tournamentVal = Tournament(
                     tournamentName = tournamentNameField.text.toString(),
                     date = dateNameField.text.toString(),
@@ -94,8 +94,10 @@ class TournamentCreatorActivity : AppCompatActivity() {
                     eventType = eventTypeSpinner.selectedItem.toString(),
                     isPrivate = currentRadioButton,
                     isMorning = false,
-                    games = gameList,
-                    gamesIDs = gameListID)
+                    players = participantsArr)
+
+                tournamentVal.createInitialGames()
+
                 tournamentViewModel.addTournament(tournamentVal)
                 finish()
             }

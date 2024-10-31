@@ -10,7 +10,8 @@ class Game (
     @PropertyName("TeamOne") var teamOne: String = "",
     @PropertyName("TeamTwo") var teamTwo: String = "",
     @PropertyName("TeamOneScore") var teamOneScore: Int = 0,
-    @PropertyName("TeamTwoScore") var teamTwoScore: Int = 0
+    @PropertyName("TeamTwoScore") var teamTwoScore: Int = 0,
+    @PropertyName("Round") var round: Int = 1
 )
 {
     companion object {

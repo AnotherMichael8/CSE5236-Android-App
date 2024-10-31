@@ -11,6 +11,10 @@ import com.google.firebase.ktx.Firebase
 import java.util.UUID
 
 class TournamentRepository {
+    companion object {
+        private const val TAG = "TournamentRepository"
+    }
+
     private val database = Firebase.firestore
     private val user = FirebaseAuth.getInstance().currentUser
     private val dbUser = user?.email ?: "No email"
@@ -29,7 +33,6 @@ class TournamentRepository {
 
     // Method to modify tournament attribute
     fun modifyTournamentAttribute(tournament: TournamentIdentifier, changedPropertyKey: String, newProperty: Any){
-        val database = Firebase.firestore
         when (changedPropertyKey){
             "Address" -> tournament.tournament.address = newProperty.toString()
             "Date" -> tournament.tournament.date = newProperty.toString()
@@ -53,6 +56,18 @@ class TournamentRepository {
         }
     }
 
+    fun updateGamesAndRounds(tournament: Tournament, tournamentId: String) {
+        val dbRef = database.collection("Tournaments").document(tournamentId)
+
+        dbRef.update("games", tournament.games)
+            .addOnSuccessListener { Log.d(TAG, "Successfully updated tournament games") }
+            .addOnFailureListener{  Log.w(TAG, "Failed to update tournament games")}
+
+        dbRef.update("round", tournament.round)
+            .addOnSuccessListener { Log.d(TAG, "Successfully updated tournament games") }
+            .addOnFailureListener{  Log.w(TAG, "Failed to update tournament games")}
+    }
+
 
     // Method to delete tournament from database
     fun deleteTournament(tournament: TournamentIdentifier){
@@ -68,9 +83,5 @@ class TournamentRepository {
             }.addOnFailureListener { e->
                 Log.d(null, tournament.tournament.tournamentName + " error deleting Tournament: $e")
             }
-        for(gameID in tournament.tournament.gamesIDs)
-        {
-            Game.deleteGame(gameID)
-        }
     }
 }

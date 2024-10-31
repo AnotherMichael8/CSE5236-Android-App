@@ -9,6 +9,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
 import java.util.UUID
+import kotlin.random.Random
 
 data class Tournament (
     @PropertyName("Address") var address: String = "",
@@ -20,10 +21,61 @@ data class Tournament (
     @PropertyName("TournamentName") var tournamentName: String = "",
     @PropertyName("isMorning") var isMorning: Boolean = false,
     @PropertyName("isPrivate") var isPrivate: Boolean = false,
-    @PropertyName("Games") var games: List<Game> = listOf(),
-    @PropertyName("GamesID") var gamesIDs: List<String> = listOf()
+    @PropertyName("Players") var players: List<String> = listOf(),
+    @PropertyName("Round") var round: Int = 1,
+    @PropertyName("Games") var games: MutableList<Game> = mutableListOf<Game>()
 )
 {
+    fun createInitialGames() {
+        var gameList = mutableListOf<Game>()
+        for(i in 0 until players.size step 2) {
+            val game = Game(
+                teamOne = players[i],
+                teamTwo = players[i + 1],
+                round = 1
+            )
+            games.add(game)
+        }
+    }
+
+    fun advanceRound() {
+        if (games.size > 1) {
+            var newGames = mutableListOf<Game>()
+            for (i in 0 until games.size step 2) {
+                val newTeamOne = getGameWinner(games[i])
+                val newTeamTwo = getGameWinner(games[i + 1])
+                val newGame = Game(
+                    teamOne = newTeamOne,
+                    teamTwo = newTeamTwo
+                )
+                newGames.add(newGame)
+            }
+
+            for (newGame in newGames) {
+                games.add(newGame)
+            }
+            round++
+        }
+    }
+
+    private fun getGameWinner(game: Game): String {
+        if (game.teamTwoScore > game.teamOneScore) {
+            return game.teamOne
+        }
+        else if (game.teamOneScore > game.teamTwoScore) {
+            return game.teamTwo
+        }
+        else {
+            val randomInt = Random.nextInt(1, 2)
+            if (randomInt == 1) {
+                return game.teamOne
+            }
+            else {
+                return game.teamTwo
+            }
+        }
+    }
+
     companion object {
         private const val TAG = "Tournament Class"
         fun getTournamentList(onResult: (ArrayList<TournamentIdentifier>) -> Unit) {
@@ -130,10 +182,6 @@ data class Tournament (
                 Log.d(null, tournament.tournament.tournamentName + " deleted successfully")
             }.addOnFailureListener { e->
                 Log.d(null, tournament.tournament.tournamentName + " error deleting Tournament: $e")
-            }
-            for(gameID in tournament.tournament.gamesIDs)
-            {
-                Game.deleteGame(gameID)
             }
         }
 

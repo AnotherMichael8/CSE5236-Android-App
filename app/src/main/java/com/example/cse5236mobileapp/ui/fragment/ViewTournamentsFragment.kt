@@ -6,9 +6,11 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.Tournament
+import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -18,24 +20,27 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
         private const val TAG = "View Tournaments Fragment"
     }
 
-    var todayTournaments = arrayListOf<TournamentIdentifier>()
+    // Use viewModels delegate to get the ViewModel instance
+    private val tournamentViewModel = TournamentViewModel()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        val previousTournaments = arrayOf("Previous Tournament 1", "Previous Tournament 2", "Previous Tournament 3", "Previous Tournament 4")
-        val futureTournaments = arrayOf("Future Tournament 1", "Future Tournament 2", "Future Tournament 3", "Future Tournament 4")
-
         val tournamentContainer: LinearLayout = view.findViewById(R.id.tournamentContainer)
-        val database = Firebase.firestore
+
+
+        // Livedata from viewModel
+        tournamentViewModel.userTournamentLive.observe(viewLifecycleOwner, Observer { tournaments ->
+            updateView(tournamentContainer, tournaments)
+        })
 
         // TODO: val docRef = database.collection("Tournaments").document("IDs for Tournaments (Template")
 
-        Tournament.getTournamentList { tournaments ->
-            todayTournaments = tournaments
-            updateView(tournamentContainer)
-        }
+//        Tournament.getTournamentList { tournaments ->
+//            todayTournaments = tournaments
+//            updateView(tournamentContainer)
+//        }
 
         val backButton = view.findViewById<Button>(R.id.viewTournamentBackButton)
         val user = FirebaseAuth.getInstance().currentUser
@@ -47,12 +52,12 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
     }
 
     // Function to reduce duplication by updating the view with tournament data
-    fun updateView(tournamentContainer: LinearLayout) {
+    fun updateView(tournamentContainer: LinearLayout, tournaments: List<TournamentIdentifier>) {
         // Clear the container first, to avoid duplicate views on repeated updates
         tournamentContainer.removeAllViews()
 
         // Create and add a TextView for each tournament
-        for (tournament in todayTournaments) {
+        for (tournament in tournaments) {
             val tournamentView = Button(requireContext()).apply {
                 text = tournament.tournament.tournamentName
                 setPadding(16, 16, 16, 16) // Add some padding

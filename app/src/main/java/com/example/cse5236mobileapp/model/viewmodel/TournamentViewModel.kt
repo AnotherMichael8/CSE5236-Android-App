@@ -1,11 +1,14 @@
 package com.example.cse5236mobileapp.model.viewmodel
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.TournamentRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
@@ -13,31 +16,30 @@ import com.google.firebase.ktx.Firebase
 class TournamentViewModel : ViewModel() {
 
     private val repository = TournamentRepository()
-    private val database = Firebase.firestore
+    private var firestore = Firebase.firestore
     private val user = FirebaseAuth.getInstance().currentUser
     private val dbUser = user?.email ?: "No email"
 
     // Tournaments specific for current user
-    val userTournamentLive: MutableLiveData<List<Tournament>> by lazy {
-        MutableLiveData<List<Tournament>>()
+    val userTournamentLive: MutableLiveData<List<TournamentIdentifier>> by lazy {
+        MutableLiveData<List<TournamentIdentifier>>()
     }
-
-    // Tournaments that are public
-
-
 
 
     init {
         // Will load the user tournament at the beginning here
         loadUserTournaments()
+        firestore = FirebaseFirestore.getInstance()
     }
 
     private fun loadUserTournaments() {
+        Log.d(null, "Calls loadusertourney")
         // Making variable for list of strings for tournaments assigned to users
         val usersTournaments = mutableSetOf<String>()
-        database.collection("Users").document(dbUser).addSnapshotListener { document, exception ->
+        firestore.collection("Users").document(dbUser).addSnapshotListener { document, exception ->
             if (exception != null) {
                 userTournamentLive.value = emptyList()
+                Log.w(TAG, "Listen Failed", exception)
                 return@addSnapshotListener
             }
 
@@ -45,6 +47,7 @@ class TournamentViewModel : ViewModel() {
                 usersTournaments.clear()
                 usersTournaments.addAll(document.data?.keys ?: emptySet())
                 // Will fetch the tournament here
+                fetchTourneys(usersTournaments)
 
             }
 
@@ -52,18 +55,18 @@ class TournamentViewModel : ViewModel() {
     }
 
     private fun fetchTourneys(tournamentIds: Set<String>) {
-        database.collection("Tournaments").addSnapshotListener { documents, exception ->
+        firestore.collection("Tournaments").addSnapshotListener { documents, exception ->
             if (exception != null) {
                 userTournamentLive.value = emptyList()
                 return@addSnapshotListener
             }
 
-            val tournaments = mutableListOf<Tournament>()
+            val tournaments = mutableListOf<TournamentIdentifier>()
             if (documents != null) {
                 for (doc in documents) {
                     if (tournamentIds.contains(doc.id)) {
                         val currentTourney = doc.toObject<Tournament>()
-                        tournaments.add(currentTourney)
+                        tournaments.add(TournamentIdentifier(doc.id, currentTourney))
                     }
                 }
             }
