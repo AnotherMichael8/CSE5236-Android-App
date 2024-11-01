@@ -75,6 +75,33 @@ data class Tournament (
         return ceil(log2(numberPlayers.toDouble())).toInt()
     }
 
+    // Used to display current Round name for a tournament
+    fun roundDisplayer(currentRound: Int): String {
+        val roundName = getRoundName(currentRound)
+        if (roundName != "Final" && roundName != "Semifinal" && roundName != "Quarterfinal") {
+            return "Round ${roundName}"
+        }
+        else {
+            return roundName
+        }
+    }
+
+    fun getRoundName(currentRound: Int): String {
+        val numRounds = getNumberOfRounds()
+        if (round == numRounds) {
+            return "Final"
+        }
+        else if (round == numRounds - 1) {
+            return "Semifinal"
+        }
+        else if (round == numRounds - 2) {
+            return "Quarterfinal"
+        }
+        else {
+            return round.toString()
+        }
+    }
+
     companion object {
         private const val TAG = "Tournament Class"
 
