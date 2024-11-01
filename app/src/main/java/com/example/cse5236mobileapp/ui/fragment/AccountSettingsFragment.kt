@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.Account
+import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.example.cse5236mobileapp.ui.activity.HomeScreenActivity
 import com.google.firebase.auth.FirebaseAuth
 
@@ -16,6 +17,8 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
     companion object {
         private const val TAG = "Account Settings Fragment"
     }
+
+    private val tournamentUserViewModel = TournamentUserViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,20 +47,30 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
             var reenteredPassword = reenteredPasswordTextField.text.toString()
 
             // Check display name field, update if not empty
-            if(newDisplayName.isNotEmpty()) {
-                Account.updateDisplayName(newDisplayName, requireContext()) { success ->
-                    if (success) {
-                        (activity as HomeScreenActivity).updateWelcomeText(newDisplayName)
-                    }
-                }
+//            if(newDisplayName.isNotEmpty()) {
+//                Account.updateDisplayName(newDisplayName, requireContext()) { success ->
+//                    if (success) {
+//                        (activity as HomeScreenActivity).updateWelcomeText(newDisplayName)
+//                    }
+//                }
+//            }
+            //TODO: FINISH THIS STUFF, should be able to test functionality afterwards
+            if(newDisplayName.isNotEmpty()){
+                TournamentUserViewModel.
             }
 
             // Check password fields and see if not empty and if match
             if(newPassword.isNotEmpty()) {
-                if(newPassword.equals(reenteredPassword)) {
-                    Account.updatePassword(newPassword, requireContext())
-                    // TODO: Get it to not crash in this case, will just call finish for now
-                    (activity as HomeScreenActivity).finish()
+                if (newPassword.equals(reenteredPassword)) {
+                    if (user != null) {
+                        tournamentUserViewModel.modifyUserPassword(user, newPassword)
+                        // TODO: Get it to not crash in this case, will just call finish for now
+                        (activity as HomeScreenActivity).finish()
+                    } else {
+                        Log.e(TAG, "User password change failed: User is null")
+                    }
+                } else {
+                    Log.e(TAG, "User password change failed: reentered password doesn't equal new")
                 }
             }
         }

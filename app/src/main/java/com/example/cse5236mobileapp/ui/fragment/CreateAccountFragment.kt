@@ -5,10 +5,13 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.Account
+import com.example.cse5236mobileapp.model.Tournament
+import com.example.cse5236mobileapp.model.TournamentIdentifier
+import com.example.cse5236mobileapp.model.TournamentUser
+import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -24,6 +27,8 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
     companion object {
         private const val TAG = "Create Account Fragment"
     }
+
+    private val tournamentUserViewModel = TournamentUserViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,21 +58,27 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
 
             // See if fields are valid
             if (Account.checkCreateUserInfo(requireContext(), username, password, reentered)) {
-                Account.createAccount(auth, requireActivity(), username, password) { success ->
-                    if (success) {
-                        val user = auth.currentUser
-                        database.collection("Users").document(username).set(mapOf<String, String>())
-                        // TODO: updateUI(user)
-                        Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
 
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "Authentication failed.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    }
-                }
+                val tournamentUser = TournamentUser(
+                    userEmail = username,
+                    userTournaments = mutableListOf<String>()
+                )
+                tournamentUserViewModel.addUser(tournamentUser, password)
+//                Account.createAccount(auth, requireActivity(), username, password) { success ->
+//                    if (success) {
+//                        val user = auth.currentUser
+//                        database.collection("Users").document(username).set(mapOf<String, String>())
+//                        // TODO: updateUI(user)
+//                        Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
+//
+//                    } else {
+//                        Toast.makeText(
+//                            requireContext(),
+//                            "Authentication failed.",
+//                            Toast.LENGTH_SHORT,
+//                        ).show()
+//                    }
+//                }
             }
         }
     }
