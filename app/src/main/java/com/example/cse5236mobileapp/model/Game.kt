@@ -15,52 +15,31 @@ class Game (
 )
 {
     companion object {
-        fun createGame(game: Game) : String {
-            val database = Firebase.firestore
+        const val TAG = "Game object class"
+    }
 
-            val uuid = "Game" + UUID.randomUUID().toString()
-            database.collection("Games").document(uuid).set(game).addOnSuccessListener { document ->
-                Log.d(null, "Game created with id: $uuid")
-                //onResult(uuid)
-            }.addOnFailureListener {
-                Log.w(null, "Game unable to create")
-                //onResult(null)
-            }
-            return uuid
+    fun roundDisplayer(numRounds: Int): String {
+        val roundName = getRoundName(numRounds)
+        if (roundName != "Final" && roundName != "Semifinal" && roundName != "Quarterfinal") {
+            return "Round ${roundName}"
         }
-
-        fun deleteGame(gameId: String) {
-            val database = Firebase.firestore
-
-            database.collection("Games").document(gameId).delete().addOnSuccessListener { doc ->
-                Log.d(null, "Game deleted with id: $gameId")
-            }.addOnFailureListener {
-                Log.w(null, "Game not deleted")
-            }
+        else {
+            return roundName
         }
+    }
 
-        fun editPlayerScore(gameId: String, newScore: Int, isTeamOne: Boolean) {
-            val database = Firebase.firestore
-
-            val attributeName = if (isTeamOne) "teamOneScore" else "teamTwoScore"
-
-            database.collection("Games").document(gameId).update(attributeName, newScore).addOnSuccessListener {
-                Log.d(null, "Changed $attributeName to $newScore")
-            }.addOnFailureListener {
-                Log.w(null, "Failure to change score")
-            }
+    fun getRoundName(numRounds: Int): String {
+        if (round == numRounds) {
+            return "Final"
         }
-
-        fun editPlayerName(gameId: String, newName: String, isTeamOne: Boolean) {
-            val database = Firebase.firestore
-
-            val attributeName = if (isTeamOne) "teamOne" else "teamTwo"
-
-            database.collection("Games").document(gameId).update(attributeName, newName).addOnSuccessListener {
-                Log.d(null, "Changed $attributeName to $newName")
-            }.addOnFailureListener {
-                Log.w(null, "Failure to change score")
-            }
+        else if (round == numRounds - 1) {
+            return "Semifinal"
+        }
+        else if (round == numRounds - 2) {
+            return "Quarterfinal"
+        }
+        else {
+            return round.toString()
         }
     }
 }

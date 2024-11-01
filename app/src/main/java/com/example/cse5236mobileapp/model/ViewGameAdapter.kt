@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
 
 class ViewGameAdapter (
-    private val games: MutableList<Game>
+    private val games: MutableList<Game>,
+    private val numRounds: Int
 ) : RecyclerView.Adapter<ViewGameAdapter.GameViewHolder>(){
 
     class GameViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -49,7 +50,8 @@ class ViewGameAdapter (
             tvPlayerTwoScore.text = curGame.teamTwoScore.toString();
             tvPlayerOne.text = curGame.teamOne
             tvPlayerTwo.text = curGame.teamTwo
-            tvRound.text = "Round ${curGame.round.toString()}"
+
+            tvRound.text = curGame.roundDisplayer(numRounds)
         }
     }
 

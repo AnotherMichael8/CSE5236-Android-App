@@ -38,7 +38,9 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
 
         val rvGameView = view.findViewById<RecyclerView>(R.id.rvGameView)
 
-        viewGameAdapter = ViewGameAdapter(mutableListOf())
+        val numberRounds = tournamentIdentifier.tournament.getNumberOfRounds()
+
+        viewGameAdapter = ViewGameAdapter(mutableListOf(), numberRounds)
         rvGameView.adapter = viewGameAdapter
         rvGameView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -60,30 +62,6 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
 
     fun updateGamesContainer(viewGameAdapter: ViewGameAdapter, games: List<Game>) {
         viewGameAdapter.updateGames(games)
-
-        /*
-        viewGameAdapter.removeAllViews()
-        for (game in tournament.games) {
-            // Setup needed modules to makeup each game
-            val gameLayout = FrameLayout(requireContext()).apply {
-                // Assign an ID to each FrameLayout for fragment transactions
-                id = View.generateViewId()
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    setMargins(0, 16, 0, 16) // Add some margins if needed
-                }
-            }
-
-            // Add the FrameLayout to the container
-            viewGameAdapter.addView(gameLayout)
-
-            // Add a fragment for each game using the FrameLayout as its container
-            parentFragmentManager.beginTransaction()
-                .replace(gameLayout.id, GameFragment(game))
-                .commit()
-            */
     }
 
     fun updateName(textView: TextView, tournament: Tournament) {

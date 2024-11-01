@@ -71,8 +71,8 @@ data class Tournament (
         }
     }
 
-    fun getNumberOfRounds(): Double {
-        return log2(numberPlayers.toDouble())
+    fun getNumberOfRounds(): Int {
+        return ceil(log2(numberPlayers.toDouble())).toInt()
     }
 
     companion object {

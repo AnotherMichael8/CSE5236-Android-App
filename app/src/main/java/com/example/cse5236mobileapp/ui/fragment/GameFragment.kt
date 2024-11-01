@@ -10,18 +10,20 @@ import com.example.cse5236mobileapp.model.Game
 import com.example.cse5236mobileapp.model.ViewGameAdapter
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
 
-class GameFragment(private val game: Game) : Fragment(R.layout.fragment_game){
+class GameFragment(private val game: Game, private val numRounds: Int) : Fragment(R.layout.fragment_game){
 
+
+    // TODO: Is this even used at all?
     private lateinit var viewGameAdapter : ViewGameAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val rvGameView = view.findViewById<RecyclerView>(R.id.rvGameView)
-
-        viewGameAdapter = ViewGameAdapter(mutableListOf())
-        rvGameView.adapter = viewGameAdapter
-        //rvGameView.layoutManager = LinearLayoutManager(this)
-
-    }
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+//        val rvGameView = view.findViewById<RecyclerView>(R.id.rvGameView)
+//
+//        //viewGameAdapter = ViewGameAdapter(mutableListOf())
+//        rvGameView.adapter = viewGameAdapter
+//        //rvGameView.layoutManager = LinearLayoutManager(this)
+//
+//    }
 }
