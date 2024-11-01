@@ -87,6 +87,6 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
     }
 
     fun updateName(textView: TextView, tournament: Tournament) {
-        textView.text = "Games for " + tournament.tournamentName
+        textView.text = tournament.tournamentName
     }
 }

@@ -17,6 +17,7 @@ class ViewGameAdapter (
         val tvPlayerTwoScore : TextView = itemView.findViewById(R.id.tvPlayerTwoScore)
         val tvPlayerOne : TextView = itemView.findViewById(R.id.tvPlayerOne)
         val tvPlayerTwo: TextView = itemView.findViewById(R.id.tvPlayerTwo)
+        var tvRound: TextView = itemView.findViewById(R.id.txtRoundNumber)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
@@ -48,6 +49,7 @@ class ViewGameAdapter (
             tvPlayerTwoScore.text = curGame.teamTwoScore.toString();
             tvPlayerOne.text = curGame.teamOne
             tvPlayerTwo.text = curGame.teamTwo
+            tvRound.text = "Round ${curGame.round.toString()}"
         }
     }
 

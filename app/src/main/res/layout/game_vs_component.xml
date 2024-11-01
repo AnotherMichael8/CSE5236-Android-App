@@ -44,13 +44,14 @@
         android:id="@+id/tvPlayerOne"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/round_corners_small_box"
         android:elevation="4dp"
         android:padding="6dp"
         android:text="Player One"
         android:textSize="40sp"
         android:textStyle="bold"
-        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toStartOf="@+id/tvPlayerOneScore"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -71,5 +72,16 @@
         app:layout_constraintEnd_toStartOf="@+id/tvPlayerTwoScore"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPlayerOne" />
+
+    <TextView
+        android:id="@+id/txtRoundNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-6dp"
+        android:text="@string/round"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

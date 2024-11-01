@@ -16,11 +16,15 @@
 
         <TextView
             android:id="@+id/gameViewText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/google_purple"
+            android:gravity="center"
             android:padding="16dp"
             android:text="@string/view_games_text"
+            android:textColor="@color/white"
             android:textSize="34sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
