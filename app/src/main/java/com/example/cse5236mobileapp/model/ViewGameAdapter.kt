@@ -37,6 +37,7 @@ class ViewGameAdapter (
     {
         games.removeAll(games)
         games.addAll(updatedGames)
+        notifyDataSetChanged()
         Log.d("GameAdapter", "Successful Update")
     }
 
