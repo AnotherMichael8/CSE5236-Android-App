@@ -1,15 +1,9 @@
 package com.example.cse5236mobileapp.model
 
-import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.PropertyName
-import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.toObject
-import com.google.firebase.ktx.Firebase
-import java.util.UUID
+import kotlin.math.ceil
 import kotlin.random.Random
+import kotlin.math.log2
 
 data class Tournament (
     @PropertyName("Address") var address: String = "",
@@ -77,7 +71,9 @@ data class Tournament (
         }
     }
 
-
+    fun getNumberOfRounds(): Double {
+        return log2(numberPlayers.toDouble())
+    }
 
     companion object {
         private const val TAG = "Tournament Class"
