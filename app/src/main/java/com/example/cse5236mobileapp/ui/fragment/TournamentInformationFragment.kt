@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -38,6 +39,16 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         })
 
         // TODO: Add on click listener for buttons
+
+        view.findViewById<Button>(R.id.btnTournamentViewBack).setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
+        }
+
+        view.findViewById<Button>(R.id.btnEditTournament).setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ModifyTournamentsFragment(tournamentIdentifier))
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun updateView(tournament: Tournament, linearLayout: LinearLayout) {
@@ -51,7 +62,13 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         tournamentName.text = tournament.tournamentName
         address.text = tournament.address
         date.text = tournament.date
-        time.text = tournament.time
+        if (tournament.isMorning) {
+            time.text = "${tournament.time} am"
+        }
+        else {
+            time.text = "${tournament.time} pm"
+        }
+
         numPlayers.text = tournament.numberPlayers
         rules.text = tournament.rules
 

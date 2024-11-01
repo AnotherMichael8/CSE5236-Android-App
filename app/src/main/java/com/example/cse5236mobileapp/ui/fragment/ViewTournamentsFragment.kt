@@ -73,7 +73,7 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                 // Optional: Set OnClickListener if needed
                 setOnClickListener {
                     // Handle click event
-                    val modifyTournamentFragment = ModifyTournamentsFragment(tournament)
+                    val modifyTournamentFragment = TournamentInformationFragment(tournament)
                     parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, modifyTournamentFragment).commit()
                 }
             }
