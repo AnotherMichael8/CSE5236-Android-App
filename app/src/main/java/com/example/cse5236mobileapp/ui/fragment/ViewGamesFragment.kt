@@ -60,11 +60,11 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
         }
     }
 
-    fun updateGamesContainer(viewGameAdapter: ViewGameAdapter, games: List<Game>) {
+    private fun updateGamesContainer(viewGameAdapter: ViewGameAdapter, games: List<Game>) {
         viewGameAdapter.updateGames(games)
     }
 
-    fun updateName(textView: TextView, tournament: Tournament) {
+    private fun updateName(textView: TextView, tournament: Tournament) {
         textView.text = tournament.tournamentName
     }
 }
