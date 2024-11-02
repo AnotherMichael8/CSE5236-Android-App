@@ -26,7 +26,8 @@ data class Tournament (
             val game = Game(
                 teamOne = players[i],
                 teamTwo = players[i + 1],
-                round = 1
+                round = 1,
+                gamePosition = i / 2
             )
             games.add(game)
         }

@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.util.Log
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -35,6 +36,8 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
          */
         val backButton = view.findViewById<Button>(R.id.viewGameBackButton)
         val gamesTextView = view.findViewById<TextView>(R.id.gameViewText)
+        val nextRoundButton = view.findViewById<ImageButton>(R.id.btnNextRound)
+        val previousRoundButton = view.findViewById<ImageButton>(R.id.btnPreviousRound)
 
         val rvGameView = view.findViewById<RecyclerView>(R.id.rvGameView)
 
@@ -57,6 +60,12 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
         //back button functionality
         backButton.setOnClickListener(){
             parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
+        }
+        nextRoundButton.setOnClickListener() {
+            viewGameAdapter.nextRound()
+        }
+        previousRoundButton.setOnClickListener() {
+            viewGameAdapter.previousRound()
         }
     }
 

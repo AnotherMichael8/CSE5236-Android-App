@@ -84,4 +84,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/txtGameProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="In Progress"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle=""
+        app:layout_constraintBottom_toBottomOf="@+id/txtRoundNumber"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
