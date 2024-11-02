@@ -58,27 +58,7 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
 
             // See if fields are valid
             if (Account.checkCreateUserInfo(requireContext(), username, password, reentered)) {
-
-                val tournamentUser = TournamentUser(
-                    userEmail = username,
-                    userTournaments = mutableListOf<String>()
-                )
-                tournamentUserViewModel.addUser(tournamentUser, password)
-//                Account.createAccount(auth, requireActivity(), username, password) { success ->
-//                    if (success) {
-//                        val user = auth.currentUser
-//                        database.collection("Users").document(username).set(mapOf<String, String>())
-//                        // TODO: updateUI(user)
-//                        Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
-//
-//                    } else {
-//                        Toast.makeText(
-//                            requireContext(),
-//                            "Authentication failed.",
-//                            Toast.LENGTH_SHORT,
-//                        ).show()
-//                    }
-//                }
+                tournamentUserViewModel.addUser(username, password)
             }
         }
     }

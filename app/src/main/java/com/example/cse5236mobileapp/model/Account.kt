@@ -63,6 +63,7 @@ class Account(val uid: String?, val username: String?) : Serializable {
                 }
         }
 
+        //TODO: Determine whether or not to keep these
         fun createAccount(auth: FirebaseAuth, context: Context, username: String, password: String, onResult: (Boolean) -> Unit) {
             auth.createUserWithEmailAndPassword(username, password)
                 .addOnCompleteListener { task ->

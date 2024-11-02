@@ -19,7 +19,7 @@ class TournamentUserViewModel : ViewModel() {
     private val firestore = FirebaseFirestore.getInstance()
     private val repository = TournamentUserRepository()
 
-    val usersLive: MutableLiveData<List<TournamentUser>> by lazy {
+    val allUsersInfoLive: MutableLiveData<List<TournamentUser>> by lazy {
         MutableLiveData<List<TournamentUser>>()
     }
 
@@ -29,40 +29,50 @@ class TournamentUserViewModel : ViewModel() {
         val users = mutableSetOf<TournamentUser>()
         firestore.collection("Users").addSnapshotListener{ query, exception ->
             if (exception != null) {
-                usersLive.value = emptyList()
+                allUsersInfoLive.value = emptyList()
                 Log.w(TAG, "Listen Failed", exception)
                 return@addSnapshotListener
             }
 
-            if (query != null && !query.isEmpty){
+            if (query != null){
                 users.clear()
                 for (document in query.documents) {
-                    users.add(TournamentUser(document.id, mutableListOf<String>()))
-                }
-                usersLive.value = users.toList()
-            }
+                    val dataMap = document.data?.mapNotNull { (key, value) ->
+                        if (value is String) key to value else null
+                    }?.toMap()?.toMutableMap() ?: mutableMapOf()
 
+                    val tournamentUserTemp = TournamentUser(document.id, dataMap)
+                    users.add(tournamentUserTemp)
+//                    TournamentUser(document.id, (document.data?.keys?.toMutableList() ?: mutableListOf<String>(), ))
+//                    users.add(TournamentUser(document.id, document.data?.keys?.toMutableList() ?: mutableListOf<String>()))
+                }
+                allUsersInfoLive.value = users.toList()
+            }
         }
     }
 
     // Calling addUserToDatabase from repository
-    fun addUser(tUser: TournamentUser, password: String) {
-        repository.addUserToDatabase(tUser, password)
+    fun addUser(email: String, password: String) {
+        repository.addUserToDatabase(email, password)
     }
 
-    // Calling modifyEmail from repository
-    fun modifyUserEmail(firebaseUser: FirebaseUser, tUser: TournamentUser, newEmail: String) {
-        repository.modifyEmail(firebaseUser, tUser, newEmail)
+    fun modifyUser(firebaseUser: FirebaseUser, newEmail: String, newPassword:String){
+        repository.modifyUser(firebaseUser, newEmail, newPassword)
     }
-
-    // Calling modifyPassword from repository
-    fun modifyUserPassword(firebaseUser: FirebaseUser, newPassword: String) {
-        repository.modifyPassword(firebaseUser, newPassword)
-    }
+//
+//    // Calling modifyEmail from repository
+//    fun modifyUserEmail(firebaseUser: FirebaseUser, oldEmail: String, newEmail: String) {
+//        repository.modifyEmail(firebaseUser, oldEmail, newEmail)
+//    }
+//
+//    // Calling modifyPassword from repository
+//    fun modifyUserPassword(firebaseUser: FirebaseUser, newPassword: String) {
+//        repository.modifyPassword(firebaseUser, newPassword)
+//    }
 
     // Calling deleteUser from repository
-    fun deleteUser(firebaseUser: FirebaseUser, tUser: TournamentUser){
-        repository.deleteUser(firebaseUser, tUser)
+    fun deleteUser(firebaseUser: FirebaseUser, userEmail: String){
+        repository.deleteUser(firebaseUser, userEmail)
     }
 
 }
