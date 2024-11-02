@@ -23,21 +23,13 @@ class ViewGameAdapter (
         val tvPlayerOne : TextView = itemView.findViewById(R.id.tvPlayerOne)
         val tvPlayerTwo: TextView = itemView.findViewById(R.id.tvPlayerTwo)
         var tvRound: TextView = itemView.findViewById(R.id.txtRoundNumber)
+        val tvGameProgress : TextView = itemView.findViewById(R.id.tvGameProgress)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         return GameViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.game_vs_component, parent, false)
         )
-    }
-    fun addGame(game: Game)
-    {
-        games.add(game)
-        notifyItemInserted(games.size - 1)
-    }
-    fun deleteGame(game: Game)
-    {
-        games.remove(game)
     }
     fun updateGames(updatedGames : List<Game>)
     {
@@ -87,10 +79,10 @@ class ViewGameAdapter (
                 advancedPlayer = game.teamTwo
             }
             if(position % 2 == 0) {
-                eachRoundGames[currentRound + 1][position / 2].teamTwo = advancedPlayer
+                eachRoundGames[currentRound + 1][position / 2].teamOne = advancedPlayer
             }
             else{
-                eachRoundGames[currentRound + 1][position / 2].teamOne = advancedPlayer
+                eachRoundGames[currentRound + 1][position / 2].teamTwo = advancedPlayer
             }
         }
     }
@@ -116,8 +108,10 @@ class ViewGameAdapter (
             tvPlayerTwoScore.text = curGame.teamTwoScore.toString();
             tvPlayerOne.text = curGame.teamOne
             tvPlayerTwo.text = curGame.teamTwo
+            tvGameProgress.text = curGame.gameStatus
 
-            tvRound.text = curGame.roundDisplayer(numRounds)
+
+            tvRound.text = curGame.roundDisplayer(numRounds - currentRound)
         }
     }
 

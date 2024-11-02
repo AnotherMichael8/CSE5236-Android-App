@@ -57,6 +57,7 @@ class Game (
                     && this.teamOneScore == game.teamOneScore
                     && this.teamTwoScore == game.teamTwoScore
                     && this.round == game.round
+                    && this.gameStatus == game.gameStatus
         }
     }
 }
