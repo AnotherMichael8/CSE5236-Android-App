@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.PropertyName
 import com.google.firebase.firestore.ktx.firestore
@@ -15,6 +16,7 @@ class TournamentUserRepository {
     }
 
     private val database = Firebase.firestore
+    private val auth = FirebaseAuth.getInstance()
 
 
     // Method to add user to database
@@ -34,6 +36,7 @@ class TournamentUserRepository {
             //Modify both email and password
             firebaseUser.updatePassword(newPassword).addOnSuccessListener {
                 val oldEmail = firebaseUser.email!!
+
                 firebaseUser.updateEmail(newEmail).addOnSuccessListener {
                     // Make new user document with past user data and delete old user document
                     database.collection("Users").document(oldEmail).get()
@@ -93,6 +96,26 @@ class TournamentUserRepository {
         }
     }
 
+    fun modifyUserDisplayName(firebaseUser: FirebaseUser, newDisplayName: String) {
+        if (firebaseUser != null) {
+            val profileUpdates = UserProfileChangeRequest.Builder()
+                .setDisplayName(newDisplayName)
+                .build()
+
+            firebaseUser.updateProfile(profileUpdates)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        println("User display name updated to $newDisplayName successfully.")
+                    } else {
+                        println("Failed to update display name.")
+                    }
+                }
+        } else {
+            println("No user is signed in.")
+        }
+    }
+
+    // TODO: Determine whether to keep this for simplicity or keep hefty general modify method
     // Method to modify user password
     fun modifyPassword(firebaseUser: FirebaseUser, newPassword: String) {
         firebaseUser.updatePassword(newPassword).addOnSuccessListener {
