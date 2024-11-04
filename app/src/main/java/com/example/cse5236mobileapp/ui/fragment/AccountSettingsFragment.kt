@@ -72,7 +72,7 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
 
             if(newPassword == reenteredPassword && (!newDisplayName.isNullOrBlank() || !newPassword.isNullOrBlank())){
                 tournamentUserViewModel.modifyUser(user, newDisplayName, newPassword)
-                (activity as HomeScreenActivity).finish()
+                parentFragmentManager.popBackStack()
             }
         }
 

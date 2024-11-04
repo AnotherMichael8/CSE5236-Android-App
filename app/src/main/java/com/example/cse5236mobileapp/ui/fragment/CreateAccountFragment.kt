@@ -66,7 +66,6 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
             if (Account.checkCreateUserInfo(requireContext(), username, password, reentered, displayName)) {
                 tournamentUserViewModel.addUser(username, password, displayName) {success ->
                     if (success) {
-                        // TODO: toast a successful account creation and then go to next activity
                         Toast.makeText(requireActivity(), "Account Creation successful for $username", Toast.LENGTH_LONG).show()
 
                         val intent =
@@ -77,7 +76,6 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
                         Log.i(TAG, "Switching to Home Screen")
                     }
                     else {
-                        // TODO: Toast a failure here
                         Toast.makeText(requireActivity(), "Account Creation failure for $username", Toast.LENGTH_LONG).show()
                     }
                 }

@@ -25,11 +25,13 @@ class TournamentUserRepository {
         // Adding the tournament to the remote firestore
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnSuccessListener {
 
-            // TODO: Update the current username here, create an onUnit for this as well
             modifyUserDisplayName(auth.currentUser!!, username) {success ->
                 if (success) {
-                    // TODO: Make this function return true, which will auto log user in and add to database
-                    database.collection("Users").document(email).set(mapOf<String, String>())
+
+                    database.collection("Users").document(email)
+                        .set(mapOf<String, String>())
+                    database.collection("Users").document(email)
+                        .set(mapOf("username" to username))
                     Log.d(TAG, "User: $email successfully added to database")
                     onComplete(true)
                 }
@@ -52,71 +54,7 @@ class TournamentUserRepository {
         }
     }
 
-    // Method to modify user email
-    fun modifyUser(firebaseUser: FirebaseUser, newEmail: String, newPassword: String){
-        if(newEmail != firebaseUser.email && !newPassword.isNullOrBlank() && !newEmail.isNullOrBlank()) {
-            //Modify both email and password
-            firebaseUser.updatePassword(newPassword).addOnSuccessListener {
-                val oldEmail = firebaseUser.email!!
 
-                firebaseUser.updateEmail(newEmail).addOnSuccessListener {
-                    // Make new user document with past user data and delete old user document
-                    database.collection("Users").document(oldEmail).get()
-                        .addOnSuccessListener { document ->
-                            val dataSet = document.data?.toMutableMap() ?: mutableMapOf<String, String>()
-                            database.collection("Users").document(newEmail).set(dataSet).addOnSuccessListener {
-                                database.collection("Users").document(oldEmail).delete()
-                                Log.d(TAG, "Successfully created new Users document with $newEmail and deleted $oldEmail")
-                            }.addOnFailureListener { e ->
-                                Log.e(TAG, "Error creating new Users document with $newEmail: $e")
-                            }
-                        }
-                        .addOnFailureListener { exception ->
-                            Log.e(TAG, "Error fetching document: ${exception.localizedMessage}")
-                        }
-
-                    val newUserEmailTemp = firebaseUser.email!!
-                    Log.d(TAG, "User email updated successfully: $newUserEmailTemp")
-                }.addOnFailureListener { e ->
-                    Log.e(TAG, "User email not updated successfully: $e")
-                }
-                Log.d(TAG, "User password updated successfully")
-            }.addOnFailureListener { e ->
-                Log.e(TAG, "User password not updated successfully: $e")
-            }
-        } else if(newEmail != firebaseUser.email && !newEmail.isNullOrBlank()){
-            //Modify only email
-            val oldEmail = firebaseUser.email!!
-            firebaseUser.updateEmail(newEmail).addOnSuccessListener {
-                // Make new user document with past user data and delete old user document
-                database.collection("Users").document(oldEmail).get()
-                    .addOnSuccessListener { document ->
-                        val dataSet = document.data?.toMutableMap() ?: mutableMapOf<String, String>()
-                        database.collection("Users").document(newEmail).set(dataSet).addOnSuccessListener {
-                            database.collection("Users").document(oldEmail).delete()
-                            Log.d(TAG, "Successfully created new Users document with $newEmail and deleted $oldEmail")
-                        }.addOnFailureListener { e ->
-                            Log.e(TAG, "Error creating new Users document with $newEmail: $e")
-                        }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.e(TAG, "Error fetching document: ${exception.localizedMessage}")
-                    }
-
-                val newUserEmailTemp = firebaseUser.email!!
-                Log.d(TAG, "User email updated successfully: $newUserEmailTemp")
-            }.addOnFailureListener { e ->
-                Log.e(TAG, "User email not updated successfully: $e")
-            }
-        } else if(!newPassword.isNullOrBlank() && newPassword.length >= 6){
-            //Modify only password
-            firebaseUser.updatePassword(newPassword).addOnSuccessListener {
-                Log.d(TAG, "User password updated successfully")
-            }.addOnFailureListener { e ->
-                Log.e(TAG, "User password failed to update: $e")
-            }
-        }
-    }
 
     fun modifyUserDisplayName(firebaseUser: FirebaseUser, newDisplayName: String, onComplete: (Boolean) -> Unit) {
         if (firebaseUser != null) {
@@ -148,6 +86,24 @@ class TournamentUserRepository {
         }.addOnFailureListener { e->
             Log.e(TAG, "User password failed to update: $e")
         }
+    }
+
+    fun modifyDisplayName(firebaseUser: FirebaseUser, newDisplayName: String) {
+        val profileUpdates = userProfileChangeRequest {
+            displayName = newDisplayName
+        }
+        firebaseUser.updateProfile(profileUpdates)
+            .addOnCompleteListener() { task ->
+                if (task.isSuccessful) {
+                    // Update database here
+                    firebaseUser.email?.let {
+                        database.collection("Users").document(it)
+                            .update("username", newDisplayName)
+                            .addOnSuccessListener {Log.d(TAG, "Successfully changed username in database") }
+                            .addOnFailureListener {Log.w(TAG, "Failed to update database accordingly")}
+                    }
+                }
+            }
     }
 
     // Method to delete user from database
