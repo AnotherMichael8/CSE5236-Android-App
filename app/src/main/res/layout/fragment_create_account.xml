@@ -68,14 +68,16 @@
                 android:id="@+id/ditCreatePassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password_registration_text" />
+                android:hint="@string/password_registration_text"
+                android:inputType="textPassword"/>
 
 
             <EditText
                 android:id="@+id/ditReenterPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/reenter_password_registration_text" />
+                android:hint="@string/reenter_password_registration_text"
+                android:inputType="textPassword"/>
 
 
         </LinearLayout>
