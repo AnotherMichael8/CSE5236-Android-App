@@ -12,7 +12,7 @@ import java.io.Serializable
 
 class Account(val uid: String?, val username: String?) : Serializable {
     companion object {
-        fun checkCreateUserInfo(context: Context, username: String, password: String, reentered: String): Boolean {
+        fun checkCreateUserInfo(context: Context, username: String, password: String, reentered: String, displayName: String): Boolean {
             // Checking the three fields to see if they're empty
             if (TextUtils.isEmpty(username)) {
                 Toast.makeText(context, "Missing Username", Toast.LENGTH_SHORT).show()
@@ -20,6 +20,10 @@ class Account(val uid: String?, val username: String?) : Serializable {
             }
             if (TextUtils.isEmpty(password)) {
                 Toast.makeText(context, "Missing Password", Toast.LENGTH_SHORT).show()
+                return false
+            }
+            if (TextUtils.isEmpty(displayName)) {
+                Toast.makeText(context, "Please Enter Username", Toast.LENGTH_SHORT).show()
                 return false
             }
             if (TextUtils.isEmpty(reentered)) {
@@ -32,6 +36,7 @@ class Account(val uid: String?, val username: String?) : Serializable {
                 Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return false
             }
+
             return true
         }
 

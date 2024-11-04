@@ -43,6 +43,7 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
         val createUserField = view.findViewById<EditText>(R.id.ditCreateUsername)
         val createPassword = view.findViewById<EditText>(R.id.ditCreatePassword)
         val reenterPassword = view.findViewById<EditText>(R.id.ditReenterPassword)
+        val createUserName = view.findViewById<EditText>(R.id.txtEnterUsername)
 
         backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -51,13 +52,14 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
 
         createButton.setOnClickListener {
             // Getting values for email and password
-            var username = createUserField.text.toString()
-            var password = createPassword.text.toString()
-            var reentered = reenterPassword.text.toString()
+            val username = createUserField.text.toString()
+            val password = createPassword.text.toString()
+            val reentered = reenterPassword.text.toString()
+            val displayName = createUserName.text.toString()
 
 
             // See if fields are valid
-            if (Account.checkCreateUserInfo(requireContext(), username, password, reentered)) {
+            if (Account.checkCreateUserInfo(requireContext(), username, password, reentered, displayName)) {
                 tournamentUserViewModel.addUser(username, password)
             }
         }
