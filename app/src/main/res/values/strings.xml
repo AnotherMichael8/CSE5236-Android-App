@@ -35,6 +35,7 @@
     <string name="delete_tournament_text">Delete Tournament</string>
     <string name="view_games_text">Games</string>
     <string name="placeholder_text">Placeholder</string>
+    <string name="search_tournament_text">Tournament Search</string>
     <string-array name="players_array">
         <item>4</item>
         <item>8</item>

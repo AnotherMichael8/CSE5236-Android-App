@@ -2,7 +2,12 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
+
+    //TODO: Find out this stupid gradle crap
+//    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
+
+
 
 android {
     namespace = "com.example.cse5236mobileapp"
@@ -47,6 +52,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    // secret services
+    implementation(libs.play.services.secrets.gradle.plugin)
+
+    // Google maps
+    implementation(libs.gms.play.services.maps)
+
     // Firebase BOM for version management
     implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
 
