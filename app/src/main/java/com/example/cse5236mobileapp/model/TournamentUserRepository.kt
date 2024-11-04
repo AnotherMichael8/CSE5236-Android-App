@@ -1,6 +1,7 @@
 package com.example.cse5236mobileapp.model
 
 import android.util.Log
+import android.widget.Toast
 import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -20,13 +21,34 @@ class TournamentUserRepository {
 
 
     // Method to add user to database
-    fun addUserToDatabase(email: String, password: String) {
+    fun addUserToDatabase(email: String, password: String, username: String, onComplete: (Boolean) -> Unit) {
         // Adding the tournament to the remote firestore
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnSuccessListener {
-            database.collection("Users").document(email).set(mapOf<String, String>())
-            Log.d(TAG, "User: $email successfully added to database")
+
+            // TODO: Update the current username here, create an onUnit for this as well
+            modifyUserDisplayName(auth.currentUser!!, username) {success ->
+                if (success) {
+                    // TODO: Make this function return true, which will auto log user in and add to database
+                    database.collection("Users").document(email).set(mapOf<String, String>())
+                    Log.d(TAG, "User: $email successfully added to database")
+                    onComplete(true)
+                }
+                else {
+                    // TODO: Delete the current user as it is a failure
+                    auth.currentUser!!.delete().addOnSuccessListener {
+                        onComplete(false)
+                    }
+                        .addOnFailureListener {
+                            onComplete(true)
+                        }
+                    onComplete(false)
+                }
+            }
+
+
         }.addOnFailureListener { e ->
             Log.e(TAG, "User failed to be created: $e")
+            onComplete(false)
         }
     }
 
@@ -96,7 +118,7 @@ class TournamentUserRepository {
         }
     }
 
-    fun modifyUserDisplayName(firebaseUser: FirebaseUser, newDisplayName: String) {
+    fun modifyUserDisplayName(firebaseUser: FirebaseUser, newDisplayName: String, onComplete: (Boolean) -> Unit) {
         if (firebaseUser != null) {
             val profileUpdates = UserProfileChangeRequest.Builder()
                 .setDisplayName(newDisplayName)
@@ -106,12 +128,15 @@ class TournamentUserRepository {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         println("User display name updated to $newDisplayName successfully.")
+                        onComplete(true)
                     } else {
                         println("Failed to update display name.")
+                        onComplete(false)
                     }
                 }
         } else {
             println("No user is signed in.")
+            onComplete(false)
         }
     }
 
