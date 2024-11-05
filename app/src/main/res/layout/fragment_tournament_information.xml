@@ -14,37 +14,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
+
+        <LinearLayout
+            android:id="@+id/tournamentViewLinear"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="70dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/btnTournamentViewBack"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:id="@+id/tournamentViewLinear"
+            <TextView
+                android:id="@+id/txtTournamentName"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingBottom="80dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="wrap_content"
+                android:background="@color/google_purple"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/tournament_name_placeholder"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtTournamentName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/google_purple"
-                    android:gravity="center"
-                    android:paddingTop="10dp"
-                    android:text="@string/tournament_name_placeholder"
-                    android:textColor="@color/white"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
 
                 <LinearLayout
@@ -183,17 +181,15 @@
                         android:text="@string/sampleRuleStringPlaceholder" />
 
                 </LinearLayout>
-
-            </LinearLayout>
-        </ScrollView>
-
+            </ScrollView>
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnTournamentViewBack"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/back_button_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -203,8 +199,8 @@
             android:id="@+id/btnEditTournament"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:text="Edit"
             app:icon="@drawable/baseline_edit_24"
             app:layout_constraintBottom_toBottomOf="parent"
