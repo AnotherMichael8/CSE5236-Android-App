@@ -43,7 +43,7 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
 
         val numberRounds = tournamentIdentifier.tournament.getNumberOfRounds()
 
-        viewGameAdapter = ViewGameAdapter(mutableListOf(), numberRounds)
+        viewGameAdapter = ViewGameAdapter(tournamentIdentifier, numberRounds)
         rvGameView.adapter = viewGameAdapter
         rvGameView.layoutManager = LinearLayoutManager(requireContext())
 

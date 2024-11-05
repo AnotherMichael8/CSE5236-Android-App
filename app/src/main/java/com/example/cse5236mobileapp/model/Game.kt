@@ -44,6 +44,17 @@ class Game (
             return round.toString()
         }
     }
+    fun MutableList<Game>.getMatchUp(team1 : String, team2 : String) : Game?
+    {
+        for(game in this)
+        {
+            if(game.teamOne == team1 && game.teamTwo == team2 || game.teamTwo == team1 && game.teamOne == team2)
+            {
+                return game
+            }
+        }
+        return null
+    }
 
     override fun equals(other: Any?): Boolean {
         if(other !is Game)

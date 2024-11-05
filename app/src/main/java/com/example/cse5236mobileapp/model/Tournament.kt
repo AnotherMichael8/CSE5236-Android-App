@@ -113,5 +113,14 @@ data class Tournament (
                 else -> false  // Return false for all other cases
             }
         }
+        fun Any?.toGameList(): MutableList<Game> {
+            if(this !is MutableList<*> || this.isEmpty() || this[0] !is Game)
+            {
+                return mutableListOf()
+            }
+            else{
+                return this as MutableList<Game>
+            }
+        }
     }
 }

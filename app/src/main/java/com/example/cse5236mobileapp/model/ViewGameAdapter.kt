@@ -7,15 +7,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
+import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
 import kotlin.math.pow
 
 class ViewGameAdapter (
-    private val games: MutableList<Game>,
+    private val tournamentIdentifier: TournamentIdentifier,
     private val numRounds: Int
 ) : RecyclerView.Adapter<ViewGameAdapter.GameViewHolder>(){
 
     private var eachRoundGames : Array<MutableList<Game>> = Array(numRounds) { mutableListOf() }
     private var currentRound = 0
+    private val tournamentGamesViewModel = TournamentGamesViewModel(tournamentIdentifier.tournamentId)
 
     class GameViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         val tvPlayerOneScore : TextView = itemView.findViewById(R.id.tvPlayerOneScore)
@@ -57,7 +59,7 @@ class ViewGameAdapter (
         {
             repeat(Math.pow(2.0, i.toDouble()).toInt())
             {
-                eachRoundGames[numRounds - 1 - i].add(Game())
+                eachRoundGames[numRounds - 1 - i].add(Game(round = numRounds - i))
             }
         }
         for(i in updatedGames.indices)
@@ -78,12 +80,16 @@ class ViewGameAdapter (
             {
                 advancedPlayer = game.teamTwo
             }
+
+
+            val oldGame = Pair<String, String>(eachRoundGames[currentRound + 1][position / 2].teamOne, eachRoundGames[currentRound + 1][position / 2].teamTwo)
             if(position % 2 == 0) {
                 eachRoundGames[currentRound + 1][position / 2].teamOne = advancedPlayer
             }
             else{
                 eachRoundGames[currentRound + 1][position / 2].teamTwo = advancedPlayer
             }
+            tournamentGamesViewModel.updateOldGameToNewGameDatabase(oldGame, eachRoundGames[currentRound + 1][position / 2])
         }
     }
     fun nextRound()

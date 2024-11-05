@@ -2,6 +2,7 @@ package com.example.cse5236mobileapp.model
 
 import android.util.Log
 import com.example.cse5236mobileapp.model.Tournament.Companion.toBoolean
+import com.example.cse5236mobileapp.model.Tournament.Companion.toGameList
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
