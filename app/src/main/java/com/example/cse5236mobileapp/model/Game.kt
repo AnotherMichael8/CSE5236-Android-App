@@ -18,15 +18,21 @@ class Game (
 {
     companion object {
         const val TAG = "Game object class"
-    }
 
-    fun roundDisplayer(numRounds: Int): String {
-        val roundName = getRoundName(numRounds)
-        if (roundName != "Final" && roundName != "Semifinal" && roundName != "Quarterfinal") {
-            return "Round ${roundName}"
-        }
-        else {
-            return roundName
+        fun getRoundDisplayer(currentRound : Int, numRounds: Int) : String
+        {
+            if (currentRound == numRounds) {
+                return "Final"
+            }
+            else if (currentRound == numRounds - 1) {
+                return "Semifinal"
+            }
+            else if (currentRound == numRounds - 2) {
+                return "Quarterfinal"
+            }
+            else {
+                return "Round $currentRound"
+            }
         }
     }
 
@@ -41,7 +47,7 @@ class Game (
             return "Quarterfinal"
         }
         else {
-            return round.toString()
+            return "Round $round"
         }
     }
     fun MutableList<Game>.getMatchUp(team1 : String, team2 : String) : Game?
@@ -71,4 +77,5 @@ class Game (
                     && this.gameStatus == game.gameStatus
         }
     }
+
 }

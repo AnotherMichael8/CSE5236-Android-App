@@ -3,9 +3,6 @@ package com.example.cse5236mobileapp.ui.fragment
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -36,12 +33,14 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
          */
         val backButton = view.findViewById<Button>(R.id.viewGameBackButton)
         val gamesTextView = view.findViewById<TextView>(R.id.gameViewText)
+        val btnGameViewRound = view.findViewById<TextView>(R.id.btnGameViewRound)
         val nextRoundButton = view.findViewById<ImageButton>(R.id.btnNextRound)
         val previousRoundButton = view.findViewById<ImageButton>(R.id.btnPreviousRound)
 
         val rvGameView = view.findViewById<RecyclerView>(R.id.rvGameView)
 
         val numberRounds = tournamentIdentifier.tournament.getNumberOfRounds()
+        btnGameViewRound.text = Game.getRoundDisplayer(1, numberRounds)
 
         viewGameAdapter = ViewGameAdapter(tournamentIdentifier, numberRounds)
         rvGameView.adapter = viewGameAdapter
@@ -62,10 +61,12 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
             parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
         }
         nextRoundButton.setOnClickListener() {
-            viewGameAdapter.nextRound()
+            val curRound = viewGameAdapter.nextRound()
+            btnGameViewRound.text = Game.getRoundDisplayer(curRound, numberRounds)
         }
         previousRoundButton.setOnClickListener() {
-            viewGameAdapter.previousRound()
+            val curRound = viewGameAdapter.previousRound()
+            btnGameViewRound.text = Game.getRoundDisplayer(curRound, numberRounds)
         }
     }
 

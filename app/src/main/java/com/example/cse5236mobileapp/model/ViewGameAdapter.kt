@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
-import kotlin.math.pow
 
 class ViewGameAdapter (
     private val tournamentIdentifier: TournamentIdentifier,
@@ -40,14 +39,19 @@ class ViewGameAdapter (
             primeTournament(updatedGames)
         }
         else {
+            var roundItemCnt = 0
             for (i in updatedGames.indices) {
-                if (updatedGames[i].round == currentRound + 1 && !(eachRoundGames[currentRound][i].equals(updatedGames[i]))) {
-                    if(updatedGames[i].gameStatus == "Final")
-                    {
-                        addNextRoundGame(i, updatedGames[i])
+                //val test1 = updatedGames[i].round == currentRound + 1
+                //val test2 = !(eachRoundGames[currentRound][roundItemCnt].equals(updatedGames[i]))
+                if (updatedGames[i].round == currentRound + 1) {
+                    if(!(eachRoundGames[currentRound][roundItemCnt].equals(updatedGames[i]))) {
+                        if (updatedGames[i].gameStatus == "Final") {
+                            addNextRoundGame(roundItemCnt, updatedGames[i])
+                        }
+                        eachRoundGames[currentRound][roundItemCnt] = updatedGames[i]
+                        notifyItemChanged(roundItemCnt)
                     }
-                    eachRoundGames[currentRound][i] = updatedGames[i]
-                    notifyItemChanged(i)
+                    roundItemCnt++
                 }
             }
         }
@@ -93,19 +97,21 @@ class ViewGameAdapter (
             tournamentGamesViewModel.updateOldGameToNewGameDatabase(oldGame, eachRoundGames[currentRound + 1][position / 2])
         }
     }
-    fun nextRound()
+    fun nextRound() : Int
     {
         if(currentRound < numRounds - 1) {
             currentRound++
         }
         notifyDataSetChanged()
+        return currentRound + 1
     }
-    fun previousRound()
+    fun previousRound() : Int
     {
         if(currentRound > 0){
             currentRound--
         }
         notifyDataSetChanged()
+        return currentRound + 1
     }
 
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
@@ -118,7 +124,7 @@ class ViewGameAdapter (
             tvGameProgress.text = curGame.gameStatus
 
 
-            tvRound.text = curGame.roundDisplayer(numRounds - currentRound)
+            tvRound.text = curGame.getRoundName(numRounds)
         }
     }
 
