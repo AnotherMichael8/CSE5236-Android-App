@@ -113,8 +113,7 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
 
         val backButton = view.findViewById<Button>(R.id.tournamentModifyBackButton)
         backButton.setOnClickListener(){
-            parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
-
+            parentFragmentManager.popBackStack()
         }
 
         val submitButton = view.findViewById<Button>(R.id.modifyTournamentsSubmitButton)
