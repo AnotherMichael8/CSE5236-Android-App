@@ -41,6 +41,7 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
 
         val numberRounds = tournamentIdentifier.tournament.getNumberOfRounds()
         btnGameViewRound.text = Game.getRoundDisplayer(1, numberRounds)
+        previousRoundButton.visibility = View.INVISIBLE
 
         viewGameAdapter = ViewGameAdapter(tournamentIdentifier, numberRounds)
         rvGameView.adapter = viewGameAdapter
@@ -63,10 +64,26 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
         nextRoundButton.setOnClickListener() {
             val curRound = viewGameAdapter.nextRound()
             btnGameViewRound.text = Game.getRoundDisplayer(curRound, numberRounds)
+            if(curRound >= numberRounds)
+            {
+                nextRoundButton.visibility = View.INVISIBLE
+            }
+            if(curRound > 1)
+            {
+                previousRoundButton.visibility = View.VISIBLE
+            }
         }
         previousRoundButton.setOnClickListener() {
             val curRound = viewGameAdapter.previousRound()
             btnGameViewRound.text = Game.getRoundDisplayer(curRound, numberRounds)
+            if(curRound <= 1)
+            {
+                previousRoundButton.visibility = View.INVISIBLE
+            }
+            if(curRound < numberRounds)
+            {
+                nextRoundButton.visibility = View.VISIBLE
+            }
         }
     }
 
