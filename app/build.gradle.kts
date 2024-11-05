@@ -4,9 +4,20 @@ plugins {
     id("com.google.gms.google-services")
 
     //TODO: Find out this stupid gradle crap
-//    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
+secrets {
+    // Specify the properties file containing your API key
+    propertiesFileName = "secrets.properties"
+
+    // Specify the properties file for default values
+    defaultPropertiesFileName = "local.defaults.properties"
+
+    // (Optional) Ignore specific keys if needed
+    ignoreList.add("keyToIgnore") // Example of ignoring a key
+    ignoreList.add("sdk.*")       // Ignore all keys matching the pattern
+}
 
 
 android {
@@ -39,6 +50,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -52,9 +66,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    // secret services
-    implementation(libs.play.services.secrets.gradle.plugin)
-
     // Google maps
     implementation(libs.gms.play.services.maps)
 

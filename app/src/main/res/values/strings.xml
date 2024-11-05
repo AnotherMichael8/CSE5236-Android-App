@@ -47,4 +47,5 @@
         <item>Double Elimination</item>
         <item>Round Robin</item>
     </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
