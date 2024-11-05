@@ -9,7 +9,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
+import com.example.cse5236mobileapp.model.PlayerNameAdapter
 import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
@@ -23,6 +26,7 @@ import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 class TournamentInformationFragment(private val tournamentIdentifier: TournamentIdentifier) : Fragment() {
 
     private val tournamentGamesViewModel =  TournamentGamesViewModel(tournamentIdentifier.tournamentId)
+    private lateinit var playerNameAdapter: PlayerNameAdapter
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,10 +35,18 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         // Getting the view of the tournament
         val tournamentLayout = view.findViewById<LinearLayout>(R.id.tournamentViewLinear)
 
+        val playerNameRecyclerView = view.findViewById<RecyclerView>(R.id.rvPlayersInTourney)
+
+        // Initializing adapter
+        playerNameAdapter = PlayerNameAdapter(mutableListOf())
+        playerNameRecyclerView.adapter = playerNameAdapter
+        playerNameRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
 
         tournamentGamesViewModel.tournamentLive.observe(viewLifecycleOwner, Observer { tournament ->
             if (tournament != null) {
                 updateView(tournament, tournamentLayout)
+                updatePlayerNames(tournament.players)
             }
         })
 
@@ -72,6 +84,11 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         numPlayers.text = tournament.numberPlayers
         rules.text = tournament.rules
 
+    }
+
+    private fun updatePlayerNames(playerNames: List<String>) {
+        //playerNameAdapter
+        playerNameAdapter.updateNames(playerNames)
     }
 
 
