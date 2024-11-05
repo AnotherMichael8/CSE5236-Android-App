@@ -81,14 +81,15 @@ class ViewGameAdapter (
                 advancedPlayer = game.teamTwo
             }
 
-
-            val oldGame = Pair<String, String>(eachRoundGames[currentRound + 1][position / 2].teamOne, eachRoundGames[currentRound + 1][position / 2].teamTwo)
+            val gameObject = eachRoundGames[currentRound + 1][position / 2]
+            val oldGame = Pair<String, String>(gameObject.teamOne, gameObject.teamTwo)
             if(position % 2 == 0) {
-                eachRoundGames[currentRound + 1][position / 2].teamOne = advancedPlayer
+                gameObject.teamOne = advancedPlayer
             }
-            else{
-                eachRoundGames[currentRound + 1][position / 2].teamTwo = advancedPlayer
+            else {
+                gameObject.teamTwo = advancedPlayer
             }
+            gameObject.gamePosition = position/2
             tournamentGamesViewModel.updateOldGameToNewGameDatabase(oldGame, eachRoundGames[currentRound + 1][position / 2])
         }
     }
