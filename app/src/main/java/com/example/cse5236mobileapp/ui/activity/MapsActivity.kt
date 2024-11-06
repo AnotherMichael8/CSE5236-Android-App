@@ -60,7 +60,7 @@ class MapsActivity : AppCompatActivity(),
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        
+
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -69,9 +69,9 @@ class MapsActivity : AppCompatActivity(),
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE requestCode)
-            onRequestPermissionsResult(LOCATION_PERMISSION_REQUEST_CODE, )
-            onRequestPermissionsResult()
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+//            onRequestPermissionsResult(LOCATION_PERMISSION_REQUEST_CODE, )
+//            onRequestPermissionsResult()
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -82,7 +82,7 @@ class MapsActivity : AppCompatActivity(),
             return
         } else {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if
+                TODO("Help")
             }
         }
 //        // Add a marker in Sydney and move the camera
