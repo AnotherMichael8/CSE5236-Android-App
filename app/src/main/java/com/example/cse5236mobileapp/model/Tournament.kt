@@ -37,8 +37,8 @@ data class Tournament (
         if (games.size > 1) {
             var newGames = mutableListOf<Game>()
             for (i in 0 until games.size step 2) {
-                val newTeamOne = getGameWinner(games[i])
-                val newTeamTwo = getGameWinner(games[i + 1])
+                val newTeamOne = games[i].getGameWinner()
+                val newTeamTwo = games[i + 1].getGameWinner()
                 val newGame = Game(
                     teamOne = newTeamOne,
                     teamTwo = newTeamTwo,
@@ -54,23 +54,6 @@ data class Tournament (
         }
     }
 
-    private fun getGameWinner(game: Game): String {
-        if (game.teamTwoScore > game.teamOneScore) {
-            return game.teamTwo
-        }
-        else if (game.teamOneScore > game.teamTwoScore) {
-            return game.teamOne
-        }
-        else {
-            val randomInt = Random.nextInt(1, 2)
-            if (randomInt == 1) {
-                return game.teamOne
-            }
-            else {
-                return game.teamTwo
-            }
-        }
-    }
 
     fun getNumberOfRounds(): Int {
         return ceil(log2(numberPlayers.toDouble())).toInt()

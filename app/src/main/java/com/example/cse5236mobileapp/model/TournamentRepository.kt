@@ -27,7 +27,7 @@ class TournamentRepository {
 
         // Adding the tournament to the remote firestore
         database.collection("Tournaments").document(uuid).set(tournament)
-        val userTournaments = mapOf(uuid to "Today")
+        val userTournaments = mapOf(uuid to "Admin")
         //val userAccount = user?.email ?: "No email"
         database.collection("Users").document(dbUser).set(userTournaments, SetOptions.merge())
     }
@@ -57,6 +57,7 @@ class TournamentRepository {
         }
     }
 
+    // Used for advancing the tournament
     fun updateGamesAndRounds(tournament: Tournament, tournamentId: String) {
         val dbRef = database.collection("Tournaments").document(tournamentId)
 

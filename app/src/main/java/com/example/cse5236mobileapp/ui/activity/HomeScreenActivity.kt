@@ -14,13 +14,20 @@ import com.example.cse5236mobileapp.ui.fragment.AccountSettingsFragment
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.ui.fragment.ViewTournamentsFragment
 import com.example.cse5236mobileapp.model.Account
+import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import androidx.lifecycle.Observer
 
 class HomeScreenActivity : AppCompatActivity() {
     lateinit var user: Account
     lateinit var currentUser: FirebaseUser
+
+
+    val tournamentUserViewModel = TournamentUserViewModel()
+
+
 
     companion object {
         private const val TAG = "Home Screen Activity"
@@ -34,15 +41,12 @@ class HomeScreenActivity : AppCompatActivity() {
         // Getting username from intent
 
         user = intent.getSerializableExtra("user") as Account
-        val username = user.username
-        val displayName = Firebase.auth.currentUser?.displayName
 
-        if (displayName.isNullOrBlank()) {
-            findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "Welcome: $username"
-        }
-        else {
-            findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "Welcome: $displayName"
-        }
+
+        tournamentUserViewModel.usernameLive.observe(this, Observer { userDisplayName ->
+            updateWelcomeText(userDisplayName)
+        })
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

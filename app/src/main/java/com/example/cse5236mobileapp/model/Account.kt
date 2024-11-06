@@ -12,7 +12,7 @@ import java.io.Serializable
 
 class Account(val uid: String?, val username: String?) : Serializable {
     companion object {
-        fun checkCreateUserInfo(context: Context, username: String, password: String, reentered: String): Boolean {
+        fun checkCreateUserInfo(context: Context, username: String, password: String, reentered: String, displayName: String): Boolean {
             // Checking the three fields to see if they're empty
             if (TextUtils.isEmpty(username)) {
                 Toast.makeText(context, "Missing Username", Toast.LENGTH_SHORT).show()
@@ -20,6 +20,10 @@ class Account(val uid: String?, val username: String?) : Serializable {
             }
             if (TextUtils.isEmpty(password)) {
                 Toast.makeText(context, "Missing Password", Toast.LENGTH_SHORT).show()
+                return false
+            }
+            if (TextUtils.isEmpty(displayName)) {
+                Toast.makeText(context, "Please Enter Username", Toast.LENGTH_SHORT).show()
                 return false
             }
             if (TextUtils.isEmpty(reentered)) {
@@ -32,6 +36,7 @@ class Account(val uid: String?, val username: String?) : Serializable {
                 Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 return false
             }
+
             return true
         }
 
@@ -58,70 +63,6 @@ class Account(val uid: String?, val username: String?) : Serializable {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(null, "signInWithEmail:failure", task.exception)
-                        onResult(false)
-                    }
-                }
-        }
-
-        fun createAccount(auth: FirebaseAuth, context: Context, username: String, password: String, onResult: (Boolean) -> Unit) {
-            auth.createUserWithEmailAndPassword(username, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(null, "createUserWithEmail:success")
-                        onResult(true)
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(null, "createUserWithEmail:failure", task.exception)
-                        onResult(false)
-                    }
-                }
-        }
-
-        fun updateDisplayName(newDisplayName: String, context: Context, onResult: (Boolean) -> Unit) {
-            val profileUpdate = userProfileChangeRequest {
-                displayName = newDisplayName
-            }
-            val user = Firebase.auth.currentUser
-            user!!.updateProfile(profileUpdate)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(context, "New DisplayName set to $newDisplayName", Toast.LENGTH_LONG).show()
-                        Log.d(null, "User profile updated.")
-                        onResult(true)
-                    }
-                    else {
-                        onResult(false)
-                    }
-                }
-        }
-
-        fun updatePassword(password: String, context: Context) {
-            val user = Firebase.auth.currentUser
-
-            user!!.updatePassword(password)
-                .addOnCompleteListener { task ->
-                    if(task.isSuccessful) {
-                        Toast.makeText(context, "Password reset", Toast.LENGTH_LONG).show()
-                        Log.d(null, "User password updated.")
-                    }
-                    else {
-                        Toast.makeText(context, "Password unable to be reset", Toast.LENGTH_LONG).show()
-                        Log.d(null, "User password update failure.")
-                    }
-                }
-        }
-
-        fun deleteAccount(onResult: (Boolean) -> Unit) {
-            val user = Firebase.auth.currentUser
-
-            user!!.delete()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(null, "Current User Deleted")
-                        onResult(true)
-                    }
-                    else {
                         onResult(false)
                     }
                 }

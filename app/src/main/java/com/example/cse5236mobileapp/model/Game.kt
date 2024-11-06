@@ -5,6 +5,7 @@ import com.google.firebase.firestore.PropertyName
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.UUID
+import kotlin.random.Random
 
 class Game (
     @PropertyName("TeamOne") var teamOne: String = "",
@@ -17,7 +18,7 @@ class Game (
 )
 {
     companion object {
-        const val TAG = "Game object class"
+        const val TAG = "Game Object Class"
 
         fun getRoundDisplayer(currentRound : Int, numRounds: Int) : String
         {
@@ -32,6 +33,24 @@ class Game (
             }
             else {
                 return "Round $currentRound"
+            }
+        }
+    }
+
+    fun getGameWinner(): String {
+        if (teamTwoScore > teamOneScore) {
+            return teamTwo
+        }
+        else if (teamOneScore > teamTwoScore) {
+            return teamOne
+        }
+        else {
+            val randomInt = Random.nextInt(1, 2)
+            if (randomInt == 1) {
+                return teamOne
+            }
+            else {
+                return teamTwo
             }
         }
     }
@@ -77,5 +96,4 @@ class Game (
                     && this.gameStatus == game.gameStatus
         }
     }
-
 }
