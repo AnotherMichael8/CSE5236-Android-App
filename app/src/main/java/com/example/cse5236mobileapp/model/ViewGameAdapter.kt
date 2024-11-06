@@ -1,9 +1,13 @@
 package com.example.cse5236mobileapp.model
 
+import android.nfc.Tag
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.util.Log
+import android.view.KeyEvent
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
@@ -25,6 +29,7 @@ class ViewGameAdapter (
         val tvPlayerTwo: TextView = itemView.findViewById(R.id.tvPlayerTwo)
         var tvRound: TextView = itemView.findViewById(R.id.txtRoundNumber)
         val tvGameProgress : TextView = itemView.findViewById(R.id.tvGameProgress)
+        val etPlayerOneScore : EditText = itemView.findViewById(R.id.etPlayerOneScore)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
@@ -117,14 +122,33 @@ class ViewGameAdapter (
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         val curGame = eachRoundGames[currentRound][position]
         holder.apply{
-            tvPlayerOneScore.text = curGame.teamOneScore.toString();
-            tvPlayerTwoScore.text = curGame.teamTwoScore.toString();
+            tvPlayerOneScore.text = curGame.teamOneScore.toString()
+            etPlayerOneScore.setText(curGame.teamOneScore.toString())
+            tvPlayerTwoScore.text = curGame.teamTwoScore.toString()
             tvPlayerOne.text = curGame.teamOne
             tvPlayerTwo.text = curGame.teamTwo
             tvGameProgress.text = curGame.gameStatus
-
-
+            tvPlayerOneScore.visibility = View.INVISIBLE
             tvRound.text = curGame.getRoundName(numRounds)
+
+            etPlayerOneScore.setOnKeyListener { v, keyCode, event ->
+                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    // Handle Enter key press here
+                    val newScore = etPlayerOneScore.text.toString().trim().toIntOrNull()
+                    if(newScore != null) {
+                        curGame.teamOneScore = newScore
+                        tournamentGamesViewModel.updateOldGameToNewGameDatabase(Pair(curGame.teamOne, curGame.teamTwo), curGame)
+                        notifyItemChanged(position)
+                    }
+                    else
+                    {
+                        Log.i("Adapter", "Invalid input for score")
+                    }
+                    true
+                } else {
+                    false
+                }
+            }
         }
     }
 

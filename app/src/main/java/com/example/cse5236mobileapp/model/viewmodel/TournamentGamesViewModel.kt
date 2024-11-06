@@ -91,11 +91,12 @@ class TournamentGamesViewModel(private val tournamentId: String) {
         firestore.collection("Tournaments").document(tournamentId).get().addOnSuccessListener { document ->
             val tournament = document.toObject<Tournament>()
             tournament?.let {
-                it.games.add(gameNew)
+                //it.games.add(gameNew)
                 if(!it.games.removeMatchUp(team1, team2))
                 {
                     Log.i("GameViewModel", "Matchup doesn't exist and was not removed")
                 }
+                it.games.add(gameNew.gamePosition, gameNew)
                 tournamentViewModel.updateTournamentGames(it, tournamentId)
             }
         }
