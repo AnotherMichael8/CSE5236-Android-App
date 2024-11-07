@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="@string/tournaments_today"
+                android:text="My Tournaments"
                 android:textSize="18sp" />
 
             <!-- Right Arrow -->
