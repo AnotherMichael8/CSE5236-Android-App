@@ -17,9 +17,15 @@ data class Tournament (
     @PropertyName("isPrivate") var isPrivate: Boolean = false,
     @PropertyName("Players") var players: List<String> = listOf(),
     @PropertyName("Round") var round: Int = 1,
-    @PropertyName("Games") var games: MutableList<Game> = mutableListOf<Game>()
+    @PropertyName("Games") var games: MutableList<Game> = mutableListOf<Game>(),
+    @PropertyName("JoinCode") var joinCode: String = ""
 )
 {
+    init {
+        createInitialGames()
+        generateJoinCode()
+    }
+
     fun createInitialGames() {
         var gameList = mutableListOf<Game>()
         for(i in 0 until numberPlayers.toInt() step 2) {
@@ -84,6 +90,17 @@ data class Tournament (
         else {
             return round.toString()
         }
+    }
+
+    fun generateJoinCode() {
+        var possibleValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        var joinString = ""
+
+        for (i in 1 until 9) {
+            joinString += possibleValues.random()
+        }
+
+        joinCode = joinString
     }
 
     companion object {
