@@ -56,6 +56,20 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvPlayerTwo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvPlayerTwo" />
+    <EditText
+        android:id="@+id/etPlayerTwoScore"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@drawable/round_corners_small_box"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:text="0"
+        android:textSize="40sp"
+        android:minWidth="100dp"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPlayerTwo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvPlayerTwo" />
 
     <TextView
         android:id="@+id/tvPlayerOne"

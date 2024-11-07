@@ -30,6 +30,7 @@ class ViewGameAdapter (
         var tvRound: TextView = itemView.findViewById(R.id.txtRoundNumber)
         val tvGameProgress : TextView = itemView.findViewById(R.id.tvGameProgress)
         val etPlayerOneScore : EditText = itemView.findViewById(R.id.etPlayerOneScore)
+        val etPlayerTwoScore : EditText = itemView.findViewById(R.id.etPlayerTwoScore)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
@@ -49,12 +50,12 @@ class ViewGameAdapter (
                 //val test1 = updatedGames[i].round == currentRound + 1
                 //val test2 = !(eachRoundGames[currentRound][roundItemCnt].equals(updatedGames[i]))
                 if (updatedGames[i].round == currentRound + 1) {
-                    if(!(eachRoundGames[currentRound][roundItemCnt].equals(updatedGames[i]))) {
-                        if (updatedGames[i].gameStatus == "Final") {
-                            addNextRoundGame(roundItemCnt, updatedGames[i])
+                    if(!(eachRoundGames[currentRound][updatedGames[i].gamePosition].equals(updatedGames[i]))) {
+                        if (updatedGames[i].gameStatus == "Final" && eachRoundGames[currentRound][updatedGames[i].gamePosition].gameStatus != "Final") {
+                            addNextRoundGame(updatedGames[i].gamePosition, updatedGames[i])
                         }
-                        eachRoundGames[currentRound][roundItemCnt] = updatedGames[i]
-                        notifyItemChanged(roundItemCnt)
+                        eachRoundGames[currentRound][updatedGames[i].gamePosition] = updatedGames[i]
+                        notifyItemChanged(updatedGames[i].gamePosition)
                     }
                     roundItemCnt++
                 }
@@ -125,10 +126,12 @@ class ViewGameAdapter (
             tvPlayerOneScore.text = curGame.teamOneScore.toString()
             etPlayerOneScore.setText(curGame.teamOneScore.toString())
             tvPlayerTwoScore.text = curGame.teamTwoScore.toString()
+            etPlayerTwoScore.setText(curGame.teamTwoScore.toString())
             tvPlayerOne.text = curGame.teamOne
             tvPlayerTwo.text = curGame.teamTwo
             tvGameProgress.text = curGame.gameStatus
             tvPlayerOneScore.visibility = View.INVISIBLE
+            tvPlayerTwoScore.visibility = View.INVISIBLE
             tvRound.text = curGame.getRoundName(numRounds)
 
             etPlayerOneScore.setOnKeyListener { v, keyCode, event ->
@@ -137,6 +140,26 @@ class ViewGameAdapter (
                     val newScore = etPlayerOneScore.text.toString().trim().toIntOrNull()
                     if(newScore != null) {
                         curGame.teamOneScore = newScore
+                        etPlayerOneScore.clearFocus()
+                        tournamentGamesViewModel.updateOldGameToNewGameDatabase(Pair(curGame.teamOne, curGame.teamTwo), curGame)
+                        notifyItemChanged(position)
+                    }
+                    else
+                    {
+                        Log.i("Adapter", "Invalid input for score")
+                    }
+                    true
+                } else {
+                    false
+                }
+            }
+            etPlayerTwoScore.setOnKeyListener { v, keyCode, event ->
+                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    // Handle Enter key press here
+                    val newScore = etPlayerTwoScore.text.toString().trim().toIntOrNull()
+                    if(newScore != null) {
+                        curGame.teamTwoScore = newScore
+                        etPlayerTwoScore.clearFocus()
                         tournamentGamesViewModel.updateOldGameToNewGameDatabase(Pair(curGame.teamOne, curGame.teamTwo), curGame)
                         notifyItemChanged(position)
                     }
