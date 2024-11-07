@@ -21,11 +21,6 @@ data class Tournament (
     @PropertyName("JoinCode") var joinCode: String = ""
 )
 {
-    init {
-        createInitialGames()
-        generateJoinCode()
-    }
-
     fun createInitialGames() {
         var gameList = mutableListOf<Game>()
         for(i in 0 until numberPlayers.toInt() step 2) {

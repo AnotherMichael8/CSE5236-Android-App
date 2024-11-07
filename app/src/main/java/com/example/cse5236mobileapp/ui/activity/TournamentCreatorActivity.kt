@@ -93,6 +93,10 @@ class TournamentCreatorActivity : AppCompatActivity() {
                             players = participantsArr
                         )
 
+                        // Creating initial games and code
+                        tournamentVal.createInitialGames()
+                        tournamentVal.generateJoinCode()
+
                         // Creating tournament object
                         val tournamentCode = tournamentViewModel.addTournament(tournamentVal)
 
