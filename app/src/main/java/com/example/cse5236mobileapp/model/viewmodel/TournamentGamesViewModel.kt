@@ -14,6 +14,7 @@ class TournamentGamesViewModel(private val tournamentId: String) {
 
     private var firestore = Firebase.firestore
     private val tournamentViewModel : TournamentViewModel = TournamentViewModel()
+    private val tournamentUserViewModel = TournamentUserViewModel()
 
     val tournamentLive: MutableLiveData<Tournament> by lazy {
         MutableLiveData<Tournament>()
@@ -21,11 +22,15 @@ class TournamentGamesViewModel(private val tournamentId: String) {
     val tournamentGamesLive: MutableLiveData<List<Game>> by lazy {
         MutableLiveData<List<Game>>()
     }
+    val currentUserAdminPrivileges: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
 
     init {
         firestore = FirebaseFirestore.getInstance()
         loadTournament()
         loadGameInTourney()
+        getUserAdminPrivileges()
     }
 
     private fun loadTournament() {
@@ -51,6 +56,19 @@ class TournamentGamesViewModel(private val tournamentId: String) {
             if (document != null) {
                 val tournament = document.toObject<Tournament>()
                 tournamentGamesLive.value = tournament!!.games
+            }
+        }
+    }
+    private fun getUserAdminPrivileges()
+    {
+        firestore.collection("Users").document(tournamentUserViewModel.currentUserEmail()!!).addSnapshotListener { document, exception ->
+            if (exception != null) {
+                currentUserAdminPrivileges.value = ""
+                return@addSnapshotListener
+            }
+            if(document != null)
+            {
+                currentUserAdminPrivileges.value = document.getString(tournamentId)
             }
         }
     }

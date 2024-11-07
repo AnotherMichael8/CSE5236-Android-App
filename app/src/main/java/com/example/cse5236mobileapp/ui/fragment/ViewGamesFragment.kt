@@ -73,6 +73,10 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
             updateName(gamesTextView, tournament)
         })
 
+        tournamentGamesViewModel.currentUserAdminPrivileges.observe(viewLifecycleOwner, Observer { privileges ->
+            viewGameAdapter.updateUserPrivileges(privileges)
+        })
+
         //back button functionality
         backButton.setOnClickListener() {
             parentFragmentManager.beginTransaction()

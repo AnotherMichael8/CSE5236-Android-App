@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
+import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 
 class ViewGameAdapter (
     private val tournamentIdentifier: TournamentIdentifier,
@@ -24,6 +25,7 @@ class ViewGameAdapter (
     private val tournamentGamesViewModel = TournamentGamesViewModel(tournamentIdentifier.tournamentId)
     private var players = listOf<String>()
     private var playerMap = mapOf<String, String>()
+    private var privileges = "User"
 
 
     class GameViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -124,6 +126,11 @@ class ViewGameAdapter (
         notifyDataSetChanged()
         return currentRound + 1
     }
+    fun updateUserPrivileges(privileges : String)
+    {
+        this.privileges = privileges
+        notifyDataSetChanged()
+    }
 
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         val curGame = eachRoundGames[currentRound][position]
@@ -135,56 +142,79 @@ class ViewGameAdapter (
             tvPlayerOne.text = linkPlayerName(curGame.teamOne)
             tvPlayerTwo.text = linkPlayerName(curGame.teamTwo)
             tvGameProgress.text = curGame.gameStatus
-            tvPlayerOneScore.visibility = View.INVISIBLE
-            tvPlayerTwoScore.visibility = View.INVISIBLE
             tvRound.text = curGame.getRoundName(numRounds)
 
-            etPlayerOneScore.setOnKeyListener { v, keyCode, event ->
-                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    // Handle Enter key press here
-                    val newScore = etPlayerOneScore.text.toString().trim().toIntOrNull()
-                    if(newScore != null) {
-                        curGame.teamOneScore = newScore
-                        etPlayerOneScore.clearFocus()
-                        tournamentGamesViewModel.updateOldGameToNewGameDatabase(Pair(curGame.teamOne, curGame.teamTwo), curGame)
+            if(privileges == "Admin") {
+                tvPlayerOneScore.visibility = View.INVISIBLE
+                tvPlayerTwoScore.visibility = View.INVISIBLE
+                etPlayerOneScore.visibility = View.VISIBLE
+                etPlayerTwoScore.visibility = View.VISIBLE
+                btFinalizeButton.visibility = View.VISIBLE
+
+                etPlayerOneScore.setOnKeyListener { v, keyCode, event ->
+                    if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                        // Handle Enter key press here
+                        val newScore = etPlayerOneScore.text.toString().trim().toIntOrNull()
+                        if (newScore != null) {
+                            curGame.teamOneScore = newScore
+                            etPlayerOneScore.clearFocus()
+                            tournamentGamesViewModel.updateOldGameToNewGameDatabase(
+                                Pair(
+                                    curGame.teamOne,
+                                    curGame.teamTwo
+                                ), curGame
+                            )
+                            notifyItemChanged(position)
+                        } else {
+                            Log.i("Adapter", "Invalid input for score")
+                        }
+                        true
+                    } else {
+                        false
+                    }
+                }
+                etPlayerTwoScore.setOnKeyListener { v, keyCode, event ->
+                    if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                        // Handle Enter key press here
+                        val newScore = etPlayerTwoScore.text.toString().trim().toIntOrNull()
+                        if (newScore != null) {
+                            curGame.teamTwoScore = newScore
+                            etPlayerTwoScore.clearFocus()
+                            tournamentGamesViewModel.updateOldGameToNewGameDatabase(
+                                Pair(
+                                    curGame.teamOne,
+                                    curGame.teamTwo
+                                ), curGame
+                            )
+                            notifyItemChanged(position)
+                        } else {
+                            Log.i("Adapter", "Invalid input for score")
+                        }
+                        true
+                    } else {
+                        false
+                    }
+                }
+                btFinalizeButton.setOnClickListener {
+                    if (curGame.gameStatus != "Final") {
+                        val newGame = Game(curGame)
+                        newGame.gameStatus = "Final"
+                        tournamentGamesViewModel.updateOldGameToNewGameDatabase(
+                            Pair(
+                                curGame.teamOne,
+                                curGame.teamTwo
+                            ), newGame
+                        )
                         notifyItemChanged(position)
                     }
-                    else
-                    {
-                        Log.i("Adapter", "Invalid input for score")
-                    }
-                    true
-                } else {
-                    false
                 }
             }
-            etPlayerTwoScore.setOnKeyListener { v, keyCode, event ->
-                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    // Handle Enter key press here
-                    val newScore = etPlayerTwoScore.text.toString().trim().toIntOrNull()
-                    if(newScore != null) {
-                        curGame.teamTwoScore = newScore
-                        etPlayerTwoScore.clearFocus()
-                        tournamentGamesViewModel.updateOldGameToNewGameDatabase(Pair(curGame.teamOne, curGame.teamTwo), curGame)
-                        notifyItemChanged(position)
-                    }
-                    else
-                    {
-                        Log.i("Adapter", "Invalid input for score")
-                    }
-                    true
-                } else {
-                    false
-                }
-            }
-            btFinalizeButton.setOnClickListener {
-                if(curGame.gameStatus != "Final")
-                {
-                    val newGame = Game(curGame)
-                    newGame.gameStatus = "Final"
-                    tournamentGamesViewModel.updateOldGameToNewGameDatabase(Pair(curGame.teamOne, curGame.teamTwo), newGame)
-                    notifyItemChanged(position)
-                }
+            else{
+                etPlayerOneScore.visibility = View.INVISIBLE
+                etPlayerTwoScore.visibility = View.INVISIBLE
+                btFinalizeButton.visibility = View.GONE
+                tvPlayerOneScore.visibility = View.VISIBLE
+                tvPlayerTwoScore.visibility = View.VISIBLE
             }
         }
     }

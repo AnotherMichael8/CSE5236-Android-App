@@ -33,7 +33,6 @@ class TournamentUserViewModel : ViewModel() {
         MutableLiveData<List<String>>()
     }
 
-
     //Might not be needed yet... NOTE: still WIP
 
     init {
@@ -98,8 +97,6 @@ class TournamentUserViewModel : ViewModel() {
             }
         }
     }
-
-
 
     fun currentUserEmail(): String? {
         return user?.email
