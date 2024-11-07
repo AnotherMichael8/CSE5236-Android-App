@@ -99,6 +99,8 @@ class TournamentUserViewModel : ViewModel() {
         }
     }
 
+
+
     fun currentUserEmail(): String? {
         return user?.email
     }
@@ -159,4 +161,11 @@ class TournamentUserViewModel : ViewModel() {
         repository.deleteUser(firebaseUser, userEmail)
     }
 
+    fun addTournamentForUser(tournamentID: String, playerEmailList: List<String>) {
+        repository.addTournamentForUser(tournamentID, playerEmailList)
+    }
+
+    fun removeTournamentForAllUsers(tournamentID: String, playerEmailList: List<String>) {
+        repository.removeTournamentForAllUsers(tournamentID, playerEmailList)
+    }
 }

@@ -75,8 +75,8 @@ class TournamentViewModel : ViewModel() {
     }
 
     // Calling addTournamentToDatabase from repository
-    fun addTournament(tournament: Tournament) {
-        repository.addTournamentToDatabase(tournament)
+    fun addTournament(tournament: Tournament): String {
+        return repository.addTournamentToDatabase(tournament)
     }
 
     // Calling modifyTournamentAttribute from repository

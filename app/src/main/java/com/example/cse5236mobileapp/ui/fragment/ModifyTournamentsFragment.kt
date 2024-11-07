@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.Tournament
+import com.example.cse5236mobileapp.model.TournamentUser
+import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 
 class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIdentifier) : Fragment(R.layout.fragment_modify_tournaments){
@@ -19,6 +21,7 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
     }
     // Viewmodel object
     private val tournamentViewModel = TournamentViewModel()
+    private val tournamentUserViewModel = TournamentUserViewModel()
 
     //subfragments
     private val modifyTextFragment = ModifyTextFragment(this)
@@ -135,7 +138,10 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
 
         val deleteButton = view.findViewById<Button>(R.id.deleteTournamentButton)
         deleteButton.setOnClickListener(){
+            // Removing tournament
             tournamentViewModel.deleteTournament(tournamentIdentifier)
+            // Remove tournament for corresponding players
+            tournamentUserViewModel.removeTournamentForAllUsers(tournamentIdentifier.tournamentId, tournamentIdentifier.tournament.players)
             parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
         }
 

@@ -107,9 +107,15 @@ class TournamentCreatorActivity : AppCompatActivity() {
                             players = participantsArr
                         )
 
+                        // TODO: Implementing creating the matchups elsewhere
                         tournamentVal.createInitialGames()
 
-                        tournamentViewModel.addTournament(tournamentVal)
+                        // Creating tournament object
+                        val tournamentCode = tournamentViewModel.addTournament(tournamentVal)
+
+                        // Linking tournament to users
+                        tournamentUserViewModel.addTournamentForUser(tournamentCode, participantsArr)
+
                         Toast.makeText(this, "Successfully created tournament", Toast.LENGTH_SHORT)
                             .show()
                         finish()

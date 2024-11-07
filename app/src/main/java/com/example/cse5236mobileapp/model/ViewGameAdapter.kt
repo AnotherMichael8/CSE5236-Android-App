@@ -21,6 +21,9 @@ class ViewGameAdapter (
     private var eachRoundGames : Array<MutableList<Game>> = Array(numRounds) { mutableListOf() }
     private var currentRound = 0
     private val tournamentGamesViewModel = TournamentGamesViewModel(tournamentIdentifier.tournamentId)
+    private var players = mutableListOf<String>()
+    private var playerMap = mapOf<String, String>()
+
 
     class GameViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         val tvPlayerOneScore : TextView = itemView.findViewById(R.id.tvPlayerOneScore)
@@ -125,8 +128,8 @@ class ViewGameAdapter (
             tvPlayerOneScore.text = curGame.teamOneScore.toString()
             etPlayerOneScore.setText(curGame.teamOneScore.toString())
             tvPlayerTwoScore.text = curGame.teamTwoScore.toString()
-            tvPlayerOne.text = curGame.teamOne
-            tvPlayerTwo.text = curGame.teamTwo
+            tvPlayerOne.text = linkPlayerName(curGame.teamOne)
+            tvPlayerTwo.text = linkPlayerName(curGame.teamTwo)
             tvGameProgress.text = curGame.gameStatus
             tvPlayerOneScore.visibility = View.INVISIBLE
             tvRound.text = curGame.getRoundName(numRounds)
@@ -154,5 +157,15 @@ class ViewGameAdapter (
 
     override fun getItemCount(): Int {
         return eachRoundGames[currentRound].size
+    }
+
+    private fun linkPlayerName(previousName: String): String {
+        return playerMap[previousName] ?: previousName
+    }
+
+    fun updatePlayerMap(updatedPlayerMap: Map<String, String>) {
+        playerMap = updatedPlayerMap
+
+        notifyDataSetChanged()
     }
 }

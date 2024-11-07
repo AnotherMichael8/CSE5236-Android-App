@@ -15,7 +15,10 @@ import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.PlayerNameAdapter
 import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.TournamentIdentifier
+import com.example.cse5236mobileapp.model.TournamentUser
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
+import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
+import com.example.cse5236mobileapp.model.viewmodel.TournamentUsernameViewModel
 import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 
 /**
@@ -26,7 +29,9 @@ import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 class TournamentInformationFragment(private val tournamentIdentifier: TournamentIdentifier) : Fragment() {
 
     private val tournamentGamesViewModel =  TournamentGamesViewModel(tournamentIdentifier.tournamentId)
+    private var tournamentUsernameViewModel = TournamentUsernameViewModel(mutableListOf<String>())
     private lateinit var playerNameAdapter: PlayerNameAdapter
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,11 +47,17 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         playerNameRecyclerView.adapter = playerNameAdapter
         playerNameRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        tournamentUsernameViewModel.emailToUsername.observe(viewLifecycleOwner, Observer { tournamentMap ->
+            if (tournamentMap != null) {
+                updatePlayerNames(tournamentMap.values.toList())
+            }
+        })
+
 
         tournamentGamesViewModel.tournamentLive.observe(viewLifecycleOwner, Observer { tournament ->
             if (tournament != null) {
+                tournamentUsernameViewModel.updateEmailList(tournament.players)
                 updateView(tournament, tournamentLayout)
-                updatePlayerNames(tournament.players)
             }
         })
 
