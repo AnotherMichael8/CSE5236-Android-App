@@ -21,7 +21,7 @@ class ViewGameAdapter (
     private var eachRoundGames : Array<MutableList<Game>> = Array(numRounds) { mutableListOf() }
     private var currentRound = 0
     private val tournamentGamesViewModel = TournamentGamesViewModel(tournamentIdentifier.tournamentId)
-    private var players = mutableListOf<String>()
+    private var players = listOf<String>()
     private var playerMap = mapOf<String, String>()
 
 
@@ -160,7 +160,23 @@ class ViewGameAdapter (
     }
 
     private fun linkPlayerName(previousName: String): String {
-        return playerMap[previousName] ?: previousName
+        // Converting previous name to int
+        val previousInt = previousName.toIntOrNull()
+        if (previousInt != null) {
+            if (previousInt < players.size) {
+                return playerMap[players[previousInt]] ?: previousName
+            }
+            else {
+                return "Placeholder$previousName"
+            }
+        }
+        else {
+            return playerMap[previousName] ?: previousName
+        }
+    }
+
+    fun updatePlayerList(updatedPlayerList: List<String>) {
+        players = updatedPlayerList
     }
 
     fun updatePlayerMap(updatedPlayerMap: Map<String, String>) {

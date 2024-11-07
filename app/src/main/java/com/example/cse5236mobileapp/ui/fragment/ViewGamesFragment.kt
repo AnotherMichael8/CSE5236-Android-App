@@ -69,6 +69,7 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
         tournamentGamesViewModel.tournamentLive.observe(viewLifecycleOwner, Observer { tournament ->
             // Updating the tournament usernames
             tournamentUsernameViewModel.updateEmailList(tournament.players)
+            updatePlayers(tournament.players)
             updateName(gamesTextView, tournament)
         })
 
@@ -109,5 +110,9 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
 
     private fun updatePlayerMap(newPlayerMap: Map<String, String>) {
         viewGameAdapter.updatePlayerMap(newPlayerMap)
+    }
+
+    private fun updatePlayers(newPlayerList: List<String>) {
+        viewGameAdapter.updatePlayerList(newPlayerList)
     }
 }
