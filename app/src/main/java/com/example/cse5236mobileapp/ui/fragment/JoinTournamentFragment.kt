@@ -40,13 +40,16 @@ class JoinTournamentFragment : Fragment(R.layout.fragment_join_tournament) {
             val userJoinCode = joinCodeField.text.toString().uppercase()
             tournamentViewModel.findTourneyIdFromJoinCode(userJoinCode) { tournamentIdentifier ->
                 if (tournamentIdentifier != null) {
-                    // TODO: Implementation to check players in tournament and then add user to it
-                    Toast.makeText(requireContext(), "Able to find tournament with that join code", Toast.LENGTH_SHORT)
-                        .show()
-
                     // Now will check to see if tournament if full
                     if (!tournamentIdentifier.tournament.isTournamentFull()) {
-                        Toast.makeText(requireContext(), "Tournament has available space", Toast.LENGTH_SHORT).show()
+                        val currentUser = tournamentUserViewModel.currentUserEmail()
+                        if (!tournamentIdentifier.tournament.isUserAPlayer(currentUser)) {
+                            Toast.makeText(requireContext(), "User isn't already in tournament", Toast.LENGTH_SHORT).show()
+                            // TODO: Update the tournament to have the user be in it and then add tournament ID to user
+                        }
+                        else {
+                            Toast.makeText(requireContext(), "User is already in tournament", Toast.LENGTH_SHORT).show()
+                        }
                     }
                     else {
                         Toast.makeText(requireContext(), "Tournament full", Toast.LENGTH_SHORT).show()

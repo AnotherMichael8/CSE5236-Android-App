@@ -102,6 +102,16 @@ data class Tournament (
         return players.size >= numberPlayers.toInt()
     }
 
+    fun isUserAPlayer(email: String?): Boolean {
+        if (email != null) {
+            return players.contains(email)
+        }
+        else {
+            // Returns true because can't verify that it isn't for null string
+            return true
+        }
+    }
+
     companion object {
         private const val TAG = "Tournament Class"
 
