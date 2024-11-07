@@ -71,11 +71,12 @@
             </LinearLayout>
         </ScrollView>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/viewTournamentsBackButtonHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,11 +87,22 @@
                 android:id="@+id/viewTournamentBackButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/back_button_text">
+                android:text="@string/back_button_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
             </Button>
 
-        </LinearLayout>
+            <Button
+                android:id="@+id/btnGoToJoinCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Join With Code"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
