@@ -68,7 +68,7 @@ class TournamentCreatorActivity : AppCompatActivity() {
             val stringRules: String = rulesField.text.toString()
             val stringAmountPlayers: String = numPlayerSpinner.selectedItem.toString()
             val stringParticipants: String = participants.text.toString().trim()
-            val participantsArr = stringParticipants.split(",").toMutableList()
+            val participantsArr = stringParticipants.split(",").map { it.trim() }.toMutableList()
             val currentUserEmail = tournamentUserViewModel.currentUserEmail()
             if (currentUserEmail != null) {
                 participantsArr.add(currentUserEmail)
