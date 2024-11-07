@@ -98,6 +98,10 @@ data class Tournament (
         joinCode = joinString
     }
 
+    fun isTournamentFull(): Boolean {
+        return players.size >= numberPlayers.toInt()
+    }
+
     companion object {
         private const val TAG = "Tournament Class"
 

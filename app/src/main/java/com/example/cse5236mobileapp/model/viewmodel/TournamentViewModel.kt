@@ -11,7 +11,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
+import com.google.firebase.firestore.toObjects
 import com.google.firebase.ktx.Firebase
+import com.google.rpc.Code
 
 class TournamentViewModel : ViewModel() {
 
@@ -74,17 +76,45 @@ class TournamentViewModel : ViewModel() {
         }
     }
 
+    fun findTourneyIdFromJoinCode(joinCode: String, onResult: (TournamentIdentifier?) -> Unit) {
+        val tourneys = firestore.collection("Tournaments").whereEqualTo("joinCode", joinCode)
+            .get()
+            .addOnSuccessListener { tournaments ->
+                if (tournaments.size() > 0) {
+                    val firstInstance = tournaments.documents[0]
+                    val tournamentConverted = firstInstance.toObject<Tournament>()
+                    if (tournamentConverted != null) {
+                        onResult(TournamentIdentifier(firstInstance.id, tournamentConverted))
+                    } else {
+                        onResult(null)
+                        Log.e(TAG, "Failure to retrieve tournament, error converting object.")
+                    }
+                }
+                else {
+                    onResult(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, "Failure to retrieve tournament.", exception)
+                onResult(null)
+            }
+    }
+
     // Calling addTournamentToDatabase from repository
     fun addTournament(tournament: Tournament): String {
         return repository.addTournamentToDatabase(tournament)
     }
 
     // Calling modifyTournamentAttribute from repository
-    fun modifyTournamentAttribute(tournament: TournamentIdentifier, changedPropertyKey: String, newProperty: Any) {
-        repository.modifyTournamentAttribute(tournament,changedPropertyKey, newProperty)
+    fun modifyTournamentAttribute(
+        tournament: TournamentIdentifier,
+        changedPropertyKey: String,
+        newProperty: Any
+    ) {
+        repository.modifyTournamentAttribute(tournament, changedPropertyKey, newProperty)
     }
-    fun updateTournamentGames(tournament: Tournament, tournamentID: String)
-    {
+
+    fun updateTournamentGames(tournament: Tournament, tournamentID: String) {
         repository.updateGamesAndRounds(tournament, tournamentID)
     }
 
