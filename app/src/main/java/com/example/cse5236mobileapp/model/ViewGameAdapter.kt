@@ -167,7 +167,7 @@ class ViewGameAdapter (
                 return playerMap[players[previousInt]] ?: previousName
             }
             else {
-                return "Placeholder$previousName"
+                return "TBD"
             }
         }
         else {

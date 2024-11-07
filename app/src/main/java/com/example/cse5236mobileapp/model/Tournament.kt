@@ -22,10 +22,10 @@ data class Tournament (
 {
     fun createInitialGames() {
         var gameList = mutableListOf<Game>()
-        for(i in 0 until players.size step 2) {
+        for(i in 0 until numberPlayers.toInt() step 2) {
             val game = Game(
-                teamOne = players[i],
-                teamTwo = players[i + 1],
+                teamOne = i.toString(),
+                teamTwo = (i + 1).toString(),
                 round = 1,
                 gamePosition = i / 2
             )
