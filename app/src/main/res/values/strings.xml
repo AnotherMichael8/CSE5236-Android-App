@@ -48,6 +48,8 @@
     <string name="round_name_placeholder">Semifinal</string>
     <string name="players">Players:</string>
     <string name="jyablok_placeholder">jyablok</string>
+    <string name="enter_tournament_join_code">Enter Tournament Join Code</string>
+    <string name="join_tournament">Join Tournament</string>
     <string-array name="players_array">
         <item>4</item>
         <item>8</item>
