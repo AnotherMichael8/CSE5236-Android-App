@@ -15,14 +15,19 @@ import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.ViewGameAdapter
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
+import com.example.cse5236mobileapp.model.viewmodel.TournamentUsernameViewModel
 
-class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) : Fragment(R.layout.fragment_view_games) {
+class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) :
+    Fragment(R.layout.fragment_view_games) {
     companion object {
         private const val TAG = "View Games Fragment"
     }
+
     //TODO: all of the game functionality
-    private val tournamentGamesViewModel = TournamentGamesViewModel(tournamentIdentifier.tournamentId)
-    private lateinit var viewGameAdapter : ViewGameAdapter
+    private val tournamentGamesViewModel =
+        TournamentGamesViewModel(tournamentIdentifier.tournamentId)
+    private val tournamentUsernameViewModel = TournamentUsernameViewModel(mutableListOf())
+    private lateinit var viewGameAdapter: ViewGameAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,6 +52,14 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
         rvGameView.adapter = viewGameAdapter
         rvGameView.layoutManager = LinearLayoutManager(requireContext())
 
+        tournamentUsernameViewModel.emailToUsername.observe(
+            viewLifecycleOwner,
+            Observer { playerNameMap ->
+                if (playerNameMap != null) {
+                    updatePlayerMap(playerNameMap)
+                }
+            })
+
 
         // Livedata implementation here
         tournamentGamesViewModel.tournamentGamesLive.observe(viewLifecycleOwner, Observer { games ->
@@ -54,34 +67,34 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
         })
 
         tournamentGamesViewModel.tournamentLive.observe(viewLifecycleOwner, Observer { tournament ->
+            // Updating the tournament usernames
+            tournamentUsernameViewModel.updateEmailList(tournament.players)
+            updatePlayers(tournament.players)
             updateName(gamesTextView, tournament)
         })
 
         //back button functionality
-        backButton.setOnClickListener(){
-            parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
+        backButton.setOnClickListener() {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
         }
         nextRoundButton.setOnClickListener() {
             val curRound = viewGameAdapter.nextRound()
             btnGameViewRound.text = Game.getRoundDisplayer(curRound, numberRounds)
-            if(curRound >= numberRounds)
-            {
+            if (curRound >= numberRounds) {
                 nextRoundButton.visibility = View.INVISIBLE
             }
-            if(curRound > 1)
-            {
+            if (curRound > 1) {
                 previousRoundButton.visibility = View.VISIBLE
             }
         }
         previousRoundButton.setOnClickListener() {
             val curRound = viewGameAdapter.previousRound()
             btnGameViewRound.text = Game.getRoundDisplayer(curRound, numberRounds)
-            if(curRound <= 1)
-            {
+            if (curRound <= 1) {
                 previousRoundButton.visibility = View.INVISIBLE
             }
-            if(curRound < numberRounds)
-            {
+            if (curRound < numberRounds) {
                 nextRoundButton.visibility = View.VISIBLE
             }
         }
@@ -93,5 +106,13 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
 
     private fun updateName(textView: TextView, tournament: Tournament) {
         textView.text = tournament.tournamentName
+    }
+
+    private fun updatePlayerMap(newPlayerMap: Map<String, String>) {
+        viewGameAdapter.updatePlayerMap(newPlayerMap)
+    }
+
+    private fun updatePlayers(newPlayerList: List<String>) {
+        viewGameAdapter.updatePlayerList(newPlayerList)
     }
 }

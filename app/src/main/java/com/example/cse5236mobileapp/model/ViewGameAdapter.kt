@@ -22,6 +22,9 @@ class ViewGameAdapter (
     private var eachRoundGames : Array<MutableList<Game>> = Array(numRounds) { mutableListOf() }
     private var currentRound = 0
     private val tournamentGamesViewModel = TournamentGamesViewModel(tournamentIdentifier.tournamentId)
+    private var players = listOf<String>()
+    private var playerMap = mapOf<String, String>()
+
 
     class GameViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         val tvPlayerOneScore : TextView = itemView.findViewById(R.id.tvPlayerOneScore)
@@ -129,8 +132,8 @@ class ViewGameAdapter (
             etPlayerOneScore.setText(curGame.teamOneScore.toString())
             tvPlayerTwoScore.text = curGame.teamTwoScore.toString()
             etPlayerTwoScore.setText(curGame.teamTwoScore.toString())
-            tvPlayerOne.text = curGame.teamOne
-            tvPlayerTwo.text = curGame.teamTwo
+            tvPlayerOne.text = linkPlayerName(curGame.teamOne)
+            tvPlayerTwo.text = linkPlayerName(curGame.teamTwo)
             tvGameProgress.text = curGame.gameStatus
             tvPlayerOneScore.visibility = View.INVISIBLE
             tvPlayerTwoScore.visibility = View.INVISIBLE
@@ -188,5 +191,31 @@ class ViewGameAdapter (
 
     override fun getItemCount(): Int {
         return eachRoundGames[currentRound].size
+    }
+
+    private fun linkPlayerName(previousName: String): String {
+        // Converting previous name to int
+        val previousInt = previousName.toIntOrNull()
+        if (previousInt != null) {
+            if (previousInt < players.size) {
+                return playerMap[players[previousInt]] ?: previousName
+            }
+            else {
+                return "TBD"
+            }
+        }
+        else {
+            return playerMap[previousName] ?: previousName
+        }
+    }
+
+    fun updatePlayerList(updatedPlayerList: List<String>) {
+        players = updatedPlayerList
+    }
+
+    fun updatePlayerMap(updatedPlayerMap: Map<String, String>) {
+        playerMap = updatedPlayerMap
+
+        notifyDataSetChanged()
     }
 }

@@ -60,7 +60,6 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
 
         backButton.setOnClickListener(){
             val displayName = user?.email ?: "No display name available"
-            Toast.makeText(requireContext(), displayName, Toast.LENGTH_LONG).show()
             parentFragmentManager.beginTransaction().remove(this).commit()
             Log.i(TAG, "Going to Home Screen from Account Settings")
         }

@@ -21,15 +21,21 @@ class TournamentRepository {
     private val dbUser = user?.email ?: "No email"
 
     // Method to add tournament to database for user
-    fun addTournamentToDatabase(tournament: Tournament) {
+    fun addTournamentToDatabase(tournament: Tournament): String {
         // Generating a random key for the tournament here
         val uuid = UUID.randomUUID().toString()
 
         // Adding the tournament to the remote firestore
         database.collection("Tournaments").document(uuid).set(tournament)
+
+
         val userTournaments = mapOf(uuid to "Admin")
         //val userAccount = user?.email ?: "No email"
         database.collection("Users").document(dbUser).set(userTournaments, SetOptions.merge())
+
+        // Calling method here to add users to tournamentViewModel
+
+        return uuid
     }
 
     // Method to modify tournament attribute

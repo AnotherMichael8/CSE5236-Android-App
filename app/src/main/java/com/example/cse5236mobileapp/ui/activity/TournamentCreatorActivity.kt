@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,11 +13,13 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.Game
 import com.example.cse5236mobileapp.model.Tournament
+import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 
 class TournamentCreatorActivity : AppCompatActivity() {
 
     private val tournamentViewModel = TournamentViewModel()
+    private val tournamentUserViewModel = TournamentUserViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,16 +44,14 @@ class TournamentCreatorActivity : AppCompatActivity() {
 
         val backButton = findViewById<Button>(R.id.tourMakerBackButton)
         val submitButton = findViewById<Button>(R.id.tourCreatorBtnSubmit)
-        var currentRadioButton : Boolean = false
+        var currentRadioButton: Boolean = false
         privateOrPublic.setOnCheckedChangeListener { radioGroup, idChecked ->
-            when(idChecked)
-            {
-                R.id.rbPublic ->
-                {
+            when (idChecked) {
+                R.id.rbPublic -> {
                     currentRadioButton = false
                 }
-                R.id.rbPrivate ->
-                {
+
+                R.id.rbPrivate -> {
                     currentRadioButton = true
                 }
             }
@@ -60,18 +61,22 @@ class TournamentCreatorActivity : AppCompatActivity() {
             finish()
         }
         submitButton.setOnClickListener {
-            val stringTournamentName : String = tournamentNameField.text.toString()
-            val stringDate : String = dateNameField.text.toString()
-            val stringTime : String = timeNameField.text.toString()
-            val stringAddress : String = addressNameField.text.toString()
-            val stringRules : String = rulesField.text.toString()
+            val stringTournamentName: String = tournamentNameField.text.toString()
+            val stringDate: String = dateNameField.text.toString()
+            val stringTime: String = timeNameField.text.toString()
+            val stringAddress: String = addressNameField.text.toString()
+            val stringRules: String = rulesField.text.toString()
             val stringAmountPlayers: String = numPlayerSpinner.selectedItem.toString()
-            val stringParticipants : String = participants.text.toString().trim()
-            val participantsArr = stringParticipants.split(",")
+            val stringParticipants: String = participants.text.toString().trim()
+            val participantsArr = stringParticipants.split(",").map { it.trim() }.toMutableList()
+            val currentUserEmail = tournamentUserViewModel.currentUserEmail()
+            if (currentUserEmail != null) {
+                participantsArr.add(currentUserEmail)
+            }
 
-            if(participantsArr.size == stringAmountPlayers.toInt() &&
-                !(stringTournamentName.isBlank() || stringDate.isBlank() || stringTime.isBlank() || stringAddress.isBlank() || stringRules.isBlank()))
-            {
+
+            if (!(stringTournamentName.isBlank() || stringDate.isBlank() || stringTime.isBlank() || stringAddress.isBlank() || stringRules.isBlank())) {
+                if (participantsArr.size <= stringAmountPlayers.toInt()) {
 //                // TODO: Have method for generating list of games be in tournament class
 //                var gameListID = mutableListOf<String>()
 //                var gameList = mutableListOf<Game>()
@@ -84,26 +89,53 @@ class TournamentCreatorActivity : AppCompatActivity() {
 //                    gameList.add(game)
 //                    gameListID.add(Game.createGame(game))
 //                }
-                val tournamentVal = Tournament(
-                    tournamentName = tournamentNameField.text.toString(),
-                    date = dateNameField.text.toString(),
-                    time = timeNameField.text.toString(),
-                    address = addressNameField.text.toString(),
-                    rules = rulesField.text.toString(),
-                    numberPlayers = numPlayerSpinner.selectedItem.toString(),
-                    eventType = eventTypeSpinner.selectedItem.toString(),
-                    isPrivate = currentRadioButton,
-                    isMorning = false,
-                    players = participantsArr)
 
-                tournamentVal.createInitialGames()
 
-                tournamentViewModel.addTournament(tournamentVal)
-                finish()
+                    // Could potentially add loading dialog here
+
+                    if (tournamentUserViewModel.verifyEmailList(participantsArr)) {
+                        val tournamentVal = Tournament(
+                            tournamentName = tournamentNameField.text.toString(),
+                            date = dateNameField.text.toString(),
+                            time = timeNameField.text.toString(),
+                            address = addressNameField.text.toString(),
+                            rules = rulesField.text.toString(),
+                            numberPlayers = numPlayerSpinner.selectedItem.toString(),
+                            eventType = eventTypeSpinner.selectedItem.toString(),
+                            isPrivate = currentRadioButton,
+                            isMorning = false,
+                            players = participantsArr
+                        )
+
+                        // TODO: Implementing creating the matchups elsewhere
+                        tournamentVal.createInitialGames()
+
+                        // Creating tournament object
+                        val tournamentCode = tournamentViewModel.addTournament(tournamentVal)
+
+                        // Linking tournament to users
+                        tournamentUserViewModel.addTournamentForUser(tournamentCode, participantsArr)
+
+                        Toast.makeText(this, "Successfully created tournament", Toast.LENGTH_SHORT)
+                            .show()
+                        finish()
+
+                    } else {
+                        Toast.makeText(this, "Unable to verify Email List", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                else {
+                    Toast.makeText(this, "Too many people added to the tournament", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+            else {
+                Toast.makeText(this, "Missing fields", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
+
     /*
     private fun createTourney()
     {

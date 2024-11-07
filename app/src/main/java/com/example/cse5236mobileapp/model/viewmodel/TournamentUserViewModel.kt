@@ -29,6 +29,11 @@ class TournamentUserViewModel : ViewModel() {
         MutableLiveData<String>()
     }
 
+    val emailListLive: MutableLiveData<List<String>> by lazy {
+        MutableLiveData<List<String>>()
+    }
+
+
     //Might not be needed yet... NOTE: still WIP
 
     init {
@@ -48,7 +53,7 @@ class TournamentUserViewModel : ViewModel() {
                     }?.toMap()?.toMutableMap() ?: mutableMapOf()
 
                     val tournamentUserTemp = document.getString("username")
-                        ?.let { TournamentUser(it,document.id, dataMap) }
+                        ?.let { TournamentUser(it, document.id, dataMap) }
                     if (tournamentUserTemp != null) {
                         users.add(tournamentUserTemp)
                     }
@@ -59,25 +64,66 @@ class TournamentUserViewModel : ViewModel() {
             }
         }
         userNameRetrieve()
+        emailListRetrieve()
         firestore = FirebaseFirestore.getInstance()
     }
 
     // Get the usernameLive
     private fun userNameRetrieve() {
         user?.email?.let {
-            firestore.collection("Users").document(it).addSnapshotListener { userObject, exception ->
-                if (exception != null) {
-                    Log.e(TAG, "Error retrieving username", exception)
-                    return@addSnapshotListener
-                } else if (userObject != null && userObject.exists()) {
-                    // TODO: Cast to object to do this
-                    usernameLive.value = userObject.getString("username").toString()
-                } else {
-                    usernameLive.value = ""
+            firestore.collection("Users").document(it)
+                .addSnapshotListener { userObject, exception ->
+                    if (exception != null) {
+                        Log.e(TAG, "Error retrieving username", exception)
+                        return@addSnapshotListener
+                    } else if (userObject != null && userObject.exists()) {
+                        // TODO: Cast to object to do this
+                        usernameLive.value = userObject.getString("username").toString()
+                    } else {
+                        usernameLive.value = ""
+                    }
                 }
+        }
+    }
+
+    private fun emailListRetrieve() {
+        emailListLive.value = mutableListOf<String>()
+        firestore.collection("Users").addSnapshotListener { users, exception ->
+            if (exception != null) {
+                Log.e(TAG, "Error retrieving emails", exception)
+                return@addSnapshotListener
+            }
+            else if (users != null) {
+                emailListLive.value = users.map { it.id }
             }
         }
     }
+
+
+
+    fun currentUserEmail(): String? {
+        return user?.email
+    }
+
+    // Verify a list of emails for the viewModel
+    fun verifyEmailList(emails: List<String>): Boolean {
+        var isVerified = true
+        val emailList = emailListLive.value
+
+        if (emailList != null) {
+            for (email in emails) {
+                if (!emailList.contains(email)) {
+                    isVerified = false
+                }
+            }
+        }
+        else {
+            isVerified = false
+        }
+        return isVerified
+    }
+
+
 
 
     // Calling addUserToDatabase from repository
@@ -115,4 +161,11 @@ class TournamentUserViewModel : ViewModel() {
         repository.deleteUser(firebaseUser, userEmail)
     }
 
+    fun addTournamentForUser(tournamentID: String, playerEmailList: List<String>) {
+        repository.addTournamentForUser(tournamentID, playerEmailList)
+    }
+
+    fun removeTournamentForAllUsers(tournamentID: String, playerEmailList: List<String>) {
+        repository.removeTournamentForAllUsers(tournamentID, playerEmailList)
+    }
 }

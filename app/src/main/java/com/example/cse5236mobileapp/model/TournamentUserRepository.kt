@@ -7,7 +7,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.PropertyName
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -18,6 +20,7 @@ class TournamentUserRepository {
 
     private val database = Firebase.firestore
     private val auth = FirebaseAuth.getInstance()
+    private val user = auth.currentUser?.email ?: "No email"
 
 
     // Method to add user to database
@@ -113,6 +116,38 @@ class TournamentUserRepository {
             Log.d(TAG, "User account deleted successfully")
         }.addOnFailureListener { e->
             Log.e(TAG, "User account deletion failed: $e")
+        }
+    }
+
+    // Add tournaments for users
+    fun addTournamentForUser(tournamentID: String, playerEmailList: List<String>) {
+        // First focus on adding the admin to db first
+        val tournamentToAdmin = mapOf(tournamentID to "Admin")
+        //val userAccount = user?.email ?: "No email"
+        database.collection("Users").document(user).set(tournamentToAdmin, SetOptions.merge())
+
+        // Now work on linking with the rest of users
+        for (player in playerEmailList) {
+            if (player != user) {
+                val tournamentToUser = mapOf(tournamentID to "User")
+                database.collection("Users").document(player).set(tournamentToUser, SetOptions.merge())
+            }
+        }
+    }
+
+    // Remove tournament for all users
+    fun removeTournamentForAllUsers(tournamentID: String, playerEmailList: List<String>) {
+        // Looping through each player on the email list
+        for (playerEmail in playerEmailList) {
+            // Removal from database
+            val ref = database.collection("Users").document(playerEmail)
+            ref.update(tournamentID, FieldValue.delete())
+                .addOnSuccessListener {
+                    Log.d(TAG, "Successfully remove $tournamentID for $playerEmail")
+                }
+                .addOnFailureListener {exception ->
+                    Log.e(TAG, "Failure to remove $tournamentID for $playerEmail", exception)
+                }
         }
     }
 }
