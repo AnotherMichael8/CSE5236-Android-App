@@ -17,6 +17,7 @@ class Game (
     @PropertyName("GameStatus") var gameStatus: String = "In Progress"
 )
 {
+    constructor(game: Game) : this(game.teamOne, game.teamTwo, game.teamOneScore, game.teamTwoScore, game.round, game.gamePosition, game.gameStatus)
     companion object {
         const val TAG = "Game Object Class"
 

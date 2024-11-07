@@ -7,6 +7,7 @@ import android.view.View
 import android.util.Log
 import android.view.KeyEvent
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,7 @@ class ViewGameAdapter (
         val tvGameProgress : TextView = itemView.findViewById(R.id.tvGameProgress)
         val etPlayerOneScore : EditText = itemView.findViewById(R.id.etPlayerOneScore)
         val etPlayerTwoScore : EditText = itemView.findViewById(R.id.etPlayerTwoScore)
+        val btFinalizeButton : Button = itemView.findViewById(R.id.btFinalizeGame)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
@@ -170,6 +172,15 @@ class ViewGameAdapter (
                     true
                 } else {
                     false
+                }
+            }
+            btFinalizeButton.setOnClickListener {
+                if(curGame.gameStatus != "Final")
+                {
+                    val newGame = Game(curGame)
+                    newGame.gameStatus = "Final"
+                    tournamentGamesViewModel.updateOldGameToNewGameDatabase(Pair(curGame.teamOne, curGame.teamTwo), newGame)
+                    notifyItemChanged(position)
                 }
             }
         }
