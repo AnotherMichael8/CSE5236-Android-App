@@ -5,13 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_grey"
     tools:context=".ui.activity.MainActivity">
 
     <Button
         android:id="@+id/btnContinue"
         android:layout_width="0dp"
         android:layout_height="63dp"
-        android:text="Continue"
+        android:text="@string/continue_txt"
+        android:textSize="20dp"
         android:textAlignment="gravity"
         android:textAllCaps="true"
         android:layout_marginBottom="20dp"
@@ -19,27 +21,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
-        android:text="Tournamernt Creator"
-        android:textColor="@color/google_purple"
-        android:textSize="45dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="406dp"
-        android:layout_height="391dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="40dp"
         app:layout_constraintBottom_toTopOf="@+id/btnContinue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/baseline_sports_football_24" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/tournament_app_logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>
