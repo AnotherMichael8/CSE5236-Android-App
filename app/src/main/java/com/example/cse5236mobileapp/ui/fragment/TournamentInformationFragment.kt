@@ -81,6 +81,7 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         val time = linearLayout.findViewById<TextView>(R.id.txtViewTime)
         val numPlayers = linearLayout.findViewById<TextView>(R.id.txtViewNumberPlayers)
         val rules = linearLayout.findViewById<TextView>(R.id.txtViewRules)
+        val joinCode = linearLayout.findViewById<TextView>(R.id.txtJoinCodeDisplay)
 
         tournamentName.text = tournament.tournamentName
         address.text = tournament.address
@@ -94,6 +95,7 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
 
         numPlayers.text = tournament.numberPlayers
         rules.text = tournament.rules
+        joinCode.text = tournament.joinCode
 
     }
 

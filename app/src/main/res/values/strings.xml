@@ -52,6 +52,7 @@
     <string name="join_tournament">Join Tournament</string>
     <string name="my_tournaments">My Tournaments</string>
     <string name="continue_txt">Continue</string>
+    <string name="join_code">Join Code:</string>
     <string-array name="players_array">
         <item>4</item>
         <item>8</item>
