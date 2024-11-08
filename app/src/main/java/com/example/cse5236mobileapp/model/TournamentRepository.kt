@@ -92,4 +92,17 @@ class TournamentRepository {
                 Log.d(null, tournament.tournament.tournamentName + " error deleting Tournament: $e")
             }
     }
+
+    fun addUserToTournament(tournamentId: String, previousPlayers: List<String>) {
+        var newPlayerList = previousPlayers.toMutableList()
+
+
+        newPlayerList.add(dbUser)
+
+
+        val updatedPlayers = hashMapOf("players" to newPlayerList)
+
+        database.collection("Tournaments").document(tournamentId)
+            .set(updatedPlayers, SetOptions.merge())
+    }
 }

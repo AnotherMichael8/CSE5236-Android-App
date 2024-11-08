@@ -1,6 +1,7 @@
 package com.example.cse5236mobileapp.model.viewmodel
 
 import android.content.ContentValues.TAG
+import android.provider.ContactsContract.CommonDataKinds.Email
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -121,6 +122,10 @@ class TournamentViewModel : ViewModel() {
     // Calling deleteTournament from repository
     fun deleteTournament(tournamentId: TournamentIdentifier) {
         repository.deleteTournament(tournamentId)
+    }
+
+    fun addUserToTournament(tournamentId: String, previousPlayers: List<String>) {
+        repository.addUserToTournament(tournamentId, previousPlayers)
     }
 }
 

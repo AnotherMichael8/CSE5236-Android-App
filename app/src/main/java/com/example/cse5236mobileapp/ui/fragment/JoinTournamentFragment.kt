@@ -46,6 +46,10 @@ class JoinTournamentFragment : Fragment(R.layout.fragment_join_tournament) {
                         if (!tournamentIdentifier.tournament.isUserAPlayer(currentUser)) {
                             Toast.makeText(requireContext(), "User isn't already in tournament", Toast.LENGTH_SHORT).show()
                             // TODO: Update the tournament to have the user be in it and then add tournament ID to user
+                            // User added to tournament
+                            tournamentViewModel.addUserToTournament(tournamentIdentifier.tournamentId, tournamentIdentifier.tournament.players)
+                            // Tournament added to user
+                            tournamentUserViewModel.addTournamentForUser(tournamentIdentifier.tournamentId)
                         }
                         else {
                             Toast.makeText(requireContext(), "User is already in tournament", Toast.LENGTH_SHORT).show()
