@@ -38,6 +38,7 @@ class ViewGameAdapter (
         val etPlayerOneScore : EditText = itemView.findViewById(R.id.etPlayerOneScore)
         val etPlayerTwoScore : EditText = itemView.findViewById(R.id.etPlayerTwoScore)
         val btFinalizeButton : Button = itemView.findViewById(R.id.btFinalizeGame)
+        val btUnfinalizeButton : Button = itemView.findViewById(R.id.btUnfinalizeGame)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
@@ -131,6 +132,40 @@ class ViewGameAdapter (
         this.privileges = privileges
         notifyDataSetChanged()
     }
+    private fun updatePlayerOneScore(curGame: Game, holder: GameViewHolder, position: Int)
+    {
+        val newScore = holder.etPlayerOneScore.text.toString().trim().toIntOrNull()
+        if (newScore != null) {
+            curGame.teamOneScore = newScore
+            holder.etPlayerOneScore.clearFocus()
+            tournamentGamesViewModel.updateOldGameToNewGameDatabase(
+                Pair(
+                    curGame.teamOne,
+                    curGame.teamTwo
+                ), curGame
+            )
+            notifyItemChanged(position)
+        } else {
+            Log.i("Adapter", "Invalid input for score")
+        }
+    }
+    private fun updatePlayerTwoScore(curGame: Game, holder: GameViewHolder, position: Int)
+    {
+        val newScore = holder.etPlayerTwoScore.text.toString().trim().toIntOrNull()
+        if (newScore != null) {
+            curGame.teamTwoScore = newScore
+            holder.etPlayerTwoScore.clearFocus()
+            tournamentGamesViewModel.updateOldGameToNewGameDatabase(
+                Pair(
+                    curGame.teamOne,
+                    curGame.teamTwo
+                ), curGame
+            )
+            notifyItemChanged(position)
+        } else {
+            Log.i("Adapter", "Invalid input for score")
+        }
+    }
 
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         val curGame = eachRoundGames[currentRound][position]
@@ -145,67 +180,82 @@ class ViewGameAdapter (
             tvRound.text = curGame.getRoundName(numRounds)
 
             if(privileges == "Admin") {
-                tvPlayerOneScore.visibility = View.INVISIBLE
-                tvPlayerTwoScore.visibility = View.INVISIBLE
-                etPlayerOneScore.visibility = View.VISIBLE
-                etPlayerTwoScore.visibility = View.VISIBLE
-                btFinalizeButton.visibility = View.VISIBLE
-
                 etPlayerOneScore.setOnKeyListener { v, keyCode, event ->
                     if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                        // Handle Enter key press here
-                        val newScore = etPlayerOneScore.text.toString().trim().toIntOrNull()
-                        if (newScore != null) {
-                            curGame.teamOneScore = newScore
-                            etPlayerOneScore.clearFocus()
-                            tournamentGamesViewModel.updateOldGameToNewGameDatabase(
-                                Pair(
-                                    curGame.teamOne,
-                                    curGame.teamTwo
-                                ), curGame
-                            )
-                            notifyItemChanged(position)
-                        } else {
-                            Log.i("Adapter", "Invalid input for score")
-                        }
+                        updatePlayerOneScore(curGame, holder, position)
                         true
                     } else {
                         false
                     }
                 }
+                /*
+                etPlayerOneScore.setOnFocusChangeListener { view, hasFocus ->
+                    if(!hasFocus)
+                    {
+                        updatePlayerOneScore(curGame, holder, position)
+                    }
+                }
+
+                 */
                 etPlayerTwoScore.setOnKeyListener { v, keyCode, event ->
                     if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                        // Handle Enter key press here
-                        val newScore = etPlayerTwoScore.text.toString().trim().toIntOrNull()
-                        if (newScore != null) {
-                            curGame.teamTwoScore = newScore
-                            etPlayerTwoScore.clearFocus()
-                            tournamentGamesViewModel.updateOldGameToNewGameDatabase(
-                                Pair(
-                                    curGame.teamOne,
-                                    curGame.teamTwo
-                                ), curGame
-                            )
-                            notifyItemChanged(position)
-                        } else {
-                            Log.i("Adapter", "Invalid input for score")
-                        }
+                        updatePlayerTwoScore(curGame, holder, position)
                         true
                     } else {
                         false
                     }
                 }
-                btFinalizeButton.setOnClickListener {
-                    if (curGame.gameStatus != "Final") {
-                        val newGame = Game(curGame)
-                        newGame.gameStatus = "Final"
-                        tournamentGamesViewModel.updateOldGameToNewGameDatabase(
-                            Pair(
-                                curGame.teamOne,
-                                curGame.teamTwo
-                            ), newGame
-                        )
-                        notifyItemChanged(position)
+                /*
+                etPlayerTwoScore.setOnFocusChangeListener { view, hasFocus ->
+                    if(!hasFocus)
+                    {
+                        updatePlayerTwoScore(curGame, holder, position)
+                    }
+                }
+
+                 */
+                if(curGame.gameStatus != "Final") {
+                    btFinalizeButton.visibility = View.VISIBLE
+                    btUnfinalizeButton.visibility = View.INVISIBLE
+                    etPlayerOneScore.visibility = View.VISIBLE
+                    etPlayerTwoScore.visibility = View.VISIBLE
+                    tvPlayerTwoScore.visibility = View.INVISIBLE
+                    tvPlayerOneScore.visibility = View.INVISIBLE
+
+                    btFinalizeButton.setOnClickListener {
+                        if (curGame.gameStatus != "Final") {
+                            val newGame = Game(curGame)
+                            newGame.gameStatus = "Final"
+                            tournamentGamesViewModel.updateOldGameToNewGameDatabase(
+                                Pair(
+                                    curGame.teamOne,
+                                    curGame.teamTwo
+                                ), newGame
+                            )
+                            notifyItemChanged(position)
+                        }
+                    }
+                }
+                else{
+                    btFinalizeButton.visibility = View.INVISIBLE
+                    btUnfinalizeButton.visibility = View.VISIBLE
+                    etPlayerOneScore.visibility = View.INVISIBLE
+                    etPlayerTwoScore.visibility = View.INVISIBLE
+                    tvPlayerOneScore.visibility = View.VISIBLE
+                    tvPlayerTwoScore.visibility = View.VISIBLE
+
+                    btUnfinalizeButton.setOnClickListener {
+                        if (curGame.gameStatus == "Final") {
+                            val newGame = Game(curGame)
+                            newGame.gameStatus = "In Progress"
+                            tournamentGamesViewModel.updateOldGameToNewGameDatabase(
+                                Pair(
+                                    curGame.teamOne,
+                                    curGame.teamTwo
+                                ), newGame
+                            )
+                            notifyItemChanged(position)
+                        }
                     }
                 }
             }
@@ -213,6 +263,7 @@ class ViewGameAdapter (
                 etPlayerOneScore.visibility = View.INVISIBLE
                 etPlayerTwoScore.visibility = View.INVISIBLE
                 btFinalizeButton.visibility = View.GONE
+                btUnfinalizeButton.visibility = View.GONE
                 tvPlayerOneScore.visibility = View.VISIBLE
                 tvPlayerTwoScore.visibility = View.VISIBLE
             }
