@@ -61,6 +61,10 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
             }
         })
 
+        tournamentGamesViewModel.currentUserAdminPrivileges.observe(viewLifecycleOwner, Observer { priv ->
+            updateEditButton(priv, view)
+        })
+
         // TODO: Add on click listener for buttons
 
         view.findViewById<Button>(R.id.btnTournamentViewBack).setOnClickListener {
@@ -104,6 +108,15 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         playerNameAdapter.updateNames(playerNames)
     }
 
+    private fun updateEditButton(adminPrivilige: String, view: View) {
+        val editButton = view.findViewById<Button>(R.id.btnEditTournament)
+        if (adminPrivilige == "Admin") {
+            editButton.visibility = View.VISIBLE
+        }
+        else {
+            editButton.visibility = View.GONE
+        }
+    }
 
 
     override fun onCreateView(
@@ -113,6 +126,4 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tournament_information, container, false)
     }
-
-
 }

@@ -82,6 +82,8 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                 setOnClickListener {
                     // Handle click event
                     val modifyTournamentFragment = TournamentInformationFragment(tournament)
+                    // TODO: Get a way to view role in tournament and pass to next view
+
                     parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, modifyTournamentFragment).commit()
                 }
             }
