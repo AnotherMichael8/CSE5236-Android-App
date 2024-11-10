@@ -10,35 +10,35 @@
     <Button
         android:id="@+id/LocationsButton"
         android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:text="@string/location_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.715" />
+        app:layout_constraintVertical_bias="0.546"/>
 
     <Button
         android:id="@+id/CreateButton"
         android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:text="@string/create_button"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.82" />
+        app:layout_constraintTop_toBottomOf="@+id/LocationsButton"
+        app:layout_constraintBottom_toTopOf="@+id/ViewButton"
+        />
 
     <Button
         android:id="@+id/ViewButton"
         android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:text="@string/view_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.923" />
+        app:layout_constraintTop_toBottomOf="@+id/CreateButton"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <Button
         android:id="@+id/LogoutButton"
@@ -53,7 +53,7 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="218dp"
-        android:layout_height="140dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/title"
         android:textColor="@color/google_purple"
@@ -91,8 +91,10 @@
         android:layout_height="fill_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
     </FrameLayout>
 
