@@ -43,12 +43,20 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
 //        }
 
         val backButton = view.findViewById<Button>(R.id.viewTournamentBackButton)
+        val joinTournamentButton = view.findViewById<Button>(R.id.btnGoToJoinCode)
         val user = FirebaseAuth.getInstance().currentUser
 
         backButton.setOnClickListener(){
             parentFragmentManager.beginTransaction().remove(this).commit()
             Log.i(TAG, "Going to Home Screen from Account Settings")
         }
+
+        joinTournamentButton.setOnClickListener() {
+            parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, JoinTournamentFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
     }
 
     // Function to reduce duplication by updating the view with tournament data
@@ -74,6 +82,8 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                 setOnClickListener {
                     // Handle click event
                     val modifyTournamentFragment = TournamentInformationFragment(tournament)
+                    // TODO: Get a way to view role in tournament and pass to next view
+
                     parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, modifyTournamentFragment).commit()
                 }
             }

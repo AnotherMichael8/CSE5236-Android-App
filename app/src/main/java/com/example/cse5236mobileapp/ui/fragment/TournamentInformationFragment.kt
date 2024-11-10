@@ -61,6 +61,10 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
             }
         })
 
+        tournamentGamesViewModel.currentUserAdminPrivileges.observe(viewLifecycleOwner, Observer { priv ->
+            updateEditButton(priv, view)
+        })
+
         // TODO: Add on click listener for buttons
 
         view.findViewById<Button>(R.id.btnTournamentViewBack).setOnClickListener {
@@ -81,6 +85,7 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         val time = linearLayout.findViewById<TextView>(R.id.txtViewTime)
         val numPlayers = linearLayout.findViewById<TextView>(R.id.txtViewNumberPlayers)
         val rules = linearLayout.findViewById<TextView>(R.id.txtViewRules)
+        val joinCode = linearLayout.findViewById<TextView>(R.id.txtJoinCodeDisplay)
 
         tournamentName.text = tournament.tournamentName
         address.text = tournament.address
@@ -94,6 +99,7 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
 
         numPlayers.text = tournament.numberPlayers
         rules.text = tournament.rules
+        joinCode.text = tournament.joinCode
 
     }
 
@@ -102,6 +108,15 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         playerNameAdapter.updateNames(playerNames)
     }
 
+    private fun updateEditButton(adminPrivilige: String, view: View) {
+        val editButton = view.findViewById<Button>(R.id.btnEditTournament)
+        if (adminPrivilige == "Admin") {
+            editButton.visibility = View.VISIBLE
+        }
+        else {
+            editButton.visibility = View.GONE
+        }
+    }
 
 
     override fun onCreateView(
@@ -111,6 +126,4 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tournament_information, container, false)
     }
-
-
 }

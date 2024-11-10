@@ -159,10 +159,14 @@ class TournamentUserViewModel : ViewModel() {
     }
 
     fun addTournamentForUser(tournamentID: String, playerEmailList: List<String>) {
-        repository.addTournamentForUser(tournamentID, playerEmailList)
+        repository.addTournamentForUsers(tournamentID, playerEmailList)
     }
 
     fun removeTournamentForAllUsers(tournamentID: String, playerEmailList: List<String>) {
         repository.removeTournamentForAllUsers(tournamentID, playerEmailList)
+    }
+
+    fun addTournamentForUser(tournamentID: String) {
+        repository.addTournamentForUser(tournamentID)
     }
 }

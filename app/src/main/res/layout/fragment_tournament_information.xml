@@ -146,6 +146,32 @@
                         android:layout_height="2dp"
                         android:background="#CCCCCC" />
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:text="@string/join_code"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtJoinCodeDisplay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/numPlayersPlaceholder" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#CCCCCC" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

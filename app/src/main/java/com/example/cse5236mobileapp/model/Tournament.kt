@@ -17,7 +17,8 @@ data class Tournament (
     @PropertyName("isPrivate") var isPrivate: Boolean = false,
     @PropertyName("Players") var players: List<String> = listOf(),
     @PropertyName("Round") var round: Int = 1,
-    @PropertyName("Games") var games: MutableList<Game> = mutableListOf<Game>()
+    @PropertyName("Games") var games: MutableList<Game> = mutableListOf<Game>(),
+    @PropertyName("JoinCode") var joinCode: String = ""
 )
 {
     fun createInitialGames() {
@@ -83,6 +84,31 @@ data class Tournament (
         }
         else {
             return round.toString()
+        }
+    }
+
+    fun generateJoinCode() {
+        var possibleValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        var joinString = ""
+
+        for (i in 1 until 9) {
+            joinString += possibleValues.random()
+        }
+
+        joinCode = joinString
+    }
+
+    fun isTournamentFull(): Boolean {
+        return players.size >= numberPlayers.toInt()
+    }
+
+    fun isUserAPlayer(email: String?): Boolean {
+        if (email != null) {
+            return players.contains(email)
+        }
+        else {
+            // Returns true because can't verify that it isn't for null string
+            return true
         }
     }
 

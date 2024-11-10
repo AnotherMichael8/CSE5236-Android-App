@@ -1,14 +1,11 @@
 package com.example.cse5236mobileapp.model
 
 import android.util.Log
-import android.widget.Toast
-import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.PropertyName
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -120,7 +117,7 @@ class TournamentUserRepository {
     }
 
     // Add tournaments for users
-    fun addTournamentForUser(tournamentID: String, playerEmailList: List<String>) {
+    fun addTournamentForUsers(tournamentID: String, playerEmailList: List<String>) {
         // First focus on adding the admin to db first
         val tournamentToAdmin = mapOf(tournamentID to "Admin")
         //val userAccount = user?.email ?: "No email"
@@ -134,6 +131,12 @@ class TournamentUserRepository {
             }
         }
     }
+
+    fun addTournamentForUser(tournamentID: String) {
+        val tournamentToUser = mapOf(tournamentID to "User")
+        database.collection("Users").document(user).set(tournamentToUser, SetOptions.merge())
+    }
+
 
     // Remove tournament for all users
     fun removeTournamentForAllUsers(tournamentID: String, playerEmailList: List<String>) {
