@@ -180,6 +180,53 @@ class ViewGameAdapter (
             tvRound.text = curGame.getRoundName(numRounds)
 
             if(privileges == "Admin") {
+                if(curGame.gameStatus != "Final") {
+                    btFinalizeButton.visibility = View.VISIBLE
+                    btUnfinalizeButton.visibility = View.INVISIBLE
+                    etPlayerOneScore.visibility = View.VISIBLE
+                    etPlayerTwoScore.visibility = View.VISIBLE
+                    tvPlayerTwoScore.visibility = View.INVISIBLE
+                    tvPlayerOneScore.visibility = View.INVISIBLE
+
+                    btFinalizeButton.setOnClickListener {
+                        etPlayerOneScore.clearFocus()
+                        etPlayerTwoScore.clearFocus()
+                        if (curGame.gameStatus != "Final") {
+                            val newGame = Game(curGame)
+                            newGame.gameStatus = "Final"
+                            tournamentGamesViewModel.updateOldGameToNewGameDatabase(
+                                Pair(
+                                    curGame.teamOne,
+                                    curGame.teamTwo
+                                ), newGame
+                            )
+                            notifyItemChanged(position)
+                        }
+                    }
+                }
+                else {
+                    btFinalizeButton.visibility = View.INVISIBLE
+                    btUnfinalizeButton.visibility = View.VISIBLE
+                    etPlayerOneScore.visibility = View.INVISIBLE
+                    etPlayerTwoScore.visibility = View.INVISIBLE
+                    tvPlayerOneScore.visibility = View.VISIBLE
+                    tvPlayerTwoScore.visibility = View.VISIBLE
+
+                    btUnfinalizeButton.setOnClickListener {
+                        if (curGame.gameStatus == "Final") {
+                            val newGame = Game(curGame)
+                            newGame.gameStatus = "In Progress"
+                            tournamentGamesViewModel.updateOldGameToNewGameDatabase(
+                                Pair(
+                                    curGame.teamOne,
+                                    curGame.teamTwo
+                                ), newGame
+                            )
+                            notifyItemChanged(position)
+                        }
+                    }
+                }
+
                 etPlayerOneScore.setOnKeyListener { v, keyCode, event ->
                     if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                         updatePlayerOneScore(curGame, holder, position)
@@ -188,15 +235,12 @@ class ViewGameAdapter (
                         false
                     }
                 }
-                /*
                 etPlayerOneScore.setOnFocusChangeListener { view, hasFocus ->
-                    if(!hasFocus)
+                    if(!hasFocus && view.visibility == View.VISIBLE)
                     {
                         updatePlayerOneScore(curGame, holder, position)
                     }
                 }
-
-                 */
                 etPlayerTwoScore.setOnKeyListener { v, keyCode, event ->
                     if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                         updatePlayerTwoScore(curGame, holder, position)
@@ -214,6 +258,7 @@ class ViewGameAdapter (
                 }
 
                  */
+                /*
                 if(curGame.gameStatus != "Final") {
                     btFinalizeButton.visibility = View.VISIBLE
                     btUnfinalizeButton.visibility = View.INVISIBLE
@@ -258,6 +303,8 @@ class ViewGameAdapter (
                         }
                     }
                 }
+
+                 */
             }
             else{
                 etPlayerOneScore.visibility = View.INVISIBLE
