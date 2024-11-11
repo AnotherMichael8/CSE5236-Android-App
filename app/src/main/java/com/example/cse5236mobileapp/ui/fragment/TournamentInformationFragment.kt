@@ -126,4 +126,6 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tournament_information, container, false)
     }
+
+
 }
