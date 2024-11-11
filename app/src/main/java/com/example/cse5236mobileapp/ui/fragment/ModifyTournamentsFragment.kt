@@ -142,7 +142,8 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
             tournamentViewModel.deleteTournament(tournamentIdentifier)
             // Remove tournament for corresponding players
             tournamentUserViewModel.removeTournamentForAllUsers(tournamentIdentifier.tournamentId, tournamentIdentifier.tournament.players)
-            parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
+            parentFragmentManager.popBackStack()
+            parentFragmentManager.popBackStack()
         }
 
     }

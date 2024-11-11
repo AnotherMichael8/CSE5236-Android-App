@@ -68,7 +68,7 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         // TODO: Add on click listener for buttons
 
         view.findViewById<Button>(R.id.btnTournamentViewBack).setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
+            parentFragmentManager.popBackStack()
         }
 
         view.findViewById<Button>(R.id.btnEditTournament).setOnClickListener {

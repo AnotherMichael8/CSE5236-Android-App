@@ -79,8 +79,7 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
 
         //back button functionality
         backButton.setOnClickListener() {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.frgHomeScreenContainer, ViewTournamentsFragment()).commit()
+            parentFragmentManager.popBackStack()
         }
         nextRoundButton.setOnClickListener() {
             val curRound = viewGameAdapter.nextRound()
