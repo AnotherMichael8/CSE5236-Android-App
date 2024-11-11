@@ -37,10 +37,6 @@ class HomeScreenActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_home_screen)
 
-        // Getting username from intent
-
-        user = intent.getSerializableExtra("user") as Account
-
 
         tournamentUserViewModel.usernameLive.observe(this, Observer { userDisplayName ->
             updateWelcomeText(userDisplayName)

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.Account
 import com.example.cse5236mobileapp.ui.activity.HomeScreenActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -35,6 +36,7 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
         val usernameField = view.findViewById<EditText>(R.id.ditUsername)
         val passwordField = view.findViewById<EditText>(R.id.ditUserPassword)
 
+
         // Set the click listener on the button
         buttonContinue.setOnClickListener {
             var username = usernameField.text.toString()
@@ -51,12 +53,7 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
                             "Login Success",
                             Toast.LENGTH_SHORT,
                         ).show()
-                        val userAccount = Account(user?.uid, username)
-                        val intent =
-                            Intent(requireContext(), HomeScreenActivity::class.java).apply {
-                                putExtra("user", userAccount)
-                            }
-                        startActivity(intent)
+                        goToHomeScreen()
                         Log.i(TAG, "Switching to Home Screen")
                     } else {
                         Toast.makeText(
@@ -66,8 +63,7 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
                         ).show()
                     }
                 }
-            }
-            else {
+            } else {
                 Toast.makeText(requireContext(), "Missing fields", Toast.LENGTH_SHORT).show()
             }
         }
@@ -76,8 +72,20 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
             val CreateAccountFrag = CreateAccountFragment()
 
             // Actually replace fragment
-            parentFragmentManager.beginTransaction().replace(R.id.frgLoginContainer, CreateAccountFrag).addToBackStack(null).commit()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frgLoginContainer, CreateAccountFrag).addToBackStack(null).commit()
             Log.i(TAG, "Switching to Create Account")
         }
+
+        // Go straight to home screen if user is already logged in
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            goToHomeScreen()
+        }
+    }
+
+    private fun goToHomeScreen() {
+        val intent =
+            Intent(requireContext(), HomeScreenActivity::class.java)
+        startActivity(intent)
     }
 }
