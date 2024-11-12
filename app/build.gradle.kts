@@ -2,7 +2,23 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
+
+    //TODO: Find out this stupid gradle crap
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
+
+secrets {
+    // Specify the properties file containing your API key
+    propertiesFileName = "secrets.properties"
+
+    // Specify the properties file for default values
+    defaultPropertiesFileName = "local.defaults.properties"
+
+    // (Optional) Ignore specific keys if needed
+    ignoreList.add("keyToIgnore") // Example of ignoring a key
+    ignoreList.add("sdk.*")       // Ignore all keys matching the pattern
+}
+
 
 android {
     namespace = "com.example.cse5236mobileapp"
@@ -34,6 +50,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -44,9 +63,13 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.firestore)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    // Google maps
+    implementation(libs.gms.play.services.maps)
+
     // Firebase BOM for version management
     implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
 
