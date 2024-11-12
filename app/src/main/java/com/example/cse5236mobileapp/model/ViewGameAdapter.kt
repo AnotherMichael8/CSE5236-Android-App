@@ -1,6 +1,8 @@
 package com.example.cse5236mobileapp.model
 
 import android.nfc.Tag
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
@@ -139,12 +141,8 @@ class ViewGameAdapter (
             curGame.teamOneScore = newScore
             holder.etPlayerOneScore.clearFocus()
             tournamentGamesViewModel.updateOldGameToNewGameDatabase(
-                Pair(
-                    curGame.teamOne,
-                    curGame.teamTwo
-                ), curGame
+                Pair(curGame.teamOne, curGame.teamTwo), curGame
             )
-            notifyItemChanged(position)
         } else {
             Log.i("Adapter", "Invalid input for score")
         }
@@ -156,12 +154,8 @@ class ViewGameAdapter (
             curGame.teamTwoScore = newScore
             holder.etPlayerTwoScore.clearFocus()
             tournamentGamesViewModel.updateOldGameToNewGameDatabase(
-                Pair(
-                    curGame.teamOne,
-                    curGame.teamTwo
-                ), curGame
+                Pair(curGame.teamOne, curGame.teamTwo), curGame
             )
-            notifyItemChanged(position)
         } else {
             Log.i("Adapter", "Invalid input for score")
         }
@@ -249,62 +243,12 @@ class ViewGameAdapter (
                         false
                     }
                 }
-                /*
                 etPlayerTwoScore.setOnFocusChangeListener { view, hasFocus ->
-                    if(!hasFocus)
-                    {
+                    if (!hasFocus && view.visibility == View.VISIBLE) {
                         updatePlayerTwoScore(curGame, holder, position)
                     }
                 }
 
-                 */
-                /*
-                if(curGame.gameStatus != "Final") {
-                    btFinalizeButton.visibility = View.VISIBLE
-                    btUnfinalizeButton.visibility = View.INVISIBLE
-                    etPlayerOneScore.visibility = View.VISIBLE
-                    etPlayerTwoScore.visibility = View.VISIBLE
-                    tvPlayerTwoScore.visibility = View.INVISIBLE
-                    tvPlayerOneScore.visibility = View.INVISIBLE
-
-                    btFinalizeButton.setOnClickListener {
-                        if (curGame.gameStatus != "Final") {
-                            val newGame = Game(curGame)
-                            newGame.gameStatus = "Final"
-                            tournamentGamesViewModel.updateOldGameToNewGameDatabase(
-                                Pair(
-                                    curGame.teamOne,
-                                    curGame.teamTwo
-                                ), newGame
-                            )
-                            notifyItemChanged(position)
-                        }
-                    }
-                }
-                else{
-                    btFinalizeButton.visibility = View.INVISIBLE
-                    btUnfinalizeButton.visibility = View.VISIBLE
-                    etPlayerOneScore.visibility = View.INVISIBLE
-                    etPlayerTwoScore.visibility = View.INVISIBLE
-                    tvPlayerOneScore.visibility = View.VISIBLE
-                    tvPlayerTwoScore.visibility = View.VISIBLE
-
-                    btUnfinalizeButton.setOnClickListener {
-                        if (curGame.gameStatus == "Final") {
-                            val newGame = Game(curGame)
-                            newGame.gameStatus = "In Progress"
-                            tournamentGamesViewModel.updateOldGameToNewGameDatabase(
-                                Pair(
-                                    curGame.teamOne,
-                                    curGame.teamTwo
-                                ), newGame
-                            )
-                            notifyItemChanged(position)
-                        }
-                    }
-                }
-
-                 */
             }
             else{
                 etPlayerOneScore.visibility = View.INVISIBLE
