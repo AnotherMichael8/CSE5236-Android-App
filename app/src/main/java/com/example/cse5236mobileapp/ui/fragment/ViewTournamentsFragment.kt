@@ -43,12 +43,20 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
 //        }
 
         val backButton = view.findViewById<Button>(R.id.viewTournamentBackButton)
+        val joinTournamentButton = view.findViewById<Button>(R.id.btnGoToJoinCode)
         val user = FirebaseAuth.getInstance().currentUser
 
         backButton.setOnClickListener(){
-            parentFragmentManager.beginTransaction().remove(this).commit()
+            parentFragmentManager.popBackStack()
             Log.i(TAG, "Going to Home Screen from Account Settings")
         }
+
+        joinTournamentButton.setOnClickListener() {
+            parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, JoinTournamentFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
     }
 
     // Function to reduce duplication by updating the view with tournament data
@@ -73,8 +81,12 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                 // Optional: Set OnClickListener if needed
                 setOnClickListener {
                     // Handle click event
-                    val modifyTournamentFragment = ModifyTournamentsFragment(tournament)
-                    parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, modifyTournamentFragment).commit()
+                    val modifyTournamentFragment = TournamentInformationFragment(tournament)
+                    // TODO: Get a way to view role in tournament and pass to next view
+
+                    parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, modifyTournamentFragment)
+                        .addToBackStack(null)
+                        .commit()
                 }
             }
             val tournamentGames = Button(requireContext()).apply{
@@ -84,7 +96,9 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                 // Optional: Set OnClickListener if needed
                 setOnClickListener {
                     // Handle click event
-                    parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewGamesFragment(tournament)).commit()
+                    parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewGamesFragment(tournament))
+                        .addToBackStack(null)
+                        .commit()
                 }
 
             }

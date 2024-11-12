@@ -2,6 +2,7 @@ package com.example.cse5236mobileapp.model
 
 import android.util.Log
 import com.example.cse5236mobileapp.model.Tournament.Companion.toBoolean
+import com.example.cse5236mobileapp.model.Tournament.Companion.toGameList
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
@@ -20,15 +21,21 @@ class TournamentRepository {
     private val dbUser = user?.email ?: "No email"
 
     // Method to add tournament to database for user
-    fun addTournamentToDatabase(tournament: Tournament) {
+    fun addTournamentToDatabase(tournament: Tournament): String {
         // Generating a random key for the tournament here
         val uuid = UUID.randomUUID().toString()
 
         // Adding the tournament to the remote firestore
         database.collection("Tournaments").document(uuid).set(tournament)
-        val userTournaments = mapOf(uuid to "Today")
+
+
+        val userTournaments = mapOf(uuid to "Admin")
         //val userAccount = user?.email ?: "No email"
         database.collection("Users").document(dbUser).set(userTournaments, SetOptions.merge())
+
+        // Calling method here to add users to tournamentViewModel
+
+        return uuid
     }
 
     // Method to modify tournament attribute
@@ -50,9 +57,9 @@ class TournamentRepository {
                 else -> newProperty.toString()
             }
         ).addOnSuccessListener {
-            Log.d(null, tournament.tournament.tournamentName+ " tournament updated successfully")
+            Log.d(TAG, tournament.tournament.tournamentName+ " tournament updated successfully")
         }.addOnFailureListener { e->
-            Log.d(null, tournament.tournament.tournamentName+ " error updating Tournament: $e")
+            Log.d(TAG, tournament.tournament.tournamentName+ " error updating Tournament: $e")
         }
     }
 
@@ -84,5 +91,18 @@ class TournamentRepository {
             }.addOnFailureListener { e->
                 Log.d(null, tournament.tournament.tournamentName + " error deleting Tournament: $e")
             }
+    }
+
+    fun addUserToTournament(tournamentId: String, previousPlayers: List<String>) {
+        var newPlayerList = previousPlayers.toMutableList()
+
+
+        newPlayerList.add(dbUser)
+
+
+        val updatedPlayers = hashMapOf("players" to newPlayerList)
+
+        database.collection("Tournaments").document(tournamentId)
+            .set(updatedPlayers, SetOptions.merge())
     }
 }

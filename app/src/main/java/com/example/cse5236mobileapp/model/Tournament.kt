@@ -1,15 +1,9 @@
 package com.example.cse5236mobileapp.model
 
-import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.PropertyName
-import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.toObject
-import com.google.firebase.ktx.Firebase
-import java.util.UUID
+import kotlin.math.ceil
 import kotlin.random.Random
+import kotlin.math.log2
 
 data class Tournament (
     @PropertyName("Address") var address: String = "",
@@ -23,16 +17,18 @@ data class Tournament (
     @PropertyName("isPrivate") var isPrivate: Boolean = false,
     @PropertyName("Players") var players: List<String> = listOf(),
     @PropertyName("Round") var round: Int = 1,
-    @PropertyName("Games") var games: MutableList<Game> = mutableListOf<Game>()
+    @PropertyName("Games") var games: MutableList<Game> = mutableListOf<Game>(),
+    @PropertyName("JoinCode") var joinCode: String = ""
 )
 {
     fun createInitialGames() {
         var gameList = mutableListOf<Game>()
-        for(i in 0 until players.size step 2) {
+        for(i in 0 until numberPlayers.toInt() step 2) {
             val game = Game(
-                teamOne = players[i],
-                teamTwo = players[i + 1],
-                round = 1
+                teamOne = i.toString(),
+                teamTwo = (i + 1).toString(),
+                round = 1,
+                gamePosition = i / 2
             )
             games.add(game)
         }
@@ -60,15 +56,79 @@ data class Tournament (
     }
 
 
+    fun getNumberOfRounds(): Int {
+        return ceil(log2(numberPlayers.toDouble())).toInt()
+    }
+
+    // Used to display current Round name for a tournament
+    fun roundDisplayer(currentRound: Int): String {
+        val roundName = getRoundName(currentRound)
+        if (roundName != "Final" && roundName != "Semifinal" && roundName != "Quarterfinal") {
+            return "Round ${roundName}"
+        }
+        else {
+            return roundName
+        }
+    }
+
+    fun getRoundName(currentRound: Int): String {
+        val numRounds = getNumberOfRounds()
+        if (round == numRounds) {
+            return "Final"
+        }
+        else if (round == numRounds - 1) {
+            return "Semifinal"
+        }
+        else if (round == numRounds - 2) {
+            return "Quarterfinal"
+        }
+        else {
+            return round.toString()
+        }
+    }
+
+    fun generateJoinCode() {
+        var possibleValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        var joinString = ""
+
+        for (i in 1 until 9) {
+            joinString += possibleValues.random()
+        }
+
+        joinCode = joinString
+    }
+
+    fun isTournamentFull(): Boolean {
+        return players.size >= numberPlayers.toInt()
+    }
+
+    fun isUserAPlayer(email: String?): Boolean {
+        if (email != null) {
+            return players.contains(email)
+        }
+        else {
+            // Returns true because can't verify that it isn't for null string
+            return true
+        }
+    }
+
     companion object {
         private const val TAG = "Tournament Class"
-
 
         fun Any?.toBoolean(): Boolean {
             return when (this) {
                 is Boolean -> this  // Return directly if it's already a Boolean
                 is String -> this.lowercase() in listOf("true", "1")  // Convert string representations of true
                 else -> false  // Return false for all other cases
+            }
+        }
+        fun Any?.toGameList(): MutableList<Game> {
+            if(this !is MutableList<*> || this.isEmpty() || this[0] !is Game)
+            {
+                return mutableListOf()
+            }
+            else{
+                return this as MutableList<Game>
             }
         }
     }

@@ -14,36 +14,69 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="#B3B3B3"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gameViewText">
+
+
+            <ImageButton
+                android:id="@+id/btnPreviousRound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/baseline_arrow_left_24" />
+
+            <TextView
+                android:id="@+id/btnGameViewRound"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/round_name_placeholder"
+                android:textStyle="bold"
+                android:textSize="22dp"
+                android:textColor="@color/black" />
+
+            <ImageButton
+                android:id="@+id/btnNextRound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/baseline_arrow_right_24" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/gameViewText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/google_purple"
+            android:gravity="center"
             android:padding="16dp"
             android:text="@string/view_games_text"
+            android:textColor="@color/white"
             android:textSize="34sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ScrollView
-            android:id="@+id/gamesViewScrollbar"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvGameView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            app:layout_constraintBottom_toTopOf="@id/viewGameBackButtonHolder"
+            app:layout_constraintBottom_toTopOf="@+id/viewGameBackButtonHolder"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/gameViewText">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.0">
 
-            <LinearLayout
-                android:id="@+id/gamesContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
-            </LinearLayout>
-        </ScrollView>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <LinearLayout
             android:id="@+id/viewGameBackButtonHolder"

@@ -5,40 +5,55 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
     tools:context=".ui.activity.HomeScreenActivity">
 
     <Button
         android:id="@+id/LocationsButton"
-        android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="@string/location_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:backgroundTint="@null"
+        android:background="@drawable/home_screen_buttons"
+        android:layout_margin="1dp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMaxTextSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.715" />
+        app:layout_constraintTop_toTopOf="@id/barrierBottom"
+        app:layout_constraintBottom_toTopOf="@+id/CreateButton"/>
 
     <Button
         android:id="@+id/CreateButton"
-        android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="@string/create_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:backgroundTint="@null"
+        android:background="@drawable/home_screen_buttons"
+        android:textColor="#FFFFFF"
+        android:layout_margin="1dp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMaxTextSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.82" />
+        app:layout_constraintTop_toBottomOf="@+id/LocationsButton"
+        app:layout_constraintBottom_toTopOf="@+id/ViewButton"
+        />
 
     <Button
         android:id="@+id/ViewButton"
-        android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="@string/view_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:backgroundTint="@null"
+        android:background="@drawable/home_screen_buttons"
+        android:layout_margin="1dp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMaxTextSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.923" />
+        app:layout_constraintTop_toBottomOf="@+id/CreateButton"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <Button
         android:id="@+id/LogoutButton"
@@ -46,20 +61,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        app:backgroundTint="@null"
+        android:background="@drawable/home_screen_buttons"
         android:text="@string/logout_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="218dp"
-        android:layout_height="140dp"
-        android:gravity="center"
-        android:text="@string/title"
-        android:textColor="@color/google_purple"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/LocationsButton"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -81,9 +85,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/barrierBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/ivAppLogo" />
+
+    <ImageView
+        android:id="@+id/ivAppLogo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/txtHomeScreenWelcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barrierTop"
+        app:srcCompat="@drawable/tournament_app_logo" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="settingsButton" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="guideline" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.65"
+        android:orientation="horizontal" />
 
     <FrameLayout
         android:id="@+id/frgHomeScreenContainer"
@@ -91,8 +128,10 @@
         android:layout_height="fill_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
     </FrameLayout>
 
