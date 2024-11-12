@@ -6,6 +6,7 @@ import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import com.example.cse5236mobileapp.model.Tournament
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
@@ -14,6 +15,7 @@ import com.google.firebase.ktx.Firebase
 class GeocoderViewModel(val context: Context) {
 
     private var firestore = Firebase.firestore
+    private var user = FirebaseAuth.getInstance().currentUser?.email
 
     val geocoderLive: MutableLiveData<Map<Tournament, LatLng>> by lazy {
         MutableLiveData<Map<Tournament, LatLng>>()
@@ -38,9 +40,14 @@ class GeocoderViewModel(val context: Context) {
                 if (documents != null) {
                     for (doc in documents) {
                         val currentTourney = doc.toObject<Tournament>()
-                        var geocode = addressGeocoded(currentTourney.address)
-                        if (geocode != null) {
-                            tournamentGeocoded[currentTourney] = geocode
+                        // TODO: Check if tourney has space in it
+                        if (!currentTourney.isTournamentFull()) {
+                            if (!currentTourney.isUserAPlayer(user)) {
+                                var geocode = addressGeocoded(currentTourney.address)
+                                if (geocode != null) {
+                                    tournamentGeocoded[currentTourney] = geocode
+                                }
+                            }
                         }
                     }
                 }
@@ -55,14 +62,20 @@ class GeocoderViewModel(val context: Context) {
             if (results.size > 0) {
                 val long = results[0].longitude
                 val lat = results[0].latitude
-                return(LatLng(lat, long))
-            }
-            else {
+                return (LatLng(lat, long))
+            } else {
                 return null
             }
-        }
-        else {
+        } else {
             return null
         }
+    }
+
+    // TODO: WIP
+    fun getDistance(userLocation: LatLng, tourneyLocation: LatLng) {
+        var results = floatArrayOf()
+        Location.distanceBetween(userLocation.latitude, userLocation.longitude, tourneyLocation.latitude, tourneyLocation.longitude, results)
+        print(results)
+        print("hello")
     }
 }

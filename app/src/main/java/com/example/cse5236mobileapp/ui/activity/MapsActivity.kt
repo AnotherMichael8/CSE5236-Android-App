@@ -19,6 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.cse5236mobileapp.databinding.ActivityMapsBinding
+import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.viewmodel.GeocoderViewModel
 import com.example.cse5236mobileapp.utils.PermissionUtils
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -37,6 +38,8 @@ class MapsActivity : AppCompatActivity(),
 
     private var geocoding = GeocoderViewModel(this)
 
+    private var geocodeStore = mapOf<Tournament, LatLng>()
+
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1001
     }
@@ -52,7 +55,8 @@ class MapsActivity : AppCompatActivity(),
         mapFragment.getMapAsync(this)
 
         geocoding.geocoderLive.observe(this, Observer { geocodes ->
-            print(geocodes)
+            geocodeStore = geocodes
+            //plotMarkers(geocodes)
         })
     }
 
@@ -73,6 +77,8 @@ class MapsActivity : AppCompatActivity(),
 
         googleMap.setOnMyLocationButtonClickListener(this)
         googleMap.setOnMyLocationClickListener(this)
+
+        plotMarkers(geocodeStore)
     }
 
     private fun enableMyLocation() {
@@ -93,5 +99,18 @@ class MapsActivity : AppCompatActivity(),
     override fun onMyLocationClick(location: Location) {
         Toast.makeText(this, "Current location:\n$location", Toast.LENGTH_LONG)
             .show()
+    }
+
+
+    private fun plotMarkers(geocodes: Map<Tournament, LatLng>) {
+        if (mMap != null) {
+            for (location in geocodes) {
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(location.value)
+                        .title(location.key.tournamentName)
+                )
+            }
+        }
     }
 }
