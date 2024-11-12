@@ -53,7 +53,6 @@ class MapsActivity : AppCompatActivity(),
 
         geocoding.geocoderLive.observe(this, Observer { geocodes ->
             print(geocodes)
-            print("hello")
         })
     }
 
