@@ -6,6 +6,7 @@ import android.location.Location
 import android.location.LocationRequest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
@@ -28,13 +29,13 @@ class MapsActivity : AppCompatActivity(),
     OnMyLocationButtonClickListener,
     OnMyLocationClickListener, OnMapReadyCallback,
     OnRequestPermissionsResultCallback {
-
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var binding: ActivityMapsBinding
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1001
+        const val TAG = "Maps Activity"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +44,7 @@ class MapsActivity : AppCompatActivity(),
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -59,12 +61,44 @@ class MapsActivity : AppCompatActivity(),
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        PermissionUtils.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
 
-        enableMyLocation()
+        if(ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+            Log.i(TAG, "User rejected permission request")
 
-        googleMap.setOnMyLocationButtonClickListener(this)
-        googleMap.setOnMyLocationClickListener(this)
+        } else {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if(location != null) {
+                    val userLat = location.latitude
+                    val userLon = location.longitude
+                    val currentLatLng = LatLng(userLat, userLon)
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+                    Log.i(TAG, "User Location retrieved: <$userLat, $userLon>")
+                } else {
+                    Log.e(TAG, "No user location")
+                }
+            }
+            enableMyLocation()
+            googleMap.setOnMyLocationButtonClickListener(this)
+            googleMap.setOnMyLocationClickListener(this)
+            Log.i(TAG, "Finished setting up user map")
+        }
+
     }
 
     private fun enableMyLocation() {
@@ -86,4 +120,22 @@ class MapsActivity : AppCompatActivity(),
         Toast.makeText(this, "Current location:\n$location", Toast.LENGTH_LONG)
             .show()
     }
+
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+//            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                // Permission was granted, proceed to enable location features
+//
+//            } else {
+//                // Permission was denied, show a message and finish the activity
+//                Toast.makeText(this, "Permission denied. Closing activity.", Toast.LENGTH_SHORT).show()
+//                finish()
+//            }
+//        }
+//    }
 }
