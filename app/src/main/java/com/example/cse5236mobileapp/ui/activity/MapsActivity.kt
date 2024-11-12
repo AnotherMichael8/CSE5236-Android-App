@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
+import androidx.lifecycle.Observer
 import com.example.cse5236mobileapp.R
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.cse5236mobileapp.databinding.ActivityMapsBinding
+import com.example.cse5236mobileapp.model.viewmodel.GeocoderViewModel
 import com.example.cse5236mobileapp.utils.PermissionUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -33,6 +35,8 @@ class MapsActivity : AppCompatActivity(),
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var binding: ActivityMapsBinding
 
+    private var geocoding = GeocoderViewModel(this)
+
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1001
     }
@@ -46,6 +50,11 @@ class MapsActivity : AppCompatActivity(),
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        geocoding.geocoderLive.observe(this, Observer { geocodes ->
+            print(geocodes)
+            print("hello")
+        })
     }
 
     /**
