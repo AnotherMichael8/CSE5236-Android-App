@@ -53,6 +53,7 @@ class HomeScreenActivity : AppCompatActivity() {
         val settings_button = findViewById<ImageButton>(R.id.settingsButton)
         val view_tournament_button = findViewById<Button>(R.id.ViewButton)
         val tournamentCreator_button = findViewById<Button>(R.id.CreateButton)
+        val location_button = findViewById<Button>(R.id.LocationsButton)
 
         button_logout.setOnClickListener {
             Firebase.auth.signOut()
@@ -79,6 +80,10 @@ class HomeScreenActivity : AppCompatActivity() {
         }
         tournamentCreator_button.setOnClickListener {
             val intent = Intent(this, TournamentCreatorActivity::class.java)
+            startActivity(intent)
+        }
+        location_button.setOnClickListener {
+            val intent = Intent(this, LocationTrackerActivity::class.java)
             startActivity(intent)
         }
     }

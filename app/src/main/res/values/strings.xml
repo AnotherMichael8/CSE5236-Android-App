@@ -64,4 +64,5 @@
         <item>Double Elimination</item>
         <item>Round Robin</item>
     </string-array>
+    <string name="title_activity_location_tracker">LocationTrackerActivity</string>
 </resources>
