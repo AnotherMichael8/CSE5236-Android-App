@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
 import com.example.cse5236mobileapp.R
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -24,6 +26,14 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsFragment : Fragment(), OnMyLocationButtonClickListener, OnMyLocationClickListener,
     OnMapReadyCallback, OnRequestPermissionsResultCallback {
+
+        companion object {
+            private final val FINE_PERMISSION_CODE = 1
+        }
+
+    private lateinit var map: GoogleMap
+    lateinit var location: Location
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     private val callback = OnMapReadyCallback { googleMap ->
         /**
@@ -40,19 +50,16 @@ class MapsFragment : Fragment(), OnMyLocationButtonClickListener, OnMyLocationCl
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_maps, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+
     }
+
+
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
