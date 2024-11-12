@@ -55,7 +55,8 @@ class TournamentGamesViewModel(private val tournamentId: String) {
 
             if (document != null) {
                 val tournament = document.toObject<Tournament>()
-                tournamentGamesLive.value = tournament!!.games
+                if (tournament != null)
+                tournamentGamesLive.value = tournament.games
             }
         }
     }

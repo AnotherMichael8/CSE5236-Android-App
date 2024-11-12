@@ -68,8 +68,14 @@ class TournamentCreatorActivity : AppCompatActivity() {
             val stringRules: String = rulesField.text.toString()
             val stringAmountPlayers: String = numPlayerSpinner.selectedItem.toString()
             val stringParticipants: String = participants.text.toString().trim()
-            val participantsArr = stringParticipants.split(",").map { it.trim() }.toMutableList()
+            var participantsArr = mutableListOf<String>()
+            if (stringParticipants != "") {
+                participantsArr =
+                    stringParticipants.split(",").map { it.trim() }.toMutableList()
+            }
             val currentUserEmail = tournamentUserViewModel.currentUserEmail()
+
+
             if (currentUserEmail != null) {
                 participantsArr.add(currentUserEmail)
             }
@@ -101,7 +107,10 @@ class TournamentCreatorActivity : AppCompatActivity() {
                         val tournamentCode = tournamentViewModel.addTournament(tournamentVal)
 
                         // Linking tournament to users
-                        tournamentUserViewModel.addTournamentForUser(tournamentCode, participantsArr)
+                        tournamentUserViewModel.addTournamentForUser(
+                            tournamentCode,
+                            participantsArr
+                        )
 
                         Toast.makeText(this, "Successfully created tournament", Toast.LENGTH_SHORT)
                             .show()
@@ -111,13 +120,15 @@ class TournamentCreatorActivity : AppCompatActivity() {
                         Toast.makeText(this, "Unable to verify Email List", Toast.LENGTH_SHORT)
                             .show()
                     }
-                }
-                else {
-                    Toast.makeText(this, "Too many people added to the tournament", Toast.LENGTH_SHORT)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Too many people added to the tournament",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Missing fields", Toast.LENGTH_SHORT).show()
             }
         }
