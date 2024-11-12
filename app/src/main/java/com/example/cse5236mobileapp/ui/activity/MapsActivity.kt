@@ -10,6 +10,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -19,6 +22,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.cse5236mobileapp.databinding.ActivityMapsBinding
+import com.example.cse5236mobileapp.model.LocationTournamentAdapter
+import com.example.cse5236mobileapp.model.TournamentIdentifier
+import com.example.cse5236mobileapp.model.ViewGameAdapter
+import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
+import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 import com.example.cse5236mobileapp.utils.PermissionUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -32,6 +40,7 @@ class MapsActivity : AppCompatActivity(),
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var binding: ActivityMapsBinding
+    private val tournamentViewModel = TournamentViewModel()
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1001
@@ -48,6 +57,15 @@ class MapsActivity : AppCompatActivity(),
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.location_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        val rvPublicTournaments = findViewById<RecyclerView>(R.id.rvPublicTournaments)
+        val locationTournamentAdapter = LocationTournamentAdapter()
+        rvPublicTournaments.adapter = locationTournamentAdapter
+        rvPublicTournaments.layoutManager = LinearLayoutManager(this)
+
+        tournamentViewModel.userTournamentLive.observe(this, Observer { tournaments ->
+            locationTournamentAdapter.updatePublicTournaments(tournaments)
+        })
     }
 
     /**

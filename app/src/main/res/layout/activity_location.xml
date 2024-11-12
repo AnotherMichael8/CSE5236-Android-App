@@ -15,13 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/barrierMiddle"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/location_map"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barrierMiddle" />
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrierMiddle"
         android:layout_width="wrap_content"
