@@ -7,7 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.TournamentCreatorActivity">
 
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
     <Button
         android:id="@+id/tourMakerBackButton"
         android:layout_width="80dp"
@@ -241,4 +248,6 @@
             app:layout_constraintEnd_toEndOf="@+id/rgPublicPrivate"
             app:layout_constraintTop_toTopOf="@+id/rgPublicPrivate" />
     </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
