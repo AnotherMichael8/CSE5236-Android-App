@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import androidx.lifecycle.Observer
+import com.example.cse5236mobileapp.ui.fragment.MapsFragment
 
 class HomeScreenActivity : AppCompatActivity() {
     lateinit var user: Account
@@ -53,6 +54,7 @@ class HomeScreenActivity : AppCompatActivity() {
         val settings_button = findViewById<ImageButton>(R.id.settingsButton)
         val view_tournament_button = findViewById<Button>(R.id.ViewButton)
         val tournamentCreator_button = findViewById<Button>(R.id.CreateButton)
+        val locations_button = findViewById<Button>(R.id.LocationsButton)
 
         button_logout.setOnClickListener {
             Firebase.auth.signOut()
@@ -77,9 +79,17 @@ class HomeScreenActivity : AppCompatActivity() {
                 .addToBackStack(null)
                 .commit()
         }
+
         tournamentCreator_button.setOnClickListener {
             val intent = Intent(this, TournamentCreatorActivity::class.java)
             startActivity(intent)
+        }
+
+        locations_button.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.frgHomeScreenContainer, MapsFragment())
+                .addToBackStack(null)
+                .commit()
         }
     }
 

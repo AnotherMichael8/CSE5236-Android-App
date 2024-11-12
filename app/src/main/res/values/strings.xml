@@ -64,4 +64,6 @@
         <item>Double Elimination</item>
         <item>Round Robin</item>
     </string-array>
+
+    <string name="my_map_api_key">AIzaSyA46PhDDfrD6lyGgni3OBIxV0JhwWVvqgQ</string>
 </resources>
