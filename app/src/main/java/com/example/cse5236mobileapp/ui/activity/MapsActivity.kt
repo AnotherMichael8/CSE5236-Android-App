@@ -27,6 +27,8 @@ import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.ViewGameAdapter
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
 import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
+import com.example.cse5236mobileapp.model.Tournament
+import com.example.cse5236mobileapp.model.viewmodel.GeocoderViewModel
 import com.example.cse5236mobileapp.utils.PermissionUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -41,6 +43,10 @@ class MapsActivity : AppCompatActivity(),
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var binding: ActivityMapsBinding
     private val tournamentViewModel = TournamentViewModel()
+
+    private var geocoding = GeocoderViewModel(this)
+
+    private var geocodeStore = mapOf<Tournament, LatLng>()
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1001
@@ -65,6 +71,9 @@ class MapsActivity : AppCompatActivity(),
 
         tournamentViewModel.userTournamentLive.observe(this, Observer { tournaments ->
             locationTournamentAdapter.updatePublicTournaments(tournaments)
+        geocoding.geocoderLive.observe(this, Observer { geocodes ->
+            geocodeStore = geocodes
+            //plotMarkers(geocodes)
         })
     }
 
@@ -117,6 +126,10 @@ class MapsActivity : AppCompatActivity(),
             Log.i(TAG, "Finished setting up user map")
         }
 
+        googleMap.setOnMyLocationButtonClickListener(this)
+        googleMap.setOnMyLocationClickListener(this)
+
+        plotMarkers(geocodeStore)
     }
 
     private fun enableMyLocation() {
@@ -139,21 +152,14 @@ class MapsActivity : AppCompatActivity(),
             .show()
     }
 
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-//            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                // Permission was granted, proceed to enable location features
-//
-//            } else {
-//                // Permission was denied, show a message and finish the activity
-//                Toast.makeText(this, "Permission denied. Closing activity.", Toast.LENGTH_SHORT).show()
-//                finish()
-//            }
-//        }
-//    }
+
+    private fun plotMarkers(geocodes: Map<Tournament, LatLng>) {
+        for (location in geocodes) {
+            mMap.addMarker(
+                MarkerOptions()
+                    .position(location.value)
+                    .title(location.key.tournamentName)
+            )
+        }
+    }
 }
