@@ -103,14 +103,12 @@ class MapsActivity : AppCompatActivity(),
 
 
     private fun plotMarkers(geocodes: Map<Tournament, LatLng>) {
-        if (mMap != null) {
-            for (location in geocodes) {
-                mMap.addMarker(
-                    MarkerOptions()
-                        .position(location.value)
-                        .title(location.key.tournamentName)
-                )
-            }
+        for (location in geocodes) {
+            mMap.addMarker(
+                MarkerOptions()
+                    .position(location.value)
+                    .title(location.key.tournamentName)
+            )
         }
     }
 }
