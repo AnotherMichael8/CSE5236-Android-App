@@ -71,11 +71,13 @@ class GeocoderViewModel(val context: Context) {
         }
     }
 
-    // TODO: WIP
-    fun getDistance(userLocation: LatLng, tourneyLocation: LatLng) {
+    fun getDistance(userLocation: LatLng, tourneyLocation: LatLng): Double {
         var results = floatArrayOf()
         Location.distanceBetween(userLocation.latitude, userLocation.longitude, tourneyLocation.latitude, tourneyLocation.longitude, results)
-        print(results)
-        print("hello")
+        return metersToMiles(results[0])
+    }
+
+    private fun metersToMiles(distanceMeters: Float): Double {
+        return distanceMeters * .000621371
     }
 }
