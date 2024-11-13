@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LocationTournamentAdapter (
+    private val listener: OnTournamentClickListener
 ) : RecyclerView.Adapter<LocationTournamentAdapter.PublicTournamentViewHolder>(){
 
     private var publicTournaments : MutableList<TournamentIdentifier> = mutableListOf()
@@ -80,6 +81,9 @@ class LocationTournamentAdapter (
             }
             btJoin.setOnClickListener {
 
+            }
+            itemView.setOnClickListener(){
+                listener.onTournamentClick(curTournament.tournament)
             }
         }
     }
