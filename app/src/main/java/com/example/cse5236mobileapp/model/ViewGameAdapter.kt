@@ -172,6 +172,12 @@ class ViewGameAdapter (
             tvPlayerTwo.text = linkPlayerName(curGame.teamTwo)
             tvGameProgress.text = curGame.gameStatus
             tvRound.text = curGame.getRoundName(numRounds)
+            btFinalizeButton.visibility = View.GONE
+            btUnfinalizeButton.visibility = View.GONE
+            etPlayerOneScore.visibility = View.INVISIBLE
+            etPlayerTwoScore.visibility = View.INVISIBLE
+            tvPlayerOneScore.visibility = View.VISIBLE
+            tvPlayerTwoScore.visibility = View.VISIBLE
 
             if(privileges == "Admin") {
                 if(curGame.gameStatus != "Final") {
@@ -288,6 +294,6 @@ class ViewGameAdapter (
     fun updatePlayerMap(updatedPlayerMap: Map<String, String>) {
         playerMap = updatedPlayerMap
 
-        notifyDataSetChanged()
+        //notifyDataSetChanged()
     }
 }
