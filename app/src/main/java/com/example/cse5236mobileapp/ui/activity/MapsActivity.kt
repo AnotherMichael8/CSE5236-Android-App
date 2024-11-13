@@ -7,6 +7,7 @@ import android.location.LocationRequest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
@@ -74,6 +75,10 @@ class MapsActivity : AppCompatActivity(),
             locationTournamentAdapter.updatePublicTournaments(geocodes)
             geocodeStore = geocodes
         })
+        val btBack = findViewById<Button>(R.id.btLocationBack)
+        btBack.setOnClickListener {
+            finish()
+        }
         /*
         geocoding.geocoderLive.observe(this, Observer { geocodes ->
             geocodeStore = geocodes
