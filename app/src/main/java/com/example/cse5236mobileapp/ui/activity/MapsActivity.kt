@@ -47,6 +47,7 @@ class MapsActivity : AppCompatActivity(),
     private var geocoding = GeocoderViewModel(this)
 
     private var geocodeStore = mapOf<Tournament, LatLng>()
+    private lateinit var locationTournamentAdapter : LocationTournamentAdapter
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1001
@@ -65,12 +66,13 @@ class MapsActivity : AppCompatActivity(),
         mapFragment.getMapAsync(this)
 
         val rvPublicTournaments = findViewById<RecyclerView>(R.id.rvPublicTournaments)
-        val locationTournamentAdapter = LocationTournamentAdapter()
+        locationTournamentAdapter = LocationTournamentAdapter()
         rvPublicTournaments.adapter = locationTournamentAdapter
         rvPublicTournaments.layoutManager = LinearLayoutManager(this)
 
-        tournamentViewModel.userTournamentLive.observe(this, Observer { tournaments ->
+        geocoding.publicTournamentLive.observe(this, Observer { tournaments ->
             locationTournamentAdapter.updatePublicTournaments(tournaments)
+        })
         geocoding.geocoderLive.observe(this, Observer { geocodes ->
             geocodeStore = geocodes
             //plotMarkers(geocodes)
@@ -115,6 +117,7 @@ class MapsActivity : AppCompatActivity(),
                     val userLon = location.longitude
                     val currentLatLng = LatLng(userLat, userLon)
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+                    locationTournamentAdapter.updateUserCurrentLocation(location)
                     Log.i(TAG, "User Location retrieved: <$userLat, $userLon>")
                 } else {
                     Log.e(TAG, "No user location")
@@ -150,6 +153,7 @@ class MapsActivity : AppCompatActivity(),
     override fun onMyLocationClick(location: Location) {
         Toast.makeText(this, "Current location:\n$location", Toast.LENGTH_LONG)
             .show()
+        //locationTournamentAdapter.updateUserCurrentLocation(location)
     }
 
 

@@ -2,7 +2,7 @@ package com.example.cse5236mobileapp.model
 
 import com.google.firebase.firestore.PropertyName
 import kotlin.math.ceil
-import kotlin.random.Random
+import com.google.android.gms.maps.model.LatLng
 import kotlin.math.log2
 
 data class Tournament (
@@ -18,7 +18,8 @@ data class Tournament (
     @PropertyName("Players") var players: List<String> = listOf(),
     @PropertyName("Round") var round: Int = 1,
     @PropertyName("Games") var games: MutableList<Game> = mutableListOf<Game>(),
-    @PropertyName("JoinCode") var joinCode: String = ""
+    @PropertyName("JoinCode") var joinCode: String = "",
+    @PropertyName("LatLng") var latLng: LatLng? = null
 )
 {
     fun createInitialGames() {

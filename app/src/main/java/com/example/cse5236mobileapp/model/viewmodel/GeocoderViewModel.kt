@@ -5,6 +5,7 @@ import android.location.Geocoder
 import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import com.example.cse5236mobileapp.model.Tournament
+import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,6 +21,9 @@ class GeocoderViewModel(val context: Context) {
     val geocoderLive: MutableLiveData<Map<Tournament, LatLng>> by lazy {
         MutableLiveData<Map<Tournament, LatLng>>()
     }
+    val publicTournamentLive: MutableLiveData<List<TournamentIdentifier>> by lazy {
+        MutableLiveData<List<TournamentIdentifier>>()
+    }
 
     init {
         getTourneyGeocodes()
@@ -33,25 +37,33 @@ class GeocoderViewModel(val context: Context) {
             .addSnapshotListener { documents, exception ->
                 if (exception != null) {
                     geocoderLive.value = emptyMap()
+                    publicTournamentLive.value = emptyList()
                     return@addSnapshotListener
                 }
 
+                val publicTourneys = mutableListOf<TournamentIdentifier>()
                 val tournamentGeocoded = mutableMapOf<Tournament, LatLng>()
                 if (documents != null) {
                     for (doc in documents) {
+                        val tourneyIdentifierId= doc.toString()
                         val currentTourney = doc.toObject<Tournament>()
+                        val tournamentInfo = TournamentIdentifier(tournamentId = tourneyIdentifierId, tournament = currentTourney)
+                        val geocode = addressGeocoded(currentTourney.address)
+                        if (geocode != null) {
+                            tournamentInfo.tournament.latLng = geocode
+                        }
+
                         // TODO: Check if tourney has space in it
                         if (!currentTourney.isTournamentFull()) {
                             if (!currentTourney.isUserAPlayer(user)) {
-                                var geocode = addressGeocoded(currentTourney.address)
-                                if (geocode != null) {
-                                    tournamentGeocoded[currentTourney] = geocode
-                                }
+                                tournamentGeocoded[currentTourney] = geocode!!
                             }
                         }
+                        publicTourneys.add(tournamentInfo)
                     }
                 }
                 geocoderLive.value = tournamentGeocoded
+                publicTournamentLive.value = publicTourneys
             }
     }
 
