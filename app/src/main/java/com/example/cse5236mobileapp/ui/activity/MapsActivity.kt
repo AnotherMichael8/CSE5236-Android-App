@@ -72,42 +72,42 @@ class MapsActivity : AppCompatActivity(),
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        val startLocation = "328+West+Lane+Ave,+Columbus,+Ohio"
-        val endLocation = "Ohio+Stadium"
-        var httpsRequest = "https://maps.googleapis.com/maps/api/directions/json?origin=START_LOCATION&destination=END_LOCATION&key=YOUR_API_KEY\n"
-
-        val apiKey = try {
-            // TODO: MIGHT need to be changed if we make secrets.properties secret
-            val ai = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
-            ai.metaData.getString("com.google.android.geo.API_KEY")
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-            null
-        }
-
-        if(apiKey != null){
-            httpsRequest = "https://maps.googleapis.com/maps/api/directions/json?origin=$startLocation&destination=$endLocation&key=$apiKey\n"
-            Log.i(TAG, "Successful https build: $httpsRequest")
-            val client = OkHttpClient()
-            val request = Request.Builder()
-                .url(httpsRequest)
-                .build()
-
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    e.printStackTrace()
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    response.body?.let {
-                        val responseData = it.string()
-                        Log.i(TAG, "Successful response: $responseData")
-                    }
-                }
-            })
-        } else {
-            Log.e(TAG, "Failed https build")
-        }
+//        val startLocation = "328+West+Lane+Ave,+Columbus,+Ohio"
+//        val endLocation = "Ohio+Stadium"
+//        var httpsRequest = "https://maps.googleapis.com/maps/api/directions/json?origin=START_LOCATION&destination=END_LOCATION&key=YOUR_API_KEY\n"
+//
+//        val apiKey = try {
+//            // TODO: MIGHT need to be changed if we make secrets.properties secret
+//            val ai = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+//            ai.metaData.getString("com.google.android.geo.API_KEY")
+//        } catch (e: PackageManager.NameNotFoundException) {
+//            e.printStackTrace()
+//            null
+//        }
+//
+//        if(apiKey != null){
+//            httpsRequest = "https://maps.googleapis.com/maps/api/directions/json?origin=$startLocation&destination=$endLocation&key=$apiKey\n"
+//            Log.i(TAG, "Successful https build: $httpsRequest")
+//            val client = OkHttpClient()
+//            val request = Request.Builder()
+//                .url(httpsRequest)
+//                .build()
+//
+//            client.newCall(request).enqueue(object : Callback {
+//                override fun onFailure(call: Call, e: IOException) {
+//                    e.printStackTrace()
+//                }
+//
+//                override fun onResponse(call: Call, response: Response) {
+//                    response.body?.let {
+//                        val responseData = it.string()
+//                        Log.i(TAG, "Successful response: $responseData")
+//                    }
+//                }
+//            })
+//        } else {
+//            Log.e(TAG, "Failed https build")
+//        }
 
 
 
