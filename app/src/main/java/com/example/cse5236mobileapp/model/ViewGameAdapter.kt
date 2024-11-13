@@ -292,8 +292,9 @@ class ViewGameAdapter (
     }
 
     fun updatePlayerMap(updatedPlayerMap: Map<String, String>) {
-        playerMap = updatedPlayerMap
-
-        //notifyDataSetChanged()
+        if(!playerMap.equals(updatedPlayerMap)) {
+            playerMap = updatedPlayerMap
+            notifyDataSetChanged()
+        }
     }
 }

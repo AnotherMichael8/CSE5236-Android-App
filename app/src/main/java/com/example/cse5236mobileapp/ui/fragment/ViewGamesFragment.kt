@@ -51,7 +51,7 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
         viewGameAdapter = ViewGameAdapter(tournamentIdentifier, numberRounds)
         rvGameView.adapter = viewGameAdapter
         rvGameView.layoutManager = LinearLayoutManager(requireContext())
-/*
+
         tournamentUsernameViewModel.emailToUsername.observe(
             viewLifecycleOwner,
             Observer { playerNameMap ->
@@ -59,14 +59,13 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
                     updatePlayerMap(playerNameMap)
                 }
             })
- */
 
 
         // Livedata implementation here
         tournamentGamesViewModel.tournamentGamesLive.observe(viewLifecycleOwner, Observer { games ->
             updateGamesContainer(viewGameAdapter, games)
         })
-/*
+
         tournamentGamesViewModel.tournamentLive.observe(viewLifecycleOwner, Observer { tournament ->
             // Updating the tournament usernames
             tournamentUsernameViewModel.updateEmailList(tournament.players)
@@ -74,7 +73,6 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
             updateName(gamesTextView, tournament)
         })
 
- */
 
         tournamentGamesViewModel.currentUserAdminPrivileges.observe(viewLifecycleOwner, Observer { privileges ->
             viewGameAdapter.updateUserPrivileges(privileges)

@@ -12,12 +12,12 @@
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="6dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/round_corners_small_box"
         android:gravity="center_vertical"
         android:paddingStart="8dp"
         android:text="GREATEST TOURNMENT"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/tvDateWord"
         app:layout_constraintEnd_toStartOf="@+id/tvDistWord"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,54 +28,57 @@
         android:layout_height="wrap_content"
         android:text="Date: "
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvTournmentNameView"
-        app:layout_constraintTop_toBottomOf="@+id/tvTournmentNameView" />
+        app:layout_constraintTop_toTopOf="@+id/tvDate"/>
 
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="12/21/2024"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvDateWord"
-        app:layout_constraintTop_toBottomOf="@+id/tvTournmentNameView" />
+        app:layout_constraintTop_toBottomOf="@+id/tvAddress"/>
 
     <TextView
         android:id="@+id/tvTimeWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time: "
         android:layout_marginStart="8dp"
+        android:text="Time: "
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvDate"
-        app:layout_constraintTop_toBottomOf="@+id/tvTournmentNameView" />
+        app:layout_constraintTop_toTopOf="@+id/tvTime"/>
+
     <TextView
         android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="12:30pm"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvTimeWord"
-        app:layout_constraintTop_toBottomOf="@+id/tvTournmentNameView" />
+        app:layout_constraintTop_toBottomOf="@+id/tvAddress" />
+
     <TextView
         android:id="@+id/tvAddressWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Address: "
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/tvDateWord"
         app:layout_constraintStart_toStartOf="@+id/tvTournmentNameView"
-        app:layout_constraintTop_toBottomOf="@+id/tvTournmentNameView" />
+        app:layout_constraintTop_toTopOf="@+id/tvAddress" />
+
     <TextView
         android:id="@+id/tvAddress"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:inputType="textMultiLine"
         android:text="50 Main St, Columbus, Ohio"
         app:layout_constraintBottom_toTopOf="@+id/tvDateWord"
+        app:layout_constraintEnd_toStartOf="@+id/btJoin"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/tvAddressWord"
-        app:layout_constraintTop_toBottomOf="@+id/tvTournmentNameView" />
+        app:layout_constraintTop_toBottomOf="@+id/tvTournmentNameView"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tvDistWord"
@@ -85,7 +88,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btJoin"
         app:layout_constraintEnd_toStartOf="@+id/tvDist"
-        app:layout_constraintStart_toStartOf="@+id/btJoin" />
+        app:layout_constraintStart_toStartOf="@+id/btJoin"
+        app:layout_constraintTop_toTopOf="@+id/tvTournmentNameView" />
 
     <TextView
         android:id="@+id/tvDist"
@@ -109,5 +113,5 @@
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
