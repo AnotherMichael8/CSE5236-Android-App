@@ -45,7 +45,7 @@ class GeocoderViewModel(val context: Context) {
                 //val tournamentGeocoded = mutableMapOf<Tournament, LatLng>()
                 if (documents != null) {
                     for (doc in documents) {
-                        val tourneyIdentifierId= doc.toString()
+                        val tourneyIdentifierId= doc.id
                         val currentTourney = doc.toObject<Tournament>()
                         val tournamentInfo = TournamentIdentifier(tournamentId = tourneyIdentifierId, tournament = currentTourney)
                         val geocode = addressGeocoded(currentTourney.address)

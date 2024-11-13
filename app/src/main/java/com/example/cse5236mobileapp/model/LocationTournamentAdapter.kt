@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.ViewGameAdapter.GameViewHolder
 import com.example.cse5236mobileapp.model.viewmodel.GeocoderViewModel
+import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
+import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 import kotlinx.coroutines.CoroutineScope
@@ -21,6 +24,8 @@ class LocationTournamentAdapter (
 ) : RecyclerView.Adapter<LocationTournamentAdapter.PublicTournamentViewHolder>(){
 
     private var publicTournaments : MutableList<TournamentIdentifier> = mutableListOf()
+    private var tournamentViewModel = TournamentViewModel()
+    private var tournamentUserViewModel = TournamentUserViewModel()
     private var userLocation: Location? = null
 
     class PublicTournamentViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -79,7 +84,13 @@ class LocationTournamentAdapter (
                 tvDist.text = "N/A"
             }
             btJoin.setOnClickListener {
-
+                if (!curTournament.tournament.isTournamentFull()) {
+                    tournamentViewModel.addUserToTournament(
+                        curTournament.tournamentId,
+                        curTournament.tournament.players
+                    )
+                    tournamentUserViewModel.addTournamentForUser(curTournament.tournamentId)
+                }
             }
         }
     }
