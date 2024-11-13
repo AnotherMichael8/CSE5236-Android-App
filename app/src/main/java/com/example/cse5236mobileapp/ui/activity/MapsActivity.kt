@@ -47,7 +47,7 @@ class MapsActivity : AppCompatActivity(),
 
     private var geocoding = GeocoderViewModel(this)
 
-    private var geocodeStore = mapOf<Tournament, LatLng>()
+    private var geocodeStore = listOf<TournamentIdentifier>()
     private lateinit var locationTournamentAdapter : LocationTournamentAdapter
 
     companion object {
@@ -71,13 +71,16 @@ class MapsActivity : AppCompatActivity(),
         rvPublicTournaments.adapter = locationTournamentAdapter
         rvPublicTournaments.layoutManager = LinearLayoutManager(this)
 
-        geocoding.publicTournamentLive.observe(this, Observer { tournaments ->
-            locationTournamentAdapter.updatePublicTournaments(tournaments)
+        geocoding.publicTournamentLive.observe(this, Observer { geocodes ->
+            locationTournamentAdapter.updatePublicTournaments(geocodes)
+            geocodeStore = geocodes
         })
+        /*
         geocoding.geocoderLive.observe(this, Observer { geocodes ->
             geocodeStore = geocodes
             //plotMarkers(geocodes)
         })
+         */
     }
 
     /**
@@ -158,13 +161,15 @@ class MapsActivity : AppCompatActivity(),
     }
 
 
-    private fun plotMarkers(geocodes: Map<Tournament, LatLng>) {
+    private fun plotMarkers(geocodes: List<TournamentIdentifier>) {
         for (location in geocodes) {
-            mMap.addMarker(
-                MarkerOptions()
-                    .position(location.value)
-                    .title(location.key.tournamentName)
-            )
+            if(location.tournament.latLng != null) {
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(location.tournament.latLng!!)
+                        .title(location.tournament.tournamentName)
+                )
+            }
         }
     }
 

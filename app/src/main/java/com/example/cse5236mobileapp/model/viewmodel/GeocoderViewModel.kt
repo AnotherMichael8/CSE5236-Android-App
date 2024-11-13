@@ -42,29 +42,26 @@ class GeocoderViewModel(val context: Context) {
                 }
 
                 val publicTourneys = mutableListOf<TournamentIdentifier>()
-                val tournamentGeocoded = mutableMapOf<Tournament, LatLng>()
+                //val tournamentGeocoded = mutableMapOf<Tournament, LatLng>()
                 if (documents != null) {
                     for (doc in documents) {
                         val tourneyIdentifierId= doc.toString()
                         val currentTourney = doc.toObject<Tournament>()
                         val tournamentInfo = TournamentIdentifier(tournamentId = tourneyIdentifierId, tournament = currentTourney)
                         val geocode = addressGeocoded(currentTourney.address)
-                        if (geocode != null) {
-                            tournamentInfo.tournament.latLng = geocode
-                        }
 
                         // TODO: Check if tourney has space in it
                         if(geocode != null) {
                             if (!currentTourney.isTournamentFull()) {
                                 if (!currentTourney.isUserAPlayer(user)) {
-                                    tournamentGeocoded[currentTourney] = geocode
+                                    tournamentInfo.tournament.latLng = geocode
+                                    publicTourneys.add(tournamentInfo)
                                 }
                             }
                         }
-                        publicTourneys.add(tournamentInfo)
                     }
                 }
-                geocoderLive.value = tournamentGeocoded
+                //geocoderLive.value = tournamentGeocoded
                 publicTournamentLive.value = publicTourneys
             }
     }
