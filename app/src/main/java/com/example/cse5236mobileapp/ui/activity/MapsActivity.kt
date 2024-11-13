@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.cse5236mobileapp.databinding.ActivityMapsBinding
 import com.example.cse5236mobileapp.model.LocationTournamentAdapter
+import com.example.cse5236mobileapp.model.OnTournamentClickListener
 import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.ViewGameAdapter
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
@@ -39,7 +40,7 @@ import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener
 class MapsActivity : AppCompatActivity(),
     OnMyLocationButtonClickListener,
     OnMyLocationClickListener, OnMapReadyCallback,
-    OnRequestPermissionsResultCallback {
+    OnRequestPermissionsResultCallback, OnTournamentClickListener{
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var binding: ActivityMapsBinding
@@ -67,7 +68,7 @@ class MapsActivity : AppCompatActivity(),
         mapFragment.getMapAsync(this)
 
         val rvPublicTournaments = findViewById<RecyclerView>(R.id.rvPublicTournaments)
-        locationTournamentAdapter = LocationTournamentAdapter()
+        locationTournamentAdapter = LocationTournamentAdapter(this)
         rvPublicTournaments.adapter = locationTournamentAdapter
         rvPublicTournaments.layoutManager = LinearLayoutManager(this)
 
@@ -174,6 +175,13 @@ class MapsActivity : AppCompatActivity(),
                         .title(location.tournament.tournamentName)
                 )
             }
+        }
+    }
+
+    override fun onTournamentClick(tournament: Tournament){
+        if(tournament.latLng != null){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tournament.latLng!!, 15f))
+            mMap.addMarker(MarkerOptions().position(tournament.latLng!!).title(tournament.tournamentName))
         }
     }
 }
