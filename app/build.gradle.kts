@@ -70,6 +70,9 @@ dependencies {
     // Google maps
     implementation(libs.gms.play.services.maps)
 
+    // okhttp
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
     // Firebase BOM for version management
     implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
 

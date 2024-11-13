@@ -1,12 +1,14 @@
 package com.example.cse5236mobileapp.ui.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationRequest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.Pair
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
@@ -19,11 +21,20 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.cse5236mobileapp.databinding.ActivityMapsBinding
-import com.example.cse5236mobileapp.utils.PermissionUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.json.JSONObject
+import java.io.IOException
+
+//import retrofit2.Retrofit
+
 
 class MapsActivity : AppCompatActivity(),
     OnMyLocationButtonClickListener,
@@ -32,6 +43,7 @@ class MapsActivity : AppCompatActivity(),
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var binding: ActivityMapsBinding
+    private var ohioStadiumLatLng: LatLng = LatLng(40.001633, -83.019707)
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1001
@@ -40,7 +52,6 @@ class MapsActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -61,6 +72,44 @@ class MapsActivity : AppCompatActivity(),
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        val startLocation = "328+West+Lane+Ave,+Columbus,+Ohio"
+        val endLocation = "Ohio+Stadium"
+        var httpsRequest = "https://maps.googleapis.com/maps/api/directions/json?origin=START_LOCATION&destination=END_LOCATION&key=YOUR_API_KEY\n"
+
+        val apiKey = try {
+            // TODO: MIGHT need to be changed if we make secrets.properties secret
+            val ai = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+            ai.metaData.getString("com.google.android.geo.API_KEY")
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+            null
+        }
+
+        if(apiKey != null){
+            httpsRequest = "https://maps.googleapis.com/maps/api/directions/json?origin=$startLocation&destination=$endLocation&key=$apiKey\n"
+            Log.i(TAG, "Successful https build: $httpsRequest")
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url(httpsRequest)
+                .build()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    e.printStackTrace()
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    response.body?.let {
+                        val responseData = it.string()
+                        Log.i(TAG, "Successful response: $responseData")
+                    }
+                }
+            })
+        } else {
+            Log.e(TAG, "Failed https build")
+        }
+
+
 
         if(ActivityCompat.checkSelfPermission(
             this,
@@ -71,6 +120,13 @@ class MapsActivity : AppCompatActivity(),
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(
@@ -86,19 +142,24 @@ class MapsActivity : AppCompatActivity(),
                 if(location != null) {
                     val userLat = location.latitude
                     val userLon = location.longitude
+                    val ohioStadiumMarker = mMap.addMarker(
+                        MarkerOptions()
+                            .title("Ohio Stadium")
+                            .position(ohioStadiumLatLng)
+                    )
                     val currentLatLng = LatLng(userLat, userLon)
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+//                    val route = Retrofit
                     Log.i(TAG, "User Location retrieved: <$userLat, $userLon>")
                 } else {
                     Log.e(TAG, "No user location")
                 }
             }
             enableMyLocation()
-            googleMap.setOnMyLocationButtonClickListener(this)
-            googleMap.setOnMyLocationClickListener(this)
+            mMap.setOnMyLocationButtonClickListener(this)
+            mMap.setOnMyLocationClickListener(this)
             Log.i(TAG, "Finished setting up user map")
         }
-
     }
 
     private fun enableMyLocation() {
@@ -121,21 +182,28 @@ class MapsActivity : AppCompatActivity(),
             .show()
     }
 
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-//            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                // Permission was granted, proceed to enable location features
-//
-//            } else {
-//                // Permission was denied, show a message and finish the activity
-//                Toast.makeText(this, "Permission denied. Closing activity.", Toast.LENGTH_SHORT).show()
-//                finish()
-//            }
-//        }
-//    }
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            if(location != null) {
+                val userLat = location.latitude
+                val userLon = location.longitude
+                val currentLatLng = LatLng(userLat, userLon)
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+                Log.i(TAG, "User Location retrieved: <$userLat, $userLon>")
+            } else {
+                Log.e(TAG, "No user location")
+            }
+        }
+        enableMyLocation()
+        mMap.setOnMyLocationButtonClickListener(this)
+        mMap.setOnMyLocationClickListener(this)
+        Log.i(TAG, "Finished setting up user map")
+    }
+
 }
