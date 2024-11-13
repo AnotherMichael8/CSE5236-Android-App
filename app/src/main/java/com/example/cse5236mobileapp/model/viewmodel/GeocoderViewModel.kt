@@ -54,9 +54,11 @@ class GeocoderViewModel(val context: Context) {
                         }
 
                         // TODO: Check if tourney has space in it
-                        if (!currentTourney.isTournamentFull()) {
-                            if (!currentTourney.isUserAPlayer(user)) {
-                                tournamentGeocoded[currentTourney] = geocode!!
+                        if(geocode != null) {
+                            if (!currentTourney.isTournamentFull()) {
+                                if (!currentTourney.isUserAPlayer(user)) {
+                                    tournamentGeocoded[currentTourney] = geocode
+                                }
                             }
                         }
                         publicTourneys.add(tournamentInfo)

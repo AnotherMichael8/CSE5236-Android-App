@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/barrierMiddle"/>
+        app:layout_constraintBottom_toBottomOf="@id/barrierMiddle" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPublicTournaments"
@@ -33,6 +33,6 @@
         android:id="@+id/mapGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.50"
+        app:layout_constraintGuide_percent="0.60"
         android:orientation="horizontal" />
 </androidx.constraintlayout.widget.ConstraintLayout>
