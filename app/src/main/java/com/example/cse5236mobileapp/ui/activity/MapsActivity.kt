@@ -7,6 +7,7 @@ import android.location.LocationRequest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -120,16 +121,19 @@ class MapsActivity : AppCompatActivity(),
             Log.i(TAG, "User rejected permission request")
 
         } else {
+            binding.loadingSpinner.visibility = View.VISIBLE
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if(location != null) {
                     val userLat = location.latitude
                     val userLon = location.longitude
                     val currentLatLng = LatLng(userLat, userLon)
+                    binding.loadingSpinner.visibility = View.GONE
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
                     locationTournamentAdapter.updateUserCurrentLocation(location)
-                    Log.i(TAG, "User Location retrieved: <$userLat, $userLon>")
+                    Log.i(TAG, "Using last known location: <$userLat, $userLon>")
                 } else {
-                    Log.e(TAG, "No user location")
+                    Log.e(TAG, "Last known location is unavailable")
+                    Toast.makeText(this, "Location unavailable. Please try again later.", Toast.LENGTH_LONG).show()
                 }
             }
             enableMyLocation()

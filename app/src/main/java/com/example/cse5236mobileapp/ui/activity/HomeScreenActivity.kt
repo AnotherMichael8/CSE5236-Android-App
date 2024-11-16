@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import android.util.Log;
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import com.example.cse5236mobileapp.ui.fragment.AccountSettingsFragment
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.ui.fragment.ViewTournamentsFragment
@@ -84,8 +85,14 @@ class HomeScreenActivity : AppCompatActivity() {
         }
 
         find_tournament_button.setOnClickListener{
-            val intent = Intent(this, MapsActivity::class.java)
-            startActivity(intent)
+            try {
+                val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)
+            } catch (e: Exception){
+                Log.e(TAG, "Error starting MapsActivity: ${e.message}", e)
+
+                Toast.makeText(this, "An error occurred. Pleas try again later.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
