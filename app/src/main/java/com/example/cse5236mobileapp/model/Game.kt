@@ -1,10 +1,6 @@
 package com.example.cse5236mobileapp.model
 
-import android.util.Log
 import com.google.firebase.firestore.PropertyName
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import java.util.UUID
 import kotlin.random.Random
 
 class Game (
@@ -23,53 +19,48 @@ class Game (
 
         fun getRoundDisplayer(currentRound : Int, numRounds: Int) : String
         {
-            if (currentRound == numRounds) {
-                return "Final"
-            }
-            else if (currentRound == numRounds - 1) {
-                return "Semifinal"
-            }
-            else if (currentRound == numRounds - 2) {
-                return "Quarterfinal"
-            }
-            else {
-                return "Round $currentRound"
+            return if (currentRound == numRounds) {
+                "Final"
+            } else if (currentRound == numRounds - 1) {
+                "Semifinal"
+            } else if (currentRound == numRounds - 2) {
+                "Quarterfinal"
+            } else {
+                "Round $currentRound"
             }
         }
     }
 
     fun getGameWinner(): String {
-        if (teamTwoScore > teamOneScore) {
-            return teamTwo
+        return if (teamTwoScore > teamOneScore) {
+            teamTwo
         }
         else if (teamOneScore > teamTwoScore) {
-            return teamOne
+            teamOne
         }
         else {
             val randomInt = Random.nextInt(1, 2)
             if (randomInt == 1) {
-                return teamOne
-            }
-            else {
-                return teamTwo
+                teamOne
+            } else {
+                teamTwo
             }
         }
     }
 
     fun getRoundName(numRounds: Int): String {
-        if (round == numRounds) {
-            return "Final"
-        }
-        else if (round == numRounds - 1) {
-            return "Semifinal"
-        }
-        else if (round == numRounds - 2) {
-            return "Quarterfinal"
-        }
-        else {
-            return "Round $round"
+        return if (round == numRounds) {
+            "Final"
+        } else if (round == numRounds - 1) {
+            "Semifinal"
+        } else if (round == numRounds - 2) {
+            "Quarterfinal"
+        } else {
+            "Round $round"
         }
     }
+
+    //TODO: Determine whether this can be removed
     fun MutableList<Game>.getMatchUp(team1 : String, team2 : String) : Game?
     {
         for(game in this)
@@ -89,7 +80,7 @@ class Game (
         }
         else
         {
-            val game = other as Game
+            val game = other
             return this.teamOne == game.teamOne && this.teamTwo == game.teamTwo
                     && this.teamOneScore == game.teamOneScore
                     && this.teamTwoScore == game.teamTwoScore

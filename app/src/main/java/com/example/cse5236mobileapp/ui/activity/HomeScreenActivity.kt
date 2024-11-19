@@ -1,5 +1,6 @@
 package com.example.cse5236mobileapp.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -7,9 +8,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import android.util.Log;
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import com.example.cse5236mobileapp.ui.fragment.AccountSettingsFragment
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.ui.fragment.ViewTournamentsFragment
@@ -18,7 +20,6 @@ import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import androidx.lifecycle.Observer
 
 class HomeScreenActivity : AppCompatActivity() {
     lateinit var user: Account
@@ -43,9 +44,9 @@ class HomeScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home_screen)
 
 
-        tournamentUserViewModel.usernameLive.observe(this, Observer { userDisplayName ->
+        tournamentUserViewModel.usernameLive.observe(this) { userDisplayName ->
             updateWelcomeText(userDisplayName)
-        })
+        }
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -75,7 +76,7 @@ class HomeScreenActivity : AppCompatActivity() {
             Log.i(TAG, "Going to Settings Fragment")
         }
 
-        view_tournament_button.setOnClickListener() {
+        view_tournament_button.setOnClickListener {
             Log.i(TAG, "Going to View Tournaments Fragment")
             val viewTournamentsFrag = ViewTournamentsFragment()
             supportFragmentManager.beginTransaction()
@@ -89,8 +90,14 @@ class HomeScreenActivity : AppCompatActivity() {
         }
 
         find_tournament_button.setOnClickListener{
-            val intent = Intent(this, MapsActivity::class.java)
-            startActivity(intent)
+            try {
+                val intent = Intent(this, MapsActivity::class.java)
+                startActivity(intent)
+            } catch (e: Exception){
+                Log.e(TAG, "Error starting MapsActivity: ${e.message}", e)
+
+                Toast.makeText(this, "An error occurred. Pleas try again later.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
     override fun onDestroy()
@@ -103,6 +110,7 @@ class HomeScreenActivity : AppCompatActivity() {
         find_tournament_button.setOnClickListener(null)
     }
 
+    @SuppressLint("SetTextI18n")
     fun updateWelcomeText(displayName: String) {
         findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "Welcome: $displayName"
     }

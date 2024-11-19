@@ -2,11 +2,10 @@ package com.example.cse5236mobileapp.model.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class TournamentUsernameViewModel(var emailList: List<String>) {
+class TournamentUsernameViewModel(private var emailList: List<String>) {
     companion object {
         private const val TAG = "TournamentUsernameViewModel"
     }
@@ -21,9 +20,9 @@ class TournamentUsernameViewModel(var emailList: List<String>) {
         fetchRelevantUserNames()
     }
 
-    fun fetchRelevantUserNames() {
+    private fun fetchRelevantUserNames() {
         // Map storage linking emails and usernames
-        var emailUserMap = mutableMapOf<String, String>()
+        val emailUserMap = mutableMapOf<String, String>()
         // List of completed emails
         val completed = mutableListOf<String>()
 

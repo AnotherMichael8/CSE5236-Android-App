@@ -17,13 +17,12 @@ data class Tournament (
     @PropertyName("isPrivate") var isPrivate: Boolean = false,
     @PropertyName("Players") var players: List<String> = listOf(),
     @PropertyName("Round") var round: Int = 1,
-    @PropertyName("Games") var games: MutableList<Game> = mutableListOf<Game>(),
+    @PropertyName("Games") var games: MutableList<Game> = mutableListOf(),
     @PropertyName("JoinCode") var joinCode: String = "",
     @PropertyName("LatLng") var latLng: LatLng? = null
 )
 {
     fun createInitialGames() {
-        var gameList = mutableListOf<Game>()
         for(i in 0 until numberPlayers.toInt() step 2) {
             val game = Game(
                 teamOne = i.toString(),
@@ -34,7 +33,7 @@ data class Tournament (
             games.add(game)
         }
     }
-
+    //TODO: Determine whether we can delete this
     fun advanceRound() {
         if (games.size > 1) {
             var newGames = mutableListOf<Game>()
@@ -61,35 +60,32 @@ data class Tournament (
         return ceil(log2(numberPlayers.toDouble())).toInt()
     }
 
+    // TODO: Can probably delete this
     // Used to display current Round name for a tournament
-    fun roundDisplayer(currentRound: Int): String {
-        val roundName = getRoundName(currentRound)
-        if (roundName != "Final" && roundName != "Semifinal" && roundName != "Quarterfinal") {
-            return "Round ${roundName}"
-        }
-        else {
-            return roundName
-        }
-    }
-
-    fun getRoundName(currentRound: Int): String {
-        val numRounds = getNumberOfRounds()
-        if (round == numRounds) {
-            return "Final"
-        }
-        else if (round == numRounds - 1) {
-            return "Semifinal"
-        }
-        else if (round == numRounds - 2) {
-            return "Quarterfinal"
-        }
-        else {
-            return round.toString()
-        }
-    }
+//    fun roundDisplayer(currentRound: Int): String {
+//        val roundName = getRoundName(currentRound)
+//        return if (roundName != "Final" && roundName != "Semifinal" && roundName != "Quarterfinal") {
+//            "Round $roundName"
+//        } else {
+//            roundName
+//        }
+//    }
+    // TODO: Once function above is deleted then we can delete this too
+//    fun getRoundName: String {
+//        val numRounds = getNumberOfRounds()
+//        return if (round == numRounds) {
+//            "Final"
+//        } else if (round == numRounds - 1) {
+//            "Semifinal"
+//        } else if (round == numRounds - 2) {
+//            "Quarterfinal"
+//        } else {
+//            round.toString()
+//        }
+//    }
 
     fun generateJoinCode() {
-        var possibleValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        val possibleValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
         var joinString = ""
 
         for (i in 1 until 9) {
@@ -104,12 +100,11 @@ data class Tournament (
     }
 
     fun isUserAPlayer(email: String?): Boolean {
-        if (email != null) {
-            return players.contains(email)
-        }
-        else {
+        return if (email != null) {
+            players.contains(email)
+        } else {
             // Returns true because can't verify that it isn't for null string
-            return true
+            true
         }
     }
 
@@ -123,14 +118,15 @@ data class Tournament (
                 else -> false  // Return false for all other cases
             }
         }
-        fun Any?.toGameList(): MutableList<Game> {
-            if(this !is MutableList<*> || this.isEmpty() || this[0] !is Game)
-            {
-                return mutableListOf()
-            }
-            else{
-                return this as MutableList<Game>
-            }
-        }
+        //TODO: Can delete this function
+//        fun Any?.toGameList(): MutableList<Game> {
+//            if(this !is MutableList<*> || this.isEmpty() || this[0] !is Game)
+//            {
+//                return mutableListOf()
+//            }
+//            else{
+//                return this as MutableList<Game>
+//            }
+//        }
     }
 }

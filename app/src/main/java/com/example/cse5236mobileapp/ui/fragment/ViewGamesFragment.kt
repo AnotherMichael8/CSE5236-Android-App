@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
@@ -58,36 +57,35 @@ class ViewGamesFragment() : Fragment(R.layout.fragment_view_games) {
         rvGameView.layoutManager = LinearLayoutManager(requireContext())
 
         tournamentUsernameViewModel.emailToUsername.observe(
-            viewLifecycleOwner,
-            Observer { playerNameMap ->
+            viewLifecycleOwner) { playerNameMap ->
                 if (playerNameMap != null) {
                     updatePlayerMap(playerNameMap)
                 }
-            })
+            }
 
 
         // Livedata implementation here
-        tournamentGamesViewModel.tournamentGamesLive.observe(viewLifecycleOwner, Observer { games ->
+        tournamentGamesViewModel.tournamentGamesLive.observe(viewLifecycleOwner) { games ->
             updateGamesContainer(viewGameAdapter, games)
-        })
+        }
 
-        tournamentGamesViewModel.tournamentLive.observe(viewLifecycleOwner, Observer { tournament ->
+        tournamentGamesViewModel.tournamentLive.observe(viewLifecycleOwner){ tournament ->
             // Updating the tournament usernames
             tournamentUsernameViewModel.updateEmailList(tournament.players)
             updatePlayers(tournament.players)
             updateName(gamesTextView, tournament)
-        })
+        }
 
 
-        tournamentGamesViewModel.currentUserAdminPrivileges.observe(viewLifecycleOwner, Observer { privileges ->
+        tournamentGamesViewModel.currentUserAdminPrivileges.observe(viewLifecycleOwner) { privileges ->
             viewGameAdapter.updateUserPrivileges(privileges)
-        })
+        }
 
         //back button functionality
-        backButton.setOnClickListener() {
+        backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-        nextRoundButton.setOnClickListener() {
+        nextRoundButton.setOnClickListener {
             val curRound = viewGameAdapter.nextRound()
             btnGameViewRound.text = Game.getRoundDisplayer(curRound, numberRounds)
             if (curRound >= numberRounds) {
@@ -97,7 +95,7 @@ class ViewGamesFragment() : Fragment(R.layout.fragment_view_games) {
                 previousRoundButton.visibility = View.VISIBLE
             }
         }
-        previousRoundButton.setOnClickListener() {
+        previousRoundButton.setOnClickListener {
             val curRound = viewGameAdapter.previousRound()
             btnGameViewRound.text = Game.getRoundDisplayer(curRound, numberRounds)
             if (curRound <= 1) {

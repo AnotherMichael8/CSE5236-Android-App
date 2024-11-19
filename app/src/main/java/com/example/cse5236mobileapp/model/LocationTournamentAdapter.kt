@@ -1,24 +1,18 @@
 package com.example.cse5236mobileapp.model
 
+import android.annotation.SuppressLint
 import android.location.Location
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
-import com.example.cse5236mobileapp.model.ViewGameAdapter.GameViewHolder
-import com.example.cse5236mobileapp.model.viewmodel.GeocoderViewModel
 import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class LocationTournamentAdapter (
     private val listener: OnTournamentClickListener
@@ -42,13 +36,15 @@ class LocationTournamentAdapter (
         publicTournaments.clear()
         for(tournament in newTournament)
         {
-            publicTournaments.add(tournament);
+            publicTournaments.add(tournament)
         }
+        //TODO: Replace these notifyDataSetChanged() calls with more optimal methods
         notifyDataSetChanged()
     }
     fun updateUserCurrentLocation(location: Location)
     {
         userLocation = location
+        //TODO: Replace these notifyDataSetChanged() calls with more optimal methods
         notifyDataSetChanged()
     }
     private fun getDistance(uLocation: LatLng, tourneyLocation: LatLng): Double {
@@ -65,6 +61,7 @@ class LocationTournamentAdapter (
         return publicTournaments.size
     }
 
+    @SuppressLint("DefaultLocale")
     override fun onBindViewHolder(holder: PublicTournamentViewHolder, position: Int) {
         val curTournament = publicTournaments[position]
         holder.apply {
@@ -93,7 +90,7 @@ class LocationTournamentAdapter (
                     tournamentUserViewModel.addTournamentForUser(curTournament.tournamentId)
                 }
             }
-            itemView.setOnClickListener(){
+            itemView.setOnClickListener{
                 listener.onTournamentClick(curTournament.tournament)
             }
         }

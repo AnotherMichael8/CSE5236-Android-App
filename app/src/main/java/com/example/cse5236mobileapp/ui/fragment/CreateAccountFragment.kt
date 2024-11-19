@@ -10,15 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.Account
-import com.example.cse5236mobileapp.model.Tournament
-import com.example.cse5236mobileapp.model.TournamentIdentifier
-import com.example.cse5236mobileapp.model.TournamentUser
 import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.example.cse5236mobileapp.ui.activity.HomeScreenActivity
-import com.example.cse5236mobileapp.ui.fragment.LogInFragment.Companion
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 
 /**
  * A simple [Fragment] subclass.
@@ -36,10 +29,6 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Creating firebase reference
-        var auth = Firebase.auth
-        val database = FirebaseFirestore.getInstance()
 
         // Getting view elements here
         val backButton = view.findViewById<Button>(R.id.tourMakerBackButton)
@@ -70,7 +59,7 @@ class CreateAccountFragment : Fragment(R.layout.fragment_create_account) {
 
                         val intent =
                             Intent(requireContext(), HomeScreenActivity::class.java).apply {
-                                putExtra("user", Account(auth.currentUser?.uid, username))
+                                putExtra("user", Account())
                             }
                         startActivity(intent)
                         Log.i(TAG, "Switching to Home Screen")

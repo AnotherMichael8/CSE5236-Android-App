@@ -13,8 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.TournamentIdentifier
-import com.example.cse5236mobileapp.model.Tournament
-import com.example.cse5236mobileapp.model.TournamentUser
 import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 
@@ -57,7 +55,7 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
 
 
         //tournament name button
-        modifyTournamentNameButton.setOnClickListener() {
+        modifyTournamentNameButton.setOnClickListener {
             Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
             updatedText = ""
             changeContainerFragment(
@@ -70,7 +68,7 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
             selectedProperty = "TournamentName"
         }
         //modify number players button
-        modifyNumberPlayersButton.setOnClickListener() {
+        modifyNumberPlayersButton.setOnClickListener {
             Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
             updatedText = ""
             changeContainerFragment(
@@ -83,7 +81,7 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
             selectedProperty = "NumberPlayers"
         }
         //modify event type button
-        modifyEventTypeButton.setOnClickListener() {
+        modifyEventTypeButton.setOnClickListener {
             Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
             updatedText = ""
             changeContainerFragment(
@@ -96,7 +94,7 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
             selectedProperty = "EventType"
         }
         //modify date button
-        modifyDateButton.setOnClickListener() {
+        modifyDateButton.setOnClickListener {
             Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
             updatedText = ""
             changeContainerFragment(
@@ -109,7 +107,7 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
             selectedProperty = "Date"
         }
         //modify time button
-        modifyTimeButton.setOnClickListener() {
+        modifyTimeButton.setOnClickListener {
             Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
             updatedText = ""
             changeContainerFragment(
@@ -122,7 +120,7 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
             selectedProperty = "Time"
         }
         //modify address button
-        modifyAddressButton.setOnClickListener() {
+        modifyAddressButton.setOnClickListener {
             Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
             updatedText = ""
             changeContainerFragment(
@@ -135,21 +133,21 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
             selectedProperty = "Address"
         }
         //modify is private button
-        modifyIsPrivateButton.setOnClickListener() {
+        modifyIsPrivateButton.setOnClickListener {
             Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
             updatedBoolean = false
             changeContainerFragment(true, "Is Private: ", "None", container, InputType.TYPE_NULL)
             selectedProperty = "isPrivate"
         }
         //modify is morning button
-        modifyIsMorningButton.setOnClickListener() {
+        modifyIsMorningButton.setOnClickListener {
             Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
             updatedBoolean = false
             changeContainerFragment(true, "Is Morning: ", "None", container, InputType.TYPE_NULL)
             selectedProperty = "isMorning"
         }
         //modify rules button
-        modifyRulesButton.setOnClickListener() {
+        modifyRulesButton.setOnClickListener {
             Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
             updatedText = ""
             changeContainerFragment(
@@ -163,12 +161,12 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
         }
 
         val backButton = view.findViewById<Button>(R.id.tournamentModifyBackButton)
-        backButton.setOnClickListener() {
+        backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
         val submitButton = view.findViewById<Button>(R.id.modifyTournamentsSubmitButton)
-        submitButton.setOnClickListener() {
+        submitButton.setOnClickListener {
             if (selectedProperty != "") {
                 if (selectedProperty != "isMorning" && selectedProperty != "isPrivate") {
                     tournamentViewModel.modifyTournamentAttribute(
@@ -193,7 +191,7 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
         }
 
         val deleteButton = view.findViewById<Button>(R.id.deleteTournamentButton)
-        deleteButton.setOnClickListener() {
+        deleteButton.setOnClickListener {
 
             // Removing fragment stack first because previous fragments rely on deleted data
             parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
@@ -211,6 +209,7 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
         }
     }
 
+    //TODO: container can probably be gotten rid of
     private fun changeContainerFragment(
         isBoolean: Boolean,
         newText: String,
@@ -220,12 +219,12 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
     ) {
 
         if (!isBoolean) {
-            modifyTextFragment.updateEditTextText("Modify " + newText)
+            modifyTextFragment.updateEditTextText("Modify $newText")
             modifyTextFragment.updateEditTextHintAndInputType(newHint, inputType)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.modifierContainer, modifyTextFragment).commit()
         } else {
-            modifyBooleanFragment.updateEditBooleanText("Modify " + newText)
+            modifyBooleanFragment.updateEditBooleanText("Modify $newText")
             modifyBooleanFragment.updateRadioButtonText(newText)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.modifierContainer, modifyBooleanFragment).commit()

@@ -39,15 +39,14 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
 
         // Set the click listener on the button
         buttonContinue.setOnClickListener {
-            var username = usernameField.text.toString()
-            var password = passwordField.text.toString()
+            val username = usernameField.text.toString()
+            val password = passwordField.text.toString()
 
             // Checking if login fields are not empty
             if (Account.checkLoginInputs(requireContext(), username, password)) {
                 // Contacting server to login
-                Account.login(auth, requireActivity(), username, password) { success ->
+                Account.login(auth, username, password) { success ->
                     if (success) {
-                        val user = auth.currentUser
                         Toast.makeText(
                             requireContext(),
                             "Login Success",
@@ -69,11 +68,11 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
         }
 
         buttonCreateNew.setOnClickListener {
-            val CreateAccountFrag = CreateAccountFragment()
+            val createAccountFrag = CreateAccountFragment()
 
             // Actually replace fragment
             parentFragmentManager.beginTransaction()
-                .replace(R.id.frgLoginContainer, CreateAccountFrag).addToBackStack(null).commit()
+                .replace(R.id.frgLoginContainer, createAccountFrag).addToBackStack(null).commit()
             Log.i(TAG, "Switching to Create Account")
         }
 

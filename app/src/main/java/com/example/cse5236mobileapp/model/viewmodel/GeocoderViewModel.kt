@@ -2,7 +2,7 @@ package com.example.cse5236mobileapp.model.viewmodel
 
 import android.content.Context
 import android.location.Geocoder
-import android.location.Location
+//import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.TournamentIdentifier
@@ -18,7 +18,7 @@ class GeocoderViewModel(val context: Context) {
     private var firestore = Firebase.firestore
     private var user = FirebaseAuth.getInstance().currentUser?.email
 
-    val geocoderLive: MutableLiveData<Map<Tournament, LatLng>> by lazy {
+    private val geocoderLive: MutableLiveData<Map<Tournament, LatLng>> by lazy {
         MutableLiveData<Map<Tournament, LatLng>>()
     }
     val publicTournamentLive: MutableLiveData<List<TournamentIdentifier>> by lazy {
@@ -66,7 +66,7 @@ class GeocoderViewModel(val context: Context) {
             }
     }
 
-    fun addressGeocoded(location: String): LatLng? {
+    private fun addressGeocoded(location: String): LatLng? {
         val geo = Geocoder(context)
         val results = geo.getFromLocationName(location, 1)
         if (results != null) {
@@ -81,14 +81,14 @@ class GeocoderViewModel(val context: Context) {
             return null
         }
     }
-
-    fun getDistance(userLocation: LatLng, tourneyLocation: LatLng): Double {
-        var results = floatArrayOf()
-        Location.distanceBetween(userLocation.latitude, userLocation.longitude, tourneyLocation.latitude, tourneyLocation.longitude, results)
-        return metersToMiles(results[0])
-    }
-
-    private fun metersToMiles(distanceMeters: Float): Double {
-        return distanceMeters * .000621371
-    }
+    //TODO: can be deleted
+//    fun getDistance(userLocation: LatLng, tourneyLocation: LatLng): Double {
+//        var results = floatArrayOf()
+//        Location.distanceBetween(userLocation.latitude, userLocation.longitude, tourneyLocation.latitude, tourneyLocation.longitude, results)
+//        return metersToMiles(results[0])
+//    }
+//
+//    private fun metersToMiles(distanceMeters: Float): Double {
+//        return distanceMeters * .000621371
+//    }
 }

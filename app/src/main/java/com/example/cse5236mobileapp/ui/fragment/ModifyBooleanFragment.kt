@@ -22,8 +22,8 @@ class ModifyBooleanFragment(private var modifyTournamentsFragmentParent: ModifyT
         // Initialize EditText Text
         editBooleanText = view.findViewById(R.id.modifyBooleanText)
         // Initialize EditText
-        checkBox = view.findViewById<CheckBox>(R.id.modifyBooleanCheckBox)
-        checkBox.setOnClickListener(){
+        checkBox = view.findViewById(R.id.modifyBooleanCheckBox)
+        checkBox.setOnClickListener{
             modifyTournamentsFragmentParent.updatedBoolean = checkBox.isChecked
         }
 
