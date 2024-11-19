@@ -43,7 +43,6 @@ class TournamentRepository {
         when (changedPropertyKey){
             "Address" -> tournament.tournament.address = newProperty.toString()
             "Date" -> tournament.tournament.date = newProperty.toString()
-            "EventType" -> tournament.tournament.eventType = newProperty.toString()
             "NumberPlayers" -> tournament.tournament.numberPlayers = newProperty.toString()
             "Rules" -> tournament.tournament.rules = newProperty.toString()
             "Time" -> tournament.tournament.time = newProperty.toString()

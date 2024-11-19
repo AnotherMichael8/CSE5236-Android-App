@@ -55,23 +55,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:text="Enter Amount of Players"
-                app:layout_constraintBottom_toTopOf="@+id/textViewEventType"
                 app:layout_constraintEnd_toStartOf="@+id/spinnerPlayers"
                 app:layout_constraintStart_toStartOf="@+id/etTournamentName"
                 app:layout_constraintTop_toBottomOf="@+id/etTournamentName" />
-
-            <TextView
-                android:id="@+id/textViewEventType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:gravity="center"
-                android:text="Enter Event Type"
-                app:layout_constraintBottom_toTopOf="@+id/textViewDate"
-                app:layout_constraintStart_toStartOf="@+id/textViewPlayers"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPlayers" />
 
             <Spinner
                 android:id="@+id/spinnerPlayers"
@@ -85,24 +74,15 @@
                 app:layout_constraintStart_toEndOf="@+id/textViewPlayers"
                 app:layout_constraintTop_toTopOf="@+id/textViewPlayers" />
 
-            <Spinner
-                android:id="@+id/spinnerEventType"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/outline"
-                android:entries="@array/event_types_array"
-                app:layout_constraintBottom_toBottomOf="@+id/textViewEventType"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/spinnerPlayers"
-                app:layout_constraintTop_toTopOf="@+id/textViewEventType" />
-
             <TextView
                 android:id="@+id/textViewDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:text="Date and Time"
                 app:layout_constraintBottom_toTopOf="@+id/etDate"
-                app:layout_constraintStart_toStartOf="@+id/etDate" />
+                app:layout_constraintStart_toStartOf="@+id/etDate"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPlayers" />
 
 
             <EditText
@@ -117,8 +97,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/etTime"
                 app:layout_constraintBottom_toTopOf="@+id/textViewAddress"
                 app:layout_constraintEnd_toStartOf="@+id/etTime"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewEventType" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
                 android:id="@+id/etTime"

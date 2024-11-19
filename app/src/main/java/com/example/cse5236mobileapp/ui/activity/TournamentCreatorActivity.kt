@@ -33,7 +33,6 @@ class TournamentCreatorActivity : AppCompatActivity() {
 
         val tournamentNameField = findViewById<EditText>(R.id.etTournamentName)
         val numPlayerSpinner = findViewById<Spinner>(R.id.spinnerPlayers)
-        val eventTypeSpinner = findViewById<Spinner>(R.id.spinnerEventType)
         val dateNameField = findViewById<EditText>(R.id.etDate)
         val timeNameField = findViewById<EditText>(R.id.etTime)
         val addressNameField = findViewById<EditText>(R.id.etAddress)
@@ -93,7 +92,6 @@ class TournamentCreatorActivity : AppCompatActivity() {
                             address = addressNameField.text.toString(),
                             rules = rulesField.text.toString(),
                             numberPlayers = numPlayerSpinner.selectedItem.toString(),
-                            eventType = eventTypeSpinner.selectedItem.toString(),
                             isPrivate = currentRadioButton,
                             isMorning = false,
                             players = participantsArr

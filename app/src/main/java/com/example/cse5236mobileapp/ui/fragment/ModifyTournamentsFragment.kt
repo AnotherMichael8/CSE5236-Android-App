@@ -41,7 +41,6 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
         //buttons
         val modifyTournamentNameButton = view.findViewById<Button>(R.id.modifyTournamentNameButton)
         val modifyNumberPlayersButton = view.findViewById<Button>(R.id.modifyNumberPlayersButton)
-        val modifyEventTypeButton = view.findViewById<Button>(R.id.modifyEventTypeButton)
         val modifyDateButton = view.findViewById<Button>(R.id.modifyDateButton)
         val modifyTimeButton = view.findViewById<Button>(R.id.modifyTimeButton)
         val modifyAddressButton = view.findViewById<Button>(R.id.modifyAddressButton)
@@ -81,19 +80,6 @@ class ModifyTournamentsFragment(private val tournamentIdentifier: TournamentIden
                 InputType.TYPE_NUMBER_FLAG_DECIMAL
             )
             selectedProperty = "NumberPlayers"
-        }
-        //modify event type button
-        modifyEventTypeButton.setOnClickListener() {
-            Log.d(TAG, "Modifying: " + tournamentIdentifier.tournamentId)
-            updatedText = ""
-            changeContainerFragment(
-                false,
-                "Event Type:",
-                "Event Type",
-                container,
-                InputType.TYPE_CLASS_TEXT
-            )
-            selectedProperty = "EventType"
         }
         //modify date button
         modifyDateButton.setOnClickListener() {

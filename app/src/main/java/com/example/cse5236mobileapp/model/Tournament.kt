@@ -8,7 +8,6 @@ import kotlin.math.log2
 data class Tournament (
     @PropertyName("Address") var address: String = "",
     @PropertyName("Date") var date: String = "",
-    @PropertyName("EventType") var eventType: String = "",
     @PropertyName("NumberPlayers") var numberPlayers: String = "",
     @PropertyName("Rules") var rules: String = "",
     @PropertyName("Time") var time: String = "",

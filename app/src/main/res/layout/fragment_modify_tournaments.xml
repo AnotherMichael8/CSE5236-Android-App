@@ -62,12 +62,6 @@
                 android:text="@string/modify_number_players_text" />
 
             <Button
-                android:id="@+id/modifyEventTypeButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/modify_event_type_text" />
-
-            <Button
                 android:id="@+id/modifyDateButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
