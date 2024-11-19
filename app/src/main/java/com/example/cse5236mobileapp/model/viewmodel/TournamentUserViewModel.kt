@@ -29,7 +29,7 @@ class TournamentUserViewModel : ViewModel() {
         MutableLiveData<String>()
     }
 
-    val emailListLive: MutableLiveData<List<String>> by lazy {
+    private val emailListLive: MutableLiveData<List<String>> by lazy {
         MutableLiveData<List<String>>()
     }
 
@@ -86,7 +86,7 @@ class TournamentUserViewModel : ViewModel() {
     }
 
     private fun emailListRetrieve() {
-        emailListLive.value = mutableListOf<String>()
+        emailListLive.value = mutableListOf()
         firestore.collection("Users").addSnapshotListener { users, exception ->
             if (exception != null) {
                 Log.e(TAG, "Error retrieving emails", exception)

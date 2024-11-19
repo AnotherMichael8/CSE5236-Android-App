@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.cse5236mobileapp.R
-import com.example.cse5236mobileapp.model.Game
 import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
@@ -44,8 +43,8 @@ class TournamentCreatorActivity : AppCompatActivity() {
 
         val backButton = findViewById<Button>(R.id.tourMakerBackButton)
         val submitButton = findViewById<Button>(R.id.tourCreatorBtnSubmit)
-        var currentRadioButton: Boolean = false
-        privateOrPublic.setOnCheckedChangeListener { radioGroup, idChecked ->
+        var currentRadioButton = false
+        privateOrPublic.setOnCheckedChangeListener { _, idChecked ->
             when (idChecked) {
                 R.id.rbPublic -> {
                     currentRadioButton = false

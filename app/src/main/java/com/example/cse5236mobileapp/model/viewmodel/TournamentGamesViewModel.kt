@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.cse5236mobileapp.model.Game
 import com.example.cse5236mobileapp.model.Tournament
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
@@ -74,35 +73,36 @@ class TournamentGamesViewModel(private val tournamentId: String) {
         }
     }
 
-    fun addNewGameToDatabase(game: Game) {
-        firestore.collection("Tournaments").document(tournamentId).get().addOnSuccessListener { document ->
-            val tournament = document.toObject<Tournament>()
-            tournament?.let {
-                if (!it.games.contains(game)) {  // Add only if game is not already in the list
-                    it.games.add(game)
-                    tournamentViewModel.updateTournamentGames(it, tournamentId)
-                }
-            }
-        }
-    }
-
-    fun removeGameFromDatabase(game: Game) {
-        val team1 = game.teamOne
-        val team2 = game.teamTwo
-        firestore.collection("Tournaments").document(tournamentId).get().addOnSuccessListener { document ->
-            val tournament = document.toObject<Tournament>()
-            tournament?.let {
-                if(it.games.removeMatchUp(team1, team2))
-                {
-                    tournamentViewModel.updateTournamentGames(it, tournamentId)
-                }
-                else
-                {
-                    Log.i("GameViewModel", "Matchup doesn't exist and was not removed")
-                }
-            }
-        }
-    }
+    //TODO: Can be deleted
+//    fun addNewGameToDatabase(game: Game) {
+//        firestore.collection("Tournaments").document(tournamentId).get().addOnSuccessListener { document ->
+//            val tournament = document.toObject<Tournament>()
+//            tournament?.let {
+//                if (!it.games.contains(game)) {  // Add only if game is not already in the list
+//                    it.games.add(game)
+//                    tournamentViewModel.updateTournamentGames(it, tournamentId)
+//                }
+//            }
+//        }
+//    }
+//
+//    fun removeGameFromDatabase(game: Game) {
+//        val team1 = game.teamOne
+//        val team2 = game.teamTwo
+//        firestore.collection("Tournaments").document(tournamentId).get().addOnSuccessListener { document ->
+//            val tournament = document.toObject<Tournament>()
+//            tournament?.let {
+//                if(it.games.removeMatchUp(team1, team2))
+//                {
+//                    tournamentViewModel.updateTournamentGames(it, tournamentId)
+//                }
+//                else
+//                {
+//                    Log.i("GameViewModel", "Matchup doesn't exist and was not removed")
+//                }
+//            }
+//        }
+//    }
     fun updateOldGameToNewGameDatabase(gameOld: Pair<String, String>, gameNew : Game)
     {
         val team1 = gameOld.first

@@ -1,14 +1,11 @@
 package com.example.cse5236mobileapp.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
@@ -20,8 +17,8 @@ import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
  */
 class JoinTournamentFragment : Fragment(R.layout.fragment_join_tournament) {
 
-    val tournamentUserViewModel = TournamentUserViewModel()
-    val tournamentViewModel = TournamentViewModel()
+    private val tournamentUserViewModel = TournamentUserViewModel()
+    private val tournamentViewModel = TournamentViewModel()
 
     override fun onViewCreated(view: View,savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,11 +29,11 @@ class JoinTournamentFragment : Fragment(R.layout.fragment_join_tournament) {
         val joinButton = view.findViewById<Button>(R.id.btnJoinTournament)
 
 
-        backButton.setOnClickListener() {
+        backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
-        joinButton.setOnClickListener() {
+        joinButton.setOnClickListener {
             val userJoinCode = joinCodeField.text.toString().uppercase()
             tournamentViewModel.findTourneyIdFromJoinCode(userJoinCode) { tournamentIdentifier ->
                 if (tournamentIdentifier != null) {
@@ -73,6 +70,6 @@ class JoinTournamentFragment : Fragment(R.layout.fragment_join_tournament) {
 
 
     companion object {
-        final val TAG = "Join Tournament Fragment"
+        private const val TAG = "Join Tournament Fragment"
     }
 }
