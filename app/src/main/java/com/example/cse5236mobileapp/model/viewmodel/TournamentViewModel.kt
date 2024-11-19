@@ -1,7 +1,6 @@
 package com.example.cse5236mobileapp.model.viewmodel
 
 import android.content.ContentValues.TAG
-import android.provider.ContactsContract.CommonDataKinds.Email
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,9 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
-import com.google.firebase.firestore.toObjects
 import com.google.firebase.ktx.Firebase
-import com.google.rpc.Code
 
 class TournamentViewModel : ViewModel() {
 
@@ -78,7 +75,7 @@ class TournamentViewModel : ViewModel() {
     }
 
     fun findTourneyIdFromJoinCode(joinCode: String, onResult: (TournamentIdentifier?) -> Unit) {
-        val tourneys = firestore.collection("Tournaments").whereEqualTo("joinCode", joinCode)
+        firestore.collection("Tournaments").whereEqualTo("joinCode", joinCode)
             .get()
             .addOnSuccessListener { tournaments ->
                 if (tournaments.size() > 0) {

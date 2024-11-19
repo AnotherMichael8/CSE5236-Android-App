@@ -55,27 +55,23 @@ class TournamentUserRepository {
     }
 
 
-
+    // can stay public because it makes sense for us to use this outside of the class itself
     fun modifyUserDisplayName(firebaseUser: FirebaseUser, newDisplayName: String, onComplete: (Boolean) -> Unit) {
-        if (firebaseUser != null) {
-            val profileUpdates = UserProfileChangeRequest.Builder()
-                .setDisplayName(newDisplayName)
-                .build()
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setDisplayName(newDisplayName)
+            .build()
 
-            firebaseUser.updateProfile(profileUpdates)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        println("User display name updated to $newDisplayName successfully.")
-                        onComplete(true)
-                    } else {
-                        println("Failed to update display name.")
-                        onComplete(false)
-                    }
+        firebaseUser.updateProfile(profileUpdates)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    println("User display name updated to $newDisplayName successfully.")
+                    onComplete(true)
+                } else {
+                    println("Failed to update display name.")
+                    onComplete(false)
                 }
-        } else {
-            println("No user is signed in.")
-            onComplete(false)
-        }
+            }
+
     }
 
     // TODO: Determine whether to keep this for simplicity or keep hefty general modify method
@@ -93,7 +89,7 @@ class TournamentUserRepository {
             displayName = newDisplayName
         }
         firebaseUser.updateProfile(profileUpdates)
-            .addOnCompleteListener() { task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Update database here
                     firebaseUser.email?.let {

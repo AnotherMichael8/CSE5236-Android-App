@@ -31,6 +31,7 @@ class PlayerNameAdapter(private val playerList : MutableList<String>) :
     fun updateNames(updatedNames: List<String>) {
         playerList.removeAll(playerList)
         playerList.addAll(updatedNames)
+        //TODO: optimize this function call to notifyDataSetChanged()
         notifyDataSetChanged()
         Log.d("PlayerNameAdapter", "Updated")
     }

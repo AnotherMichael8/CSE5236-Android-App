@@ -1,5 +1,6 @@
 package com.example.cse5236mobileapp.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -7,7 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import android.util.Log;
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import com.example.cse5236mobileapp.ui.fragment.AccountSettingsFragment
@@ -18,14 +19,13 @@ import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import androidx.lifecycle.Observer
 
 class HomeScreenActivity : AppCompatActivity() {
     lateinit var user: Account
     lateinit var currentUser: FirebaseUser
 
 
-    val tournamentUserViewModel = TournamentUserViewModel()
+    private val tournamentUserViewModel = TournamentUserViewModel()
 
 
     companion object {
@@ -38,9 +38,9 @@ class HomeScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home_screen)
 
 
-        tournamentUserViewModel.usernameLive.observe(this, Observer { userDisplayName ->
+        tournamentUserViewModel.usernameLive.observe(this) { userDisplayName ->
             updateWelcomeText(userDisplayName)
-        })
+        }
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -70,7 +70,7 @@ class HomeScreenActivity : AppCompatActivity() {
             Log.i(TAG, "Going to Settings Fragment")
         }
 
-        view_tournament_button.setOnClickListener() {
+        view_tournament_button.setOnClickListener {
             Log.i(TAG, "Going to View Tournaments Fragment")
             val viewTournamentsFrag = ViewTournamentsFragment()
             supportFragmentManager.beginTransaction()
@@ -89,6 +89,7 @@ class HomeScreenActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     fun updateWelcomeText(displayName: String) {
         findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "Welcome: $displayName"
     }
