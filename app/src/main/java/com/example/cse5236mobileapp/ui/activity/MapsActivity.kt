@@ -20,6 +20,7 @@ import com.example.cse5236mobileapp.model.OnTournamentClickListener
 import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.viewmodel.GeocoderViewModel
+import com.example.cse5236mobileapp.utility.Internet
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -34,10 +35,13 @@ import com.google.android.gms.maps.model.MarkerOptions
 class MapsActivity : AppCompatActivity(),
     OnMyLocationButtonClickListener,
     OnMyLocationClickListener, OnMapReadyCallback,
-    OnRequestPermissionsResultCallback, OnTournamentClickListener{
+    OnRequestPermissionsResultCallback, OnTournamentClickListener,
+    Internet.NetworkStateListener {
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var binding: ActivityMapsBinding
+
+    private lateinit var internetMonitor: Internet
 
     private var geocoding = GeocoderViewModel(this)
 
@@ -54,6 +58,9 @@ class MapsActivity : AppCompatActivity(),
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        internetMonitor = Internet(this)
+        internetMonitor.startMonitoring(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         val mapFragment = supportFragmentManager
@@ -129,13 +136,13 @@ class MapsActivity : AppCompatActivity(),
                 }
             }
             enableMyLocation()
-            googleMap.setOnMyLocationButtonClickListener(this)
-            googleMap.setOnMyLocationClickListener(this)
+            mMap.setOnMyLocationButtonClickListener(this)
+            mMap.setOnMyLocationClickListener(this)
             Log.i(TAG, "Finished setting up user map")
         }
 
-        googleMap.setOnMyLocationButtonClickListener(this)
-        googleMap.setOnMyLocationClickListener(this)
+        mMap.setOnMyLocationButtonClickListener(this)
+        mMap.setOnMyLocationClickListener(this)
 
         plotMarkers(geocodeStore)
     }
@@ -179,5 +186,23 @@ class MapsActivity : AppCompatActivity(),
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tournament.latLng!!, 15f))
             mMap.addMarker(MarkerOptions().position(tournament.latLng!!).title(tournament.tournamentName))
         }
+    }
+
+    // If network is still available then start or continue (not sure whether to start or continue) map functionality
+    override fun onNetworkAvailable() {
+        Log.i(TAG, "Network available")
+        //TODO("Not yet implemented")
+    }
+
+    // If network is lost then must halt map functionality before it crashes
+    override fun onNetworkLost() {
+        Log.i(TAG, "Network lost")
+        //TODO("Not yet implemented")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "Destroying MapsActivity")
+        internetMonitor.stopMonitoring()
     }
 }

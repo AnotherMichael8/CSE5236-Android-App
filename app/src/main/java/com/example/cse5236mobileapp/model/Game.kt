@@ -32,15 +32,15 @@ class Game (
     }
 
     fun getGameWinner(): String {
-        if (teamTwoScore > teamOneScore) {
-            return teamTwo
+        return if (teamTwoScore > teamOneScore) {
+            teamTwo
         }
         else if (teamOneScore > teamTwoScore) {
-            return teamOne
+            teamOne
         }
         else {
             val randomInt = Random.nextInt(1, 2)
-            return if (randomInt == 1) {
+            if (randomInt == 1) {
                 teamOne
             } else {
                 teamTwo

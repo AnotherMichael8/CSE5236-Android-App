@@ -1,6 +1,7 @@
 package com.example.cse5236mobileapp.ui.activity
 
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
