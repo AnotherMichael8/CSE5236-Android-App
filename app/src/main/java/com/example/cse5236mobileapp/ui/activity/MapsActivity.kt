@@ -96,6 +96,8 @@ class MapsActivity : AppCompatActivity(),
         mMap.setOnMyLocationButtonClickListener(null)
         mMap.setOnMyLocationClickListener(null)
         //locationTournamentAdapter = null
+        Log.i(TAG, "Destroying MapsActivity")
+        internetMonitor.stopMonitoring()
     }
 
     /**
@@ -208,11 +210,5 @@ class MapsActivity : AppCompatActivity(),
     override fun onNetworkLost() {
         Log.i(TAG, "Network lost")
         //TODO("Not yet implemented")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i(TAG, "Destroying MapsActivity")
-        internetMonitor.stopMonitoring()
     }
 }
