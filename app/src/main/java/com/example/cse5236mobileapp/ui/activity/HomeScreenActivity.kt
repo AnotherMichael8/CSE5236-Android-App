@@ -26,6 +26,11 @@ class HomeScreenActivity : AppCompatActivity() {
 
 
     val tournamentUserViewModel = TournamentUserViewModel()
+    lateinit var button_logout : Button
+    lateinit var settings_button : ImageButton
+    lateinit var view_tournament_button : Button
+    lateinit var tournamentCreator_button : Button
+    lateinit var find_tournament_button : Button
 
 
     companion object {
@@ -49,11 +54,11 @@ class HomeScreenActivity : AppCompatActivity() {
             insets
         }
 
-        val button_logout = findViewById<Button>(R.id.LogoutButton)
-        val settings_button = findViewById<ImageButton>(R.id.settingsButton)
-        val view_tournament_button = findViewById<Button>(R.id.ViewButton)
-        val tournamentCreator_button = findViewById<Button>(R.id.CreateButton)
-        val find_tournament_button = findViewById<Button>(R.id.LocationsButton)
+        button_logout = findViewById<Button>(R.id.LogoutButton)
+        settings_button = findViewById<ImageButton>(R.id.settingsButton)
+        view_tournament_button = findViewById<Button>(R.id.ViewButton)
+        tournamentCreator_button = findViewById<Button>(R.id.CreateButton)
+        find_tournament_button = findViewById<Button>(R.id.LocationsButton)
 
         button_logout.setOnClickListener {
             Firebase.auth.signOut()
@@ -87,6 +92,15 @@ class HomeScreenActivity : AppCompatActivity() {
             val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
+    }
+    override fun onDestroy()
+    {
+        super.onDestroy()
+        button_logout.setOnClickListener(null)
+        settings_button.setOnClickListener(null)
+        view_tournament_button.setOnClickListener(null)
+        tournamentCreator_button.setOnClickListener(null)
+        find_tournament_button.setOnClickListener(null)
     }
 
     fun updateWelcomeText(displayName: String) {

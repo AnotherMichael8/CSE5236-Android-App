@@ -88,6 +88,16 @@ class MapsActivity : AppCompatActivity(),
          */
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mMap.clear() // Removes all markers, overlays, etc.
+        //fusedLocationClient.removeLocationUpdates() // Stops location updates if set.
+        geocoding.publicTournamentLive.removeObservers(this) // Clear LiveData observers.
+        mMap.setOnMyLocationButtonClickListener(null)
+        mMap.setOnMyLocationClickListener(null)
+        //locationTournamentAdapter = null
+    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
