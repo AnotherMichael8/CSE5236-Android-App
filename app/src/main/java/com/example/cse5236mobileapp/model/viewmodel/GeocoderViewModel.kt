@@ -2,6 +2,7 @@ package com.example.cse5236mobileapp.model.viewmodel
 
 import android.content.Context
 import android.location.Geocoder
+import android.location.Location
 import androidx.lifecycle.MutableLiveData
 import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.TournamentIdentifier
@@ -12,13 +13,12 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
 
-@Suppress("DEPRECATION")
 class GeocoderViewModel(val context: Context) {
 
     private var firestore = Firebase.firestore
     private var user = FirebaseAuth.getInstance().currentUser?.email
 
-    private val geocoderLive: MutableLiveData<Map<Tournament, LatLng>> by lazy {
+    val geocoderLive: MutableLiveData<Map<Tournament, LatLng>> by lazy {
         MutableLiveData<Map<Tournament, LatLng>>()
     }
     val publicTournamentLive: MutableLiveData<List<TournamentIdentifier>> by lazy {
@@ -50,11 +50,9 @@ class GeocoderViewModel(val context: Context) {
                         val tournamentInfo = TournamentIdentifier(tournamentId = tourneyIdentifierId, tournament = currentTourney)
                         val geocode = addressGeocoded(currentTourney.address)
 
-                        // Checking if geocode exists
+                        // TODO: Check if tourney has space in it
                         if(geocode != null) {
-                            // Making sure tourney is not full
                             if (!currentTourney.isTournamentFull()) {
-                                // Making sure user isn't already in tournament
                                 if (!currentTourney.isUserAPlayer(user)) {
                                     tournamentInfo.tournament.latLng = geocode
                                     publicTourneys.add(tournamentInfo)
@@ -68,7 +66,7 @@ class GeocoderViewModel(val context: Context) {
             }
     }
 
-    private fun addressGeocoded(location: String): LatLng? {
+    fun addressGeocoded(location: String): LatLng? {
         val geo = Geocoder(context)
         val results = geo.getFromLocationName(location, 1)
         if (results != null) {
@@ -82,5 +80,15 @@ class GeocoderViewModel(val context: Context) {
         } else {
             return null
         }
+    }
+
+    fun getDistance(userLocation: LatLng, tourneyLocation: LatLng): Double {
+        var results = floatArrayOf()
+        Location.distanceBetween(userLocation.latitude, userLocation.longitude, tourneyLocation.latitude, tourneyLocation.longitude, results)
+        return metersToMiles(results[0])
+    }
+
+    private fun metersToMiles(distanceMeters: Float): Double {
+        return distanceMeters * .000621371
     }
 }
