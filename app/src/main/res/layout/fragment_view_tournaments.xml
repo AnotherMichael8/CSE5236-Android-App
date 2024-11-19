@@ -58,8 +58,10 @@
             android:layout_weight="1"
             app:layout_constraintBottom_toTopOf="@id/viewTournamentsBackButtonHolder"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tournamentChronoLayout">
+            app:layout_constraintTop_toBottomOf="@id/tournamentChronoLayout"
+            app:layout_constraintVertical_bias="0.0">
 
             <LinearLayout
                 android:id="@+id/tournamentContainer"

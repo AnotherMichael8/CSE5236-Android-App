@@ -96,7 +96,9 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                 // Optional: Set OnClickListener if needed
                 setOnClickListener {
                     // Handle click event
-                    parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewGamesFragment(tournament))
+                    val viewGameFragment = ViewGamesFragment()
+                    ViewGamesFragment.setTournamentIdentifier(tournament)
+                    parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewGamesFragment())
                         .addToBackStack(null)
                         .commit()
                 }

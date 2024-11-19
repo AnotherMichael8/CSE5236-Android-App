@@ -17,10 +17,15 @@ import com.example.cse5236mobileapp.model.ViewGameAdapter
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
 import com.example.cse5236mobileapp.model.viewmodel.TournamentUsernameViewModel
 
-class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) :
-    Fragment(R.layout.fragment_view_games) {
+class ViewGamesFragment() : Fragment(R.layout.fragment_view_games) {
     companion object {
         private const val TAG = "View Games Fragment"
+        private var tournamentIdentifier : TournamentIdentifier = TournamentIdentifier("NO ID", Tournament())
+
+        fun setTournamentIdentifier(tI: TournamentIdentifier)
+        {
+            tournamentIdentifier = tI
+        }
     }
 
     //TODO: all of the game functionality
@@ -103,6 +108,7 @@ class ViewGamesFragment(private var tournamentIdentifier: TournamentIdentifier) 
             }
         }
     }
+
 
     private fun updateGamesContainer(viewGameAdapter: ViewGameAdapter, games: List<Game>) {
         viewGameAdapter.updateGames(games)
