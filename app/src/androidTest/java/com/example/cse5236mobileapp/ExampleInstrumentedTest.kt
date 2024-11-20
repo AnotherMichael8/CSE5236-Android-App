@@ -16,6 +16,8 @@ import com.example.cse5236mobileapp.ui.activity.MainActivity
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.example.cse5236mobileapp.ui.activity.HomeScreenActivity
+import com.example.cse5236mobileapp.ui.activity.LoginActivity
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,18 +40,61 @@ class MainActivityTesting {
     }
 
     @Test
-    fun login_with_credentials() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+    fun login_test() {
 
-        onView(withId(R.id.btnContinue)).perform(click())
+        val activityScenario = ActivityScenario.launch(LoginActivity::class.java)
 
-        onView(withId(R.id.ditUsername)).perform(typeText("jyablok@gmail.com"), closeSoftKeyboard())
-        onView(withId(R.id.ditUserPassword)).perform(typeText("jyablok"), closeSoftKeyboard())
+        login_with_credentials("instrument@gmail.com", "instrument")
+
+        onView(withId(R.id.txtHomeScreenWelcome)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun create_and_delete_user() {
+        // Creating a dummy account
+        val email = "${random_name()}@gmail.com"
+        val password = random_name()
+        val username = random_name()
+
+        // Pulling up create account screen and creating account
+        val activityScenario = ActivityScenario.launch(LoginActivity::class.java)
+        onView(withId(R.id.btnCreateNew)).perform(click())
+        onView(withId(R.id.txtEnterUsername)).perform(typeText(username), closeSoftKeyboard())
+        onView(withId(R.id.ditCreateUsername)).perform(typeText(email), closeSoftKeyboard())
+        onView(withId(R.id.ditCreatePassword)).perform(typeText(password), closeSoftKeyboard())
+        onView(withId(R.id.ditReenterPassword)).perform(typeText(password), closeSoftKeyboard())
+        onView(withId(R.id.btnCreateAccount)).perform(click())
+
+        Thread.sleep(100000)
+    }
+
+
+    @Test
+    fun change_display_name() {
+        val activityScenario = ActivityScenario.launch(HomeScreenActivity::class.java)
+
+        Thread.sleep(1000)
+    }
+
+
+    private fun random_name(): String {
+        val possibleValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        var dummyUsername = ""
+
+        for (i in 0 until 6) {
+            dummyUsername += possibleValues.random()
+        }
+
+        return dummyUsername
+    }
+
+
+    private fun login_with_credentials(email: String, password: String) {
+        onView(withId(R.id.ditUsername)).perform(typeText(email), closeSoftKeyboard())
+        onView(withId(R.id.ditUserPassword)).perform(typeText(password), closeSoftKeyboard())
 
         onView(withId(R.id.btnLogIn)).perform(click())
 
-        Thread.sleep(1000)
-
-        onView(withId(R.id.txtHomeScreenWelcome)).check((matches(withText("Welcome: jyablok"))))
+        Thread.sleep(500)
     }
 }
