@@ -14,6 +14,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.example.cse5236mobileapp.ui.activity.HomeScreenActivity
 import com.example.cse5236mobileapp.ui.activity.LoginActivity
 import org.hamcrest.Matchers.containsString
+import org.junit.After
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -41,6 +42,8 @@ class InstrumentUiTest {
         login_with_credentials("instrument@gmail.com", "instrument")
 
         onView(withId(R.id.txtHomeScreenWelcome)).check(matches(isDisplayed()))
+
+        logging_out()
     }
 
     @Test
@@ -91,6 +94,12 @@ class InstrumentUiTest {
 
         // Verify new welcome text (livedata)
         onView(withId(R.id.txtHomeScreenWelcome)).check(matches(withText("Welcome: $newName")))
+
+        logging_out()
+    }
+
+    private fun logging_out() {
+        onView(withId(R.id.LogoutButton)).perform(click())
     }
 
 
