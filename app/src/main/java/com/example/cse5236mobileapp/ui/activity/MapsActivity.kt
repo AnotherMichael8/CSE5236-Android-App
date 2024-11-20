@@ -31,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.lang.ref.WeakReference
 
 class MapsActivity : AppCompatActivity(),
     OnMyLocationButtonClickListener,
@@ -44,6 +45,9 @@ class MapsActivity : AppCompatActivity(),
     private lateinit var internetMonitor: Internet
 
     private var geocoding: GeocoderViewModel? = null
+
+    private val weakContext = WeakReference(this)
+    private val weakActivityReference = weakContext.get()
 
     private var geocodeStore = listOf<TournamentIdentifier>()
     private lateinit var locationTournamentAdapter : LocationTournamentAdapter
@@ -62,7 +66,12 @@ class MapsActivity : AppCompatActivity(),
         internetMonitor = Internet(this)
         internetMonitor.startMonitoring(this)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if(weakActivityReference != null) {
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(weakActivityReference.applicationContext)
+        } else {
+            Log.e(TAG,"MapsActivity is null")
+        }
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.location_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -78,7 +87,6 @@ class MapsActivity : AppCompatActivity(),
                 geocodeStore = geocodes
             }
         }
-
         val btBack = findViewById<Button>(R.id.btLocationBack)
         btBack.setOnClickListener {
             finish()
