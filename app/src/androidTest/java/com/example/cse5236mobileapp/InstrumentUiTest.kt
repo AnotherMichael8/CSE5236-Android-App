@@ -1,16 +1,11 @@
 package com.example.cse5236mobileapp
 
-import androidx.annotation.UiThread
-import androidx.test.annotation.UiThreadTest
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.IdlingResource
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.cse5236mobileapp.ui.activity.MainActivity
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -18,11 +13,10 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.example.cse5236mobileapp.ui.activity.HomeScreenActivity
 import com.example.cse5236mobileapp.ui.activity.LoginActivity
+import org.hamcrest.Matchers.containsString
 
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -30,7 +24,7 @@ import org.junit.Assert.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4ClassRunner::class)
-class MainActivityTesting {
+class InstrumentUiTest {
     @Test
     fun activityViewed() {
         // Context of the app under test.
@@ -59,26 +53,49 @@ class MainActivityTesting {
         // Pulling up create account screen and creating account
         val activityScenario = ActivityScenario.launch(LoginActivity::class.java)
         onView(withId(R.id.btnCreateNew)).perform(click())
-        onView(withId(R.id.txtEnterUsername)).perform(typeText(username), closeSoftKeyboard())
-        onView(withId(R.id.ditCreateUsername)).perform(typeText(email), closeSoftKeyboard())
-        onView(withId(R.id.ditCreatePassword)).perform(typeText(password), closeSoftKeyboard())
-        onView(withId(R.id.ditReenterPassword)).perform(typeText(password), closeSoftKeyboard())
-        onView(withId(R.id.btnCreateAccount)).perform(click())
 
-        Thread.sleep(100000)
+        // Creating account
+        create_account(username, email, password)
+        Thread.sleep(1000)
+        // Should be at home screen now
+
+        // Navigate settings menu
+        onView(withId(R.id.settingsButton)).perform(click())
+        Thread.sleep(500)
+        onView(withId(R.id.btnDeleteAccount)).perform(click())
+        Thread.sleep(500)
+
+        // Should see create account screen again
+        onView(withId(R.id.btnCreateAccount)).check(matches(isDisplayed()))
+
     }
 
 
     @Test
     fun change_display_name() {
-        val activityScenario = ActivityScenario.launch(HomeScreenActivity::class.java)
+        val activityScenario = ActivityScenario.launch(LoginActivity::class.java)
 
-        Thread.sleep(1000)
+        val newName = random_name()
+
+        // Logging in to testing account
+        login_with_credentials("instrument@gmail.com", "instrument")
+
+        // Navigate settings menu
+        onView(withId(R.id.settingsButton)).perform(click())
+        Thread.sleep(50)
+
+        // Fill in new username and submit
+        onView(withId(R.id.settingsEditUsername)).perform(typeText(newName))
+        onView(withId(R.id.settingsSubmitButton)).perform(click())
+        Thread.sleep(500)
+
+        // Verify new welcome text (livedata)
+        onView(withId(R.id.txtHomeScreenWelcome)).check(matches(withText("Welcome: $newName")))
     }
 
 
     private fun random_name(): String {
-        val possibleValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        val possibleValues = "abcdefghijklmnopqrstuvwxyz1234567890"
         var dummyUsername = ""
 
         for (i in 0 until 6) {
@@ -95,6 +112,14 @@ class MainActivityTesting {
 
         onView(withId(R.id.btnLogIn)).perform(click())
 
-        Thread.sleep(500)
+        Thread.sleep(1000)
+    }
+
+    private fun create_account(username: String, email: String, password: String) {
+        onView(withId(R.id.txtEnterUsername)).perform(typeText(username), closeSoftKeyboard())
+        onView(withId(R.id.ditCreateUsername)).perform(typeText(email), closeSoftKeyboard())
+        onView(withId(R.id.ditCreatePassword)).perform(typeText(password), closeSoftKeyboard())
+        onView(withId(R.id.ditReenterPassword)).perform(typeText(password), closeSoftKeyboard())
+        onView(withId(R.id.btnCreateAccount)).perform(click())
     }
 }

@@ -1,6 +1,8 @@
 package com.example.cse5236mobileapp.model
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -103,12 +105,14 @@ class TournamentUserRepository {
     }
 
     // Method to delete user from database
-    fun deleteUser(firebaseUser: FirebaseUser, userEmail: String){
+    fun deleteUser(firebaseUser: FirebaseUser, userEmail: String, onComplete: (Boolean) -> Unit){
         firebaseUser.delete().addOnSuccessListener {
             database.collection("Users").document(userEmail).delete()
             Log.d(TAG, "User account deleted successfully")
+            onComplete(true)
         }.addOnFailureListener { e->
             Log.e(TAG, "User account deletion failed: $e")
+            onComplete(false)
         }
     }
 

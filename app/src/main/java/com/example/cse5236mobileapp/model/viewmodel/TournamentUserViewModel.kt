@@ -1,5 +1,6 @@
 package com.example.cse5236mobileapp.model.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -154,8 +155,15 @@ class TournamentUserViewModel : ViewModel() {
 //    }
 
     // Calling deleteUser from repository
-    fun deleteUser(firebaseUser: FirebaseUser, userEmail: String) {
-        repository.deleteUser(firebaseUser, userEmail)
+    fun deleteUser(firebaseUser: FirebaseUser, userEmail: String, onComplete: (Boolean) -> Unit) {
+        repository.deleteUser(firebaseUser, userEmail) { result ->
+            if (result) {
+                onComplete(true)
+            }
+            else {
+                onComplete(false)
+            }
+        }
     }
 
     fun addTournamentForUser(tournamentID: String, playerEmailList: List<String>) {
