@@ -1,9 +1,13 @@
 package com.example.cse5236mobileapp.ui.activity
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -22,6 +26,7 @@ import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.viewmodel.GeocoderViewModel
 import com.example.cse5236mobileapp.utility.Internet
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -124,30 +129,36 @@ class MapsActivity : AppCompatActivity(),
 
         } else {
             binding.loadingSpinner.visibility = View.VISIBLE
-            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if(location != null) {
-                    val userLat = location.latitude
-                    val userLon = location.longitude
-                    val currentLatLng = LatLng(userLat, userLon)
-                    binding.loadingSpinner.visibility = View.GONE
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
-                    locationTournamentAdapter.updateUserCurrentLocation(location)
-                    Log.i(TAG, "Using last known location: <$userLat, $userLon>")
-                } else {
-                    Log.e(TAG, "Last known location is unavailable")
-                    Toast.makeText(this, "Location unavailable. Please try again later.", Toast.LENGTH_LONG).show()
+            val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+            if(isGpsEnabled){
+                fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                    if(location != null) {
+                        val userLat = location.latitude
+                        val userLon = location.longitude
+                        val currentLatLng = LatLng(userLat, userLon)
+                        binding.loadingSpinner.visibility = View.GONE
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+                        locationTournamentAdapter.updateUserCurrentLocation(location)
+                        Log.i(TAG, "Using last known location: <$userLat, $userLon>")
+                    } else {
+
+                        Log.e(TAG, "Last known location is unavailable")
+                        Toast.makeText(this, "Location unavailable. Please try again later.", Toast.LENGTH_LONG).show()
+                    }
                 }
+                enableMyLocation()
+                mMap.setOnMyLocationButtonClickListener(this)
+                mMap.setOnMyLocationClickListener(this)
+                Log.i(TAG, "Finished setting up user map")
+
+                plotMarkers(geocodeStore)
+            } else {
+                Toast.makeText(this, "Please enable GPS", Toast.LENGTH_LONG).show()
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
             }
-            enableMyLocation()
-            mMap.setOnMyLocationButtonClickListener(this)
-            mMap.setOnMyLocationClickListener(this)
-            Log.i(TAG, "Finished setting up user map")
         }
-
-        mMap.setOnMyLocationButtonClickListener(this)
-        mMap.setOnMyLocationClickListener(this)
-
-        plotMarkers(geocodeStore)
     }
 
     private fun enableMyLocation() {
