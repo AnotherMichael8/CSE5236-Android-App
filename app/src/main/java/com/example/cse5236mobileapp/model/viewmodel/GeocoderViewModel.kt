@@ -9,6 +9,7 @@ import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
@@ -24,6 +25,7 @@ class GeocoderViewModel(val context: Context) {
     val publicTournamentLive: MutableLiveData<List<TournamentIdentifier>> by lazy {
         MutableLiveData<List<TournamentIdentifier>>()
     }
+    private var listenerRegistration : ListenerRegistration? = null;
 
     init {
         getTourneyGeocodes()
@@ -33,7 +35,7 @@ class GeocoderViewModel(val context: Context) {
 
     private fun getTourneyGeocodes() {
         // Querying non-private tournaments
-        firestore.collection("Tournaments").whereEqualTo("private", false)
+        listenerRegistration = firestore.collection("Tournaments").whereEqualTo("private", false)
             .addSnapshotListener { documents, exception ->
                 if (exception != null) {
                     geocoderLive.value = emptyMap()
@@ -81,14 +83,13 @@ class GeocoderViewModel(val context: Context) {
             return null
         }
     }
-    //TODO: can be deleted
-//    fun getDistance(userLocation: LatLng, tourneyLocation: LatLng): Double {
-//        var results = floatArrayOf()
-//        Location.distanceBetween(userLocation.latitude, userLocation.longitude, tourneyLocation.latitude, tourneyLocation.longitude, results)
-//        return metersToMiles(results[0])
-//    }
-//
-//    private fun metersToMiles(distanceMeters: Float): Double {
-//        return distanceMeters * .000621371
-//    }
+    fun destroyViewModel()
+    {
+        if(listenerRegistration != null) {
+            listenerRegistration!!.remove()
+            listenerRegistration = null
+        }
+        geocoderLive.value = null
+        publicTournamentLive.value = null
+    }
 }

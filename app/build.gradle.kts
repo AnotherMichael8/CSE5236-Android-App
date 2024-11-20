@@ -85,4 +85,6 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
     implementation("com.google.maps.android:android-maps-utils:2.2.5")
+
+    //debugImplementation("com.squareup.leakcanary:leakcanary-android:2.8.1")
 }

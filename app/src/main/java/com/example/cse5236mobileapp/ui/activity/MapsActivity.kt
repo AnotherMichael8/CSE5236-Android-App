@@ -31,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.lang.ref.WeakReference
 
 class MapsActivity : AppCompatActivity(),
     OnMyLocationButtonClickListener,
@@ -47,6 +48,7 @@ class MapsActivity : AppCompatActivity(),
 
     private var geocodeStore = listOf<TournamentIdentifier>()
     private lateinit var locationTournamentAdapter : LocationTournamentAdapter
+    private lateinit var rvPublicTournaments : RecyclerView
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1001
@@ -67,7 +69,7 @@ class MapsActivity : AppCompatActivity(),
             .findFragmentById(R.id.location_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        val rvPublicTournaments = findViewById<RecyclerView>(R.id.rvPublicTournaments)
+        rvPublicTournaments = findViewById<RecyclerView>(R.id.rvPublicTournaments)
         locationTournamentAdapter = LocationTournamentAdapter(this)
         rvPublicTournaments.adapter = locationTournamentAdapter
         rvPublicTournaments.layoutManager = LinearLayoutManager(this)
@@ -86,16 +88,6 @@ class MapsActivity : AppCompatActivity(),
             //plotMarkers(geocodes)
         })
          */
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mMap.clear() // Removes all markers, overlays, etc.
-        //fusedLocationClient.removeLocationUpdates() // Stops location updates if set.
-        geocoding.publicTournamentLive.removeObservers(this) // Clear LiveData observers.
-        mMap.setOnMyLocationButtonClickListener(null)
-        mMap.setOnMyLocationClickListener(null)
-        //locationTournamentAdapter = null
     }
 
     /**
@@ -214,5 +206,12 @@ class MapsActivity : AppCompatActivity(),
         super.onDestroy()
         Log.i(TAG, "Destroying MapsActivity")
         internetMonitor.stopMonitoring()
+        mMap.clear()
+        geocoding.publicTournamentLive.removeObservers(this)
+        mMap.setOnMyLocationButtonClickListener(null)
+        mMap.setOnMyLocationClickListener(null)
+        geocoding.destroyViewModel()
+        rvPublicTournaments.adapter = null
+        rvPublicTournaments.layoutManager = null
     }
 }

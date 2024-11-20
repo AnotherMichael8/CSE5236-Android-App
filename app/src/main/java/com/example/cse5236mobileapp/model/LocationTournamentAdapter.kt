@@ -15,7 +15,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 
 class LocationTournamentAdapter (
-    private val listener: OnTournamentClickListener
+    private var listener: OnTournamentClickListener?
 ) : RecyclerView.Adapter<LocationTournamentAdapter.PublicTournamentViewHolder>(){
 
     private var publicTournaments : MutableList<TournamentIdentifier> = mutableListOf()
@@ -91,8 +91,23 @@ class LocationTournamentAdapter (
                 }
             }
             itemView.setOnClickListener{
-                listener.onTournamentClick(curTournament.tournament)
+                if(listener != null)
+                    listener!!.onTournamentClick(curTournament.tournament)
             }
         }
+    }
+    // Optional: Clean up resources in onViewRecycled
+    override fun onViewRecycled(holder: PublicTournamentViewHolder) {
+        super.onViewRecycled(holder)
+        holder.btJoin.setOnClickListener(null) // Detach listeners
+        holder.itemView.setOnClickListener(null)
+    }
+
+    // Ensure proper nullification in Activity/Fragment's onDestroy()
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        // Clean up global references in Adapter
+        userLocation = null
+        listener = null
     }
 }
