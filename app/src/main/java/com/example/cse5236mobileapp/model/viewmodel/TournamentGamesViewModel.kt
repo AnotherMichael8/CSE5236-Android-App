@@ -120,7 +120,7 @@ class TournamentGamesViewModel(private val tournamentId: String) {
             }
         }
     }
-    private fun MutableList<Game>.removeMatchUp(team1 : String, team2 : String) : Boolean
+    fun MutableList<Game>.removeMatchUp(team1 : String, team2 : String) : Boolean
     {
         var trueGame : Game?
         trueGame = null
