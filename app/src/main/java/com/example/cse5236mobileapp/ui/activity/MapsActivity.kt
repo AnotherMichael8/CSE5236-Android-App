@@ -43,7 +43,7 @@ class MapsActivity : AppCompatActivity(),
 
     private lateinit var internetMonitor: Internet
 
-    private var geocoding = GeocoderViewModel(this)
+    private var geocoding: GeocoderViewModel? = null
 
     private var geocodeStore = listOf<TournamentIdentifier>()
     private lateinit var locationTournamentAdapter : LocationTournamentAdapter
@@ -72,10 +72,13 @@ class MapsActivity : AppCompatActivity(),
         rvPublicTournaments.adapter = locationTournamentAdapter
         rvPublicTournaments.layoutManager = LinearLayoutManager(this)
 
-        geocoding.publicTournamentLive.observe(this) { geocodes ->
-            locationTournamentAdapter.updatePublicTournaments(geocodes)
-            geocodeStore = geocodes
+        if(geocoding != null){
+            geocoding!!.publicTournamentLive.observe(this) { geocodes ->
+                locationTournamentAdapter.updatePublicTournaments(geocodes)
+                geocodeStore = geocodes
+            }
         }
+
         val btBack = findViewById<Button>(R.id.btLocationBack)
         btBack.setOnClickListener {
             finish()
@@ -191,13 +194,26 @@ class MapsActivity : AppCompatActivity(),
     // If network is still available then start or continue (not sure whether to start or continue) map functionality
     override fun onNetworkAvailable() {
         Log.i(TAG, "Network available")
-        //TODO("Not yet implemented")
+        runOnUiThread {
+            if (geocoding == null) {
+                geocoding = GeocoderViewModel(this)
+                geocoding!!.publicTournamentLive.observe(this) { geocodes ->
+                    locationTournamentAdapter.updatePublicTournaments(geocodes)
+                    geocodeStore = geocodes
+                }
+            }
+            // If the map is already ready, re-plot the markers
+            if (::mMap.isInitialized) {
+                plotMarkers(geocodeStore)
+            }
+        }
     }
 
     // If network is lost then must halt map functionality before it crashes
     override fun onNetworkLost() {
         Log.i(TAG, "Network lost")
-        //TODO("Not yet implemented")
+        Toast.makeText(this, "Network connection unavailable: Locations unable to be shown. Try reloading this activity later.", Toast.LENGTH_LONG).show()
+        geocoding = null
     }
 
     override fun onDestroy() {
