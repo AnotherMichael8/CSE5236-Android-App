@@ -25,12 +25,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <!-- Left Arrow -->
-            <ImageButton
-                android:id="@+id/tournamentViewLeftButton"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:padding="16dp"
-                android:src="@drawable/baseline_arrow_left_24" />
 
             <!-- Title Text -->
             <TextView
@@ -43,12 +37,6 @@
                 android:textSize="18sp" />
 
             <!-- Right Arrow -->
-            <ImageButton
-                android:id="@+id/tournamentViewRightButton"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:padding="16dp"
-                android:src="@drawable/baseline_arrow_right_24" />
         </LinearLayout>
 
         <ScrollView
