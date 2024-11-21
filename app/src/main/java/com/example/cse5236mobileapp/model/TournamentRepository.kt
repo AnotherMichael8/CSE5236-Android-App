@@ -9,6 +9,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.UUID
@@ -41,82 +42,87 @@ class TournamentRepository {
     }
 
     // Method to modify tournament attribute
-    fun modifyTournamentAttribute(
+    suspend fun modifyTournamentAttribute(
         tournament: TournamentIdentifier, changedPropertyKey: String, newProperty: Any
     ) {
-        when (changedPropertyKey) {
-            "Address" -> tournament.tournament.address = newProperty.toString()
-            "Date" -> tournament.tournament.date = newProperty.toString()
-            "EventType" -> tournament.tournament.eventType = newProperty.toString()
-            "NumberPlayers" -> tournament.tournament.numberPlayers = newProperty.toString()
-            "Rules" -> tournament.tournament.rules = newProperty.toString()
-            "Time" -> tournament.tournament.time = newProperty.toString()
-            "TournamentName" -> tournament.tournament.tournamentName = newProperty.toString()
-            "isMorning" -> tournament.tournament.isMorning = newProperty.toBoolean()
-            "isPrivate" -> tournament.tournament.isPrivate = newProperty.toBoolean()
-        }
-        database.collection("Tournaments").document(tournament.tournamentId).update(
-            changedPropertyKey, when (changedPropertyKey) {
-                "isMorning", "isPrivate" -> newProperty.toBoolean()
-                else -> newProperty.toString()
-            }
-        ).addOnSuccessListener {
-            Log.d(TAG, tournament.tournament.tournamentName + " tournament updated successfully")
-        }.addOnFailureListener { e ->
-            Log.d(TAG, tournament.tournament.tournamentName + " error updating Tournament: $e")
-        }
-    }
-
-    // Used for advancing the tournament
-    suspend fun updateGamesAndRounds(tournament: Tournament, tournamentId: String) {
         withContext(Dispatchers.IO) {
-            val dbRef = database.collection("Tournaments").document(tournamentId)
+            when (changedPropertyKey) {
+                "Address" -> tournament.tournament.address = newProperty.toString()
+                "Date" -> tournament.tournament.date = newProperty.toString()
+                "EventType" -> tournament.tournament.eventType = newProperty.toString()
+                "NumberPlayers" -> tournament.tournament.numberPlayers = newProperty.toString()
+                "Rules" -> tournament.tournament.rules = newProperty.toString()
+                "Time" -> tournament.tournament.time = newProperty.toString()
+                "TournamentName" -> tournament.tournament.tournamentName = newProperty.toString()
+                "isMorning" -> tournament.tournament.isMorning = newProperty.toBoolean()
+                "isPrivate" -> tournament.tournament.isPrivate = newProperty.toBoolean()
+            }
 
             try {
-                dbRef.update("games", tournament.games).await()
-                dbRef.update("round", tournament.round).await()
-
-                Log.d(TAG, "Successfully updated tournament games")
-            } catch (e: Exception) {
-                Log.w(TAG, "Failed to update tournament games", e)
-            }
-        }
-    }
-
-
-    // Method to delete tournament from database
-    suspend fun deleteTournament(tournament: TournamentIdentifier) {
-        withContext(Dispatchers.IO) {
-            try {
-                database.collection("Tournaments").document(tournament.tournamentId).delete()
-                    .await()
-                database.collection("Users").document(dbUser)
-                    .update(tournament.tournamentId, FieldValue.delete()).await()
-                Log.d(null, tournament.tournament.tournamentName + " deleted successfully")
-            } catch (e: Exception) {
-                Log.e(
-                    null, tournament.tournament.tournamentName + " error deleting Tournament: $e", e
+                database.collection("Tournaments").document(tournament.tournamentId).update(
+                    changedPropertyKey, when (changedPropertyKey) {
+                        "isMorning", "isPrivate" -> newProperty.toBoolean()
+                        else -> newProperty.toString()
+                    }
+                ).await()
+                Log.d(
+                    TAG, tournament.tournament.tournamentName + " tournament updated successfully"
                 )
+            } catch (e: Exception) {
+                Log.e(TAG, tournament.tournament.tournamentName + " error updating Tournament.", e)
             }
+
         }
     }
 
+// Used for advancing the tournament
+suspend fun updateGamesAndRounds(tournament: Tournament, tournamentId: String) {
+    withContext(Dispatchers.IO) {
+        val dbRef = database.collection("Tournaments").document(tournamentId)
 
-    suspend fun addUserToTournament(tournamentId: String, previousPlayers: List<String>) {
-        withContext(Dispatchers.IO) {
-            val newPlayerList = previousPlayers.toMutableList()
-            newPlayerList.add(dbUser)
+        try {
+            dbRef.update("games", tournament.games).await()
+            dbRef.update("round", tournament.round).await()
 
-            val updatedPlayers = hashMapOf("players" to newPlayerList)
-
-            try {
-                database.collection("Tournaments").document(tournamentId)
-                    .set(updatedPlayers, SetOptions.merge()).await()
-                Log.d(TAG, "$dbUser added to $tournamentId successfully.")
-            }
-            catch (e: Exception) {
-                Log.e(TAG, "Failure to add $dbUser to $tournamentId successfully.", e)
-            }
+            Log.d(TAG, "Successfully updated tournament games")
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to update tournament games", e)
         }
     }
+}
+
+
+// Method to delete tournament from database
+suspend fun deleteTournament(tournament: TournamentIdentifier) {
+    withContext(Dispatchers.IO) {
+        try {
+            database.collection("Tournaments").document(tournament.tournamentId).delete().await()
+            database.collection("Users").document(dbUser)
+                .update(tournament.tournamentId, FieldValue.delete()).await()
+            Log.d(null, tournament.tournament.tournamentName + " deleted successfully")
+        } catch (e: Exception) {
+            Log.e(
+                null, tournament.tournament.tournamentName + " error deleting Tournament: $e", e
+            )
+        }
+    }
+}
+
+
+suspend fun addUserToTournament(tournamentId: String, previousPlayers: List<String>) {
+    withContext(Dispatchers.IO) {
+        val newPlayerList = previousPlayers.toMutableList()
+        newPlayerList.add(dbUser)
+
+        val updatedPlayers = hashMapOf("players" to newPlayerList)
+
+        try {
+            database.collection("Tournaments").document(tournamentId)
+                .set(updatedPlayers, SetOptions.merge()).await()
+            Log.d(TAG, "$dbUser added to $tournamentId successfully.")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failure to add $dbUser to $tournamentId successfully.", e)
+        }
+    }
+}
 }

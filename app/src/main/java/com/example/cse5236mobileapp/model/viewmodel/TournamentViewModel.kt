@@ -111,7 +111,9 @@ class TournamentViewModel : ViewModel() {
         changedPropertyKey: String,
         newProperty: Any
     ) {
-        repository.modifyTournamentAttribute(tournament, changedPropertyKey, newProperty)
+        viewModelScope.launch {
+            repository.modifyTournamentAttribute(tournament, changedPropertyKey, newProperty)
+        }
     }
 
     fun updateTournamentGames(tournament: Tournament, tournamentID: String) {
