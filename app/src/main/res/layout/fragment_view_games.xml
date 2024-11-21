@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/background"
     android:clickable="true"
     android:focusable="true">
 
@@ -18,16 +18,15 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:background="#B3B3B3"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gameViewText">
-
 
             <ImageButton
                 android:id="@+id/btnPreviousRound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/google_purple"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/baseline_arrow_left_24" />
 
@@ -40,15 +39,17 @@
                 android:text="@string/round_name_placeholder"
                 android:textStyle="bold"
                 android:textSize="22dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/google_purple" />
 
             <ImageButton
                 android:id="@+id/btnNextRound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/google_purple"
                 app:srcCompat="@drawable/baseline_arrow_right_24" />
         </LinearLayout>
+
 
         <TextView
             android:id="@+id/gameViewText"
@@ -58,7 +59,7 @@
             android:gravity="center"
             android:padding="16dp"
             android:text="@string/view_games_text"
-            android:textColor="@color/white"
+            android:textColor="@color/button_txt"
             android:textSize="34sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -98,6 +99,15 @@
             </Button>
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/dividerLine"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/google_purple"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,8 +34,9 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="@string/my_tournaments"
+                android:textColor="@color/google_purple"
                 android:textStyle="bold"
-                android:textSize="18sp" />
+                android:textSize="24sp" />
 
             <!-- Right Arrow -->
         </LinearLayout>
