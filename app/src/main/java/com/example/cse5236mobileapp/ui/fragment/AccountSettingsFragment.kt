@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.TournamentIdentifier
@@ -69,12 +70,15 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
 
         deleteButton.setOnClickListener {
             //Using User
-            tournamentUserViewModel.deleteUser(user, user.email!!)
-            (activity as HomeScreenActivity).finish()
-
+            tournamentUserViewModel.deleteUser(user, user.email!!) { result ->
+                if (result) {
+                    (activity as HomeScreenActivity).finish()
+                    Toast.makeText(requireContext(), "User ${user.email} is deleted.", Toast.LENGTH_LONG).show()
+                }
+                else {
+                    Toast.makeText(requireContext(), "Unable to delete ${user.email}.", Toast.LENGTH_LONG).show()
+                }
+            }
         }
-
-
     }
-
 }

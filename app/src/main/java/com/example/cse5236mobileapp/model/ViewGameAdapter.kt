@@ -199,6 +199,34 @@ class ViewGameAdapter (
                             notifyItemChanged(position)
                         }
                     }
+
+                    etPlayerOneScore.setOnKeyListener { _, keyCode, event ->
+                        if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                            updatePlayerOneScore(curGame, holder)
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    etPlayerOneScore.setOnFocusChangeListener { view, hasFocus ->
+                        if(!hasFocus && view.visibility == View.VISIBLE)
+                        {
+                            updatePlayerOneScore(curGame, holder)
+                        }
+                    }
+                    etPlayerTwoScore.setOnKeyListener { _, keyCode, event ->
+                        if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                            updatePlayerTwoScore(curGame, holder)
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    etPlayerTwoScore.setOnFocusChangeListener { view, hasFocus ->
+                        if (!hasFocus && view.visibility == View.VISIBLE) {
+                            updatePlayerTwoScore(curGame, holder)
+                        }
+                    }
                 }
                 else {
                     btFinalizeButton.visibility = View.INVISIBLE
@@ -222,35 +250,6 @@ class ViewGameAdapter (
                         }
                     }
                 }
-
-                etPlayerOneScore.setOnKeyListener { _, keyCode, event ->
-                    if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                        updatePlayerOneScore(curGame, holder)
-                        true
-                    } else {
-                        false
-                    }
-                }
-                etPlayerOneScore.setOnFocusChangeListener { view, hasFocus ->
-                    if(!hasFocus && view.visibility == View.VISIBLE)
-                    {
-                        updatePlayerOneScore(curGame, holder)
-                    }
-                }
-                etPlayerTwoScore.setOnKeyListener { _, keyCode, event ->
-                    if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                        updatePlayerTwoScore(curGame, holder)
-                        true
-                    } else {
-                        false
-                    }
-                }
-                etPlayerTwoScore.setOnFocusChangeListener { view, hasFocus ->
-                    if (!hasFocus && view.visibility == View.VISIBLE) {
-                        updatePlayerTwoScore(curGame, holder)
-                    }
-                }
-
             }
             else{
                 etPlayerOneScore.visibility = View.INVISIBLE

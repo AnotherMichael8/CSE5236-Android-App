@@ -102,14 +102,14 @@ class TournamentCreatorActivity : AppCompatActivity() {
                         tournamentVal.createInitialGames()
                         tournamentVal.generateJoinCode()
 
-                        // Creating tournament object
-                        val tournamentCode = tournamentViewModel.addTournament(tournamentVal)
 
-                        // Linking tournament to users
-                        tournamentUserViewModel.addTournamentForUser(
-                            tournamentCode,
-                            participantsArr
-                        )
+                        tournamentViewModel.addTournament(tournamentVal) { code ->
+                            // Linking tournament to users
+                            tournamentUserViewModel.addTournamentForUser(
+                                code,
+                                participantsArr
+                            )
+                        }
 
                         Toast.makeText(this, "Successfully created tournament", Toast.LENGTH_SHORT)
                             .show()

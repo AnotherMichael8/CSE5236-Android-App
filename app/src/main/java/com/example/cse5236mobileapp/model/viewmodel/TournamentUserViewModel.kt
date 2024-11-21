@@ -1,8 +1,10 @@
 package com.example.cse5236mobileapp.model.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.cse5236mobileapp.model.TournamentUser
 import com.example.cse5236mobileapp.model.TournamentUserRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -10,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 class TournamentUserViewModel : ViewModel() {
 
@@ -125,21 +128,25 @@ class TournamentUserViewModel : ViewModel() {
 
     // Calling addUserToDatabase from repository
     fun addUser(email: String, password: String, username: String, onComplete: (Boolean) -> Unit) {
-        repository.addUserToDatabase(email, password, username) { success ->
-            if (success) {
-                onComplete(true)
-            } else {
-                onComplete(false)
+        viewModelScope.launch {
+            repository.addUserToDatabase(email, password, username) { success ->
+                if (success) {
+                    onComplete(true)
+                } else {
+                    onComplete(false)
+                }
             }
         }
     }
 
     fun modifyUser(firebaseUser: FirebaseUser, newDisplayName: String, newPassword: String) {
-        if (newDisplayName != "") {
-            repository.modifyDisplayName(firebaseUser, newDisplayName)
-        }
-        if (newPassword != "") {
-            repository.modifyPassword(firebaseUser, newPassword)
+        viewModelScope.launch {
+            if (newDisplayName != "") {
+                repository.modifyDisplayName(firebaseUser, newDisplayName)
+            }
+            if (newPassword != "") {
+                repository.modifyPassword(firebaseUser, newPassword)
+            }
         }
     }
 //
@@ -154,19 +161,33 @@ class TournamentUserViewModel : ViewModel() {
 //    }
 
     // Calling deleteUser from repository
-    fun deleteUser(firebaseUser: FirebaseUser, userEmail: String) {
-        repository.deleteUser(firebaseUser, userEmail)
+    fun deleteUser(firebaseUser: FirebaseUser, userEmail: String, onComplete: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            repository.deleteUser(firebaseUser, userEmail) { result ->
+                if (result) {
+                    onComplete(true)
+                } else {
+                    onComplete(false)
+                }
+            }
+        }
     }
 
     fun addTournamentForUser(tournamentID: String, playerEmailList: List<String>) {
-        repository.addTournamentForUsers(tournamentID, playerEmailList)
+        viewModelScope.launch {
+            repository.addTournamentForUsers(tournamentID, playerEmailList)
+        }
     }
 
     fun removeTournamentForAllUsers(tournamentID: String, playerEmailList: List<String>) {
-        repository.removeTournamentForAllUsers(tournamentID, playerEmailList)
+        viewModelScope.launch {
+            repository.removeTournamentForAllUsers(tournamentID, playerEmailList)
+        }
     }
 
     fun addTournamentForUser(tournamentID: String) {
-        repository.addTournamentForUser(tournamentID)
+        viewModelScope.launch {
+            repository.addTournamentForUser(tournamentID)
+        }
     }
 }

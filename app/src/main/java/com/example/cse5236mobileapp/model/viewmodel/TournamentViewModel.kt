@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.example.cse5236mobileapp.model.TournamentRepository
@@ -12,6 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 class TournamentViewModel : ViewModel() {
 
@@ -99,8 +101,10 @@ class TournamentViewModel : ViewModel() {
     }
 
     // Calling addTournamentToDatabase from repository
-    fun addTournament(tournament: Tournament): String {
-        return repository.addTournamentToDatabase(tournament)
+    fun addTournament(tournament: Tournament, onResult: (String) -> Unit) {
+        viewModelScope.launch {
+            onResult(repository.addTournamentToDatabase(tournament))
+        }
     }
 
     // Calling modifyTournamentAttribute from repository
@@ -109,20 +113,28 @@ class TournamentViewModel : ViewModel() {
         changedPropertyKey: String,
         newProperty: Any
     ) {
-        repository.modifyTournamentAttribute(tournament, changedPropertyKey, newProperty)
+        viewModelScope.launch {
+            repository.modifyTournamentAttribute(tournament, changedPropertyKey, newProperty)
+        }
     }
 
     fun updateTournamentGames(tournament: Tournament, tournamentID: String) {
-        repository.updateGamesAndRounds(tournament, tournamentID)
+        viewModelScope.launch {
+            repository.updateGamesAndRounds(tournament, tournamentID)
+        }
     }
 
     // Calling deleteTournament from repository
     fun deleteTournament(tournamentId: TournamentIdentifier) {
-        repository.deleteTournament(tournamentId)
+        viewModelScope.launch {
+            repository.deleteTournament(tournamentId)
+        }
     }
 
     fun addUserToTournament(tournamentId: String, previousPlayers: List<String>) {
-        repository.addUserToTournament(tournamentId, previousPlayers)
+        viewModelScope.launch {
+            repository.addUserToTournament(tournamentId, previousPlayers)
+        }
     }
 }
 

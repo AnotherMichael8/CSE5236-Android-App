@@ -2,8 +2,10 @@ package com.example.cse5236mobileapp.model.viewmodel
 
 import android.content.Context
 import android.location.Geocoder
-//import android.location.Location
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.google.android.gms.maps.model.LatLng
@@ -13,8 +15,16 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.async
+import java.io.IOException
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
-class GeocoderViewModel(val context: Context) {
+class GeocoderViewModel(val context: Context): ViewModel() {
+
+    companion object {
+        private const val TAG = "GeocoderViewModel"
+    }
 
     private var firestore = Firebase.firestore
     private var user = FirebaseAuth.getInstance().currentUser?.email
@@ -46,22 +56,39 @@ class GeocoderViewModel(val context: Context) {
                 val publicTourneys = mutableListOf<TournamentIdentifier>()
                 //val tournamentGeocoded = mutableMapOf<Tournament, LatLng>()
                 if (documents != null) {
-                    for (doc in documents) {
-                        val tourneyIdentifierId= doc.id
-                        val currentTourney = doc.toObject<Tournament>()
-                        val tournamentInfo = TournamentIdentifier(tournamentId = tourneyIdentifierId, tournament = currentTourney)
-                        val geocode = addressGeocoded(currentTourney.address)
 
-                        // TODO: Check if tourney has space in it
-                        if(geocode != null) {
-                            if (!currentTourney.isTournamentFull()) {
-                                if (!currentTourney.isUserAPlayer(user)) {
+                    viewModelScope.launch {
+
+                        // Documents are being processed concurrently now
+                        val deferredResults = documents.map { doc ->
+                            async {
+                                val tourneyIdentifierId = doc.id
+                                val currentTourney = doc.toObject<Tournament>()
+                                val tournamentInfo = TournamentIdentifier(
+                                    tournamentId = tourneyIdentifierId,
+                                    tournament = currentTourney
+                                )
+                                val geocode = addressGeocoded(currentTourney.address)
+
+                                if (geocode != null &&
+                                    !currentTourney.isTournamentFull() &&
+                                    !currentTourney.isUserAPlayer(user)) {
                                     tournamentInfo.tournament.latLng = geocode
-                                    publicTourneys.add(tournamentInfo)
+                                    tournamentInfo
+                                } else {
+                                    null
                                 }
                             }
                         }
+
+                        // Wait for all coroutines to complete
+                        val results = deferredResults.mapNotNull { it.await() }
+                        publicTourneys.addAll(results)
+
+                        // Update LiveData with the results
+                        publicTournamentLive.value = publicTourneys
                     }
+
                 }
                 //geocoderLive.value = tournamentGeocoded
                 publicTournamentLive.value = publicTourneys
@@ -69,18 +96,19 @@ class GeocoderViewModel(val context: Context) {
     }
 
     private fun addressGeocoded(location: String): LatLng? {
-        val geo = Geocoder(context)
-        val results = geo.getFromLocationName(location, 1)
-        if (results != null) {
-            if (results.size > 0) {
-                val long = results[0].longitude
-                val lat = results[0].latitude
-                return (LatLng(lat, long))
+        return try {
+            val geocoder = Geocoder(context)
+            val results = geocoder.getFromLocationName(location, 1)
+            if (results.isNullOrEmpty()) {
+                Log.e(TAG, "No results found for the address: $location")
+                null
             } else {
-                return null
+                val location = results[0]
+                LatLng(location.latitude, location.longitude)
             }
-        } else {
-            return null
+        } catch (e: IOException) {
+            Log.e(TAG, "Geocoder service unavailable: ${e.message}")
+            null
         }
     }
     fun destroyViewModel()
