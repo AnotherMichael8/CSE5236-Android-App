@@ -64,4 +64,7 @@
         <item>Single Elimination</item>
     </string-array>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="tournament_name">Tournament Name</string>
+    <string name="greatest_tournment">GREATEST TOURNMENT</string>
+    <string name="join">Join</string>
 </resources>
