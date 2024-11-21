@@ -27,10 +27,7 @@ class TournamentUserRepository {
 
     // Method to add user to database
     fun addUserToDatabase(
-        email: String,
-        password: String,
-        username: String,
-        onComplete: (Boolean) -> Unit
+        email: String, password: String, username: String, onComplete: (Boolean) -> Unit
     ) {
         // Adding the tournament to the remote firestore
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
@@ -39,8 +36,7 @@ class TournamentUserRepository {
                 modifyUserDisplayName(auth.currentUser!!, username) { success ->
                     if (success) {
 
-                        database.collection("Users").document(email)
-                            .set(mapOf<String, String>())
+                        database.collection("Users").document(email).set(mapOf<String, String>())
                         database.collection("Users").document(email)
                             .set(mapOf("username" to username))
                         Log.d(TAG, "User: $email successfully added to database")
@@ -49,42 +45,37 @@ class TournamentUserRepository {
                         // TODO: Delete the current user as it is a failure
                         auth.currentUser!!.delete().addOnSuccessListener {
                             onComplete(false)
+                        }.addOnFailureListener {
+                            onComplete(true)
                         }
-                            .addOnFailureListener {
-                                onComplete(true)
-                            }
                         onComplete(false)
                     }
                 }
 
 
             }.addOnFailureListener { e ->
-            Log.e(TAG, "User failed to be created: $e")
-            onComplete(false)
-        }
+                Log.e(TAG, "User failed to be created: $e")
+                onComplete(false)
+            }
     }
 
 
     // can stay public because it makes sense for us to use this outside of the class itself
     fun modifyUserDisplayName(
-        firebaseUser: FirebaseUser,
-        newDisplayName: String,
-        onComplete: (Boolean) -> Unit
+        firebaseUser: FirebaseUser, newDisplayName: String, onComplete: (Boolean) -> Unit
     ) {
-        val profileUpdates = UserProfileChangeRequest.Builder()
-            .setDisplayName(newDisplayName)
-            .build()
+        val profileUpdates =
+            UserProfileChangeRequest.Builder().setDisplayName(newDisplayName).build()
 
-        firebaseUser.updateProfile(profileUpdates)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    println("User display name updated to $newDisplayName successfully.")
-                    onComplete(true)
-                } else {
-                    println("Failed to update display name.")
-                    onComplete(false)
-                }
+        firebaseUser.updateProfile(profileUpdates).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                println("User display name updated to $newDisplayName successfully.")
+                onComplete(true)
+            } else {
+                println("Failed to update display name.")
+                onComplete(false)
             }
+        }
 
     }
 
@@ -98,43 +89,42 @@ class TournamentUserRepository {
         }
     }
 
-    fun modifyDisplayName(firebaseUser: FirebaseUser, newDisplayName: String) {
-        val profileUpdates = userProfileChangeRequest {
-            displayName = newDisplayName
-        }
-        firebaseUser.updateProfile(profileUpdates)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Update database here
-                    firebaseUser.email?.let {
-                        database.collection("Users").document(it)
-                            .update("username", newDisplayName)
-                            .addOnSuccessListener {
-                                Log.d(
-                                    TAG,
-                                    "Successfully changed username in database"
-                                )
-                            }
-                            .addOnFailureListener {
-                                Log.w(
-                                    TAG,
-                                    "Failed to update database accordingly"
-                                )
-                            }
-                    }
-                }
+    suspend fun modifyDisplayName(firebaseUser: FirebaseUser, newDisplayName: String) {
+        withContext(Dispatchers.IO) {
+            val profileUpdates = userProfileChangeRequest {
+                displayName = newDisplayName
             }
+            try {
+                firebaseUser.updateProfile(profileUpdates).await()
+                firebaseUser.email?.let {
+                    database.collection("Users").document(it).update("username", newDisplayName)
+                        .await()
+                    Log.d(TAG, "Successfully changed username to $newDisplayName")
+                }
+            } catch (e: Exception) {
+                Log.w(
+                    TAG, "Failed to update username to $newDisplayName"
+                )
+            }
+
+        }
     }
 
+
     // Method to delete user from database
-    fun deleteUser(firebaseUser: FirebaseUser, userEmail: String, onComplete: (Boolean) -> Unit) {
-        firebaseUser.delete().addOnSuccessListener {
-            database.collection("Users").document(userEmail).delete()
-            Log.d(TAG, "User account deleted successfully")
-            onComplete(true)
-        }.addOnFailureListener { e ->
-            Log.e(TAG, "User account deletion failed: $e")
-            onComplete(false)
+    suspend fun deleteUser(
+        firebaseUser: FirebaseUser, userEmail: String, onComplete: (Boolean) -> Unit
+    ) {
+        withContext(Dispatchers.IO) {
+            try {
+                firebaseUser.delete().await()
+                database.collection("Users").document(userEmail).delete()
+                Log.d(TAG, "$userEmail account deleted successfully")
+                onComplete(true)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failure to delete $userEmail.", e)
+                onComplete(false)
+            }
         }
     }
 
@@ -163,7 +153,9 @@ class TournamentUserRepository {
                             .set(tournamentToUser, SetOptions.merge()).await()
                         Log.d(TAG, "Added tournament $tournamentID for user $player.")
                     } catch (e: Exception) {
-                        Log.e(TAG, "Failure to add tournament $tournamentID for user $player.", e)
+                        Log.e(
+                            TAG, "Failure to add tournament $tournamentID for user $player.", e
+                        )
                     }
                 }
             }
@@ -174,10 +166,10 @@ class TournamentUserRepository {
         withContext(Dispatchers.IO) {
             val tournamentToUser = mapOf(tournamentID to "User")
             try {
-                database.collection("Users").document(user).set(tournamentToUser, SetOptions.merge())
+                database.collection("Users").document(user)
+                    .set(tournamentToUser, SetOptions.merge())
                 Log.d(TAG, "Added $user to tournament $tournamentID.")
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.e(TAG, "Failure to add $user to tournament $tournamentID.")
             }
         }
@@ -185,7 +177,9 @@ class TournamentUserRepository {
 
 
     // Remove tournament for all users
-    suspend fun removeTournamentForAllUsers(tournamentID: String, playerEmailList: List<String>) {
+    suspend fun removeTournamentForAllUsers(
+        tournamentID: String, playerEmailList: List<String>
+    ) {
         withContext(Dispatchers.IO) {
             // Looping through each player on the email list
             for (playerEmail in playerEmailList) {

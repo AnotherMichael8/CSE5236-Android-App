@@ -138,11 +138,13 @@ class TournamentUserViewModel : ViewModel() {
     }
 
     fun modifyUser(firebaseUser: FirebaseUser, newDisplayName: String, newPassword: String) {
-        if (newDisplayName != "") {
-            repository.modifyDisplayName(firebaseUser, newDisplayName)
-        }
-        if (newPassword != "") {
-            repository.modifyPassword(firebaseUser, newPassword)
+        viewModelScope.launch {
+            if (newDisplayName != "") {
+                repository.modifyDisplayName(firebaseUser, newDisplayName)
+            }
+            if (newPassword != "") {
+                repository.modifyPassword(firebaseUser, newPassword)
+            }
         }
     }
 //
@@ -158,12 +160,13 @@ class TournamentUserViewModel : ViewModel() {
 
     // Calling deleteUser from repository
     fun deleteUser(firebaseUser: FirebaseUser, userEmail: String, onComplete: (Boolean) -> Unit) {
-        repository.deleteUser(firebaseUser, userEmail) { result ->
-            if (result) {
-                onComplete(true)
-            }
-            else {
-                onComplete(false)
+        viewModelScope.launch {
+            repository.deleteUser(firebaseUser, userEmail) { result ->
+                if (result) {
+                    onComplete(true)
+                } else {
+                    onComplete(false)
+                }
             }
         }
     }
