@@ -78,12 +78,12 @@ class MapsActivity : AppCompatActivity(),
         mapFragment.getMapAsync(this)
 
         rvPublicTournaments = findViewById<RecyclerView>(R.id.rvPublicTournaments)
-        locationTournamentAdapter = LocationTournamentAdapter(this)
+        locationTournamentAdapter = LocationTournamentAdapter(weakActivityReference)
         rvPublicTournaments.adapter = locationTournamentAdapter
-        rvPublicTournaments.layoutManager = LinearLayoutManager(this)
+        rvPublicTournaments.layoutManager = LinearLayoutManager(weakActivityReference)
 
         if(geocoding != null){
-            geocoding!!.publicTournamentLive.observe(this) { geocodes ->
+            geocoding?.publicTournamentLive?.observe(this) { geocodes ->
                 locationTournamentAdapter.updatePublicTournaments(geocodes)
                 geocodeStore = geocodes
             }
@@ -230,10 +230,10 @@ class MapsActivity : AppCompatActivity(),
         Log.i(TAG, "Destroying MapsActivity")
         internetMonitor.stopMonitoring()
         mMap.clear()
-        geocoding.publicTournamentLive.removeObservers(this)
+        geocoding?.publicTournamentLive?.removeObservers(this)
         mMap.setOnMyLocationButtonClickListener(null)
         mMap.setOnMyLocationClickListener(null)
-        geocoding.destroyViewModel()
+        geocoding?.destroyViewModel()
         rvPublicTournaments.adapter = null
         rvPublicTournaments.layoutManager = null
     }

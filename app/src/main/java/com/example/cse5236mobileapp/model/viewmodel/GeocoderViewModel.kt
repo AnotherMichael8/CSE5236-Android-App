@@ -113,10 +113,8 @@ class GeocoderViewModel(val context: Context): ViewModel() {
     }
     fun destroyViewModel()
     {
-        if(listenerRegistration != null) {
-            listenerRegistration!!.remove()
-            listenerRegistration = null
-        }
+        listenerRegistration?.remove()
+        listenerRegistration = null
         geocoderLive.value = null
         publicTournamentLive.value = null
     }
