@@ -120,11 +120,12 @@
             android:id="@+id/btnDeleteAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:text="@string/delete_account"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settingsSubmitButton" />
+            app:layout_constraintTop_toBottomOf="@+id/settingsSubmitButton"
+            app:layout_constraintVertical_bias="0.050000012" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrierBottom"
@@ -138,6 +139,17 @@
             android:layout_height="wrap_content"
             app:layout_constraintGuide_percent="0.15"
             android:orientation="horizontal" />
+
+        <Button
+            android:id="@+id/langButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lang_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnDeleteAccount"
+            app:layout_constraintVertical_bias="0.07999998" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

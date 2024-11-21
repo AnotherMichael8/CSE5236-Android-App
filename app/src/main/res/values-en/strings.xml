@@ -2,6 +2,7 @@
     <string name="app_name">CSE5236 Mobile App</string>
     <string name="title">Bracket Maker</string>
     <string name="logout_button">Log Out</string>
+    <string name="location_button">Locations</string>
     <string name="create_button">Create</string>
     <string name="view_button">View</string>
     <string name="settings_button_desc">Settings</string>
@@ -65,5 +66,4 @@
     <string name="title_activity_maps">MapsActivity</string>
     <!--  CHANGE ENGLISH TO SPANISH IN SPANISH FILE  -->
     <string name="lang_button">Set to Spanish?</string>
-    <string name="location_button">Locations</string>
 </resources>
