@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.cse5236mobileapp.model.TournamentUser
 import com.example.cse5236mobileapp.model.TournamentUserRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -11,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 
 class TournamentUserViewModel : ViewModel() {
 
@@ -167,14 +169,20 @@ class TournamentUserViewModel : ViewModel() {
     }
 
     fun addTournamentForUser(tournamentID: String, playerEmailList: List<String>) {
-        repository.addTournamentForUsers(tournamentID, playerEmailList)
+        viewModelScope.launch {
+            repository.addTournamentForUsers(tournamentID, playerEmailList)
+        }
     }
 
     fun removeTournamentForAllUsers(tournamentID: String, playerEmailList: List<String>) {
-        repository.removeTournamentForAllUsers(tournamentID, playerEmailList)
+        viewModelScope.launch {
+            repository.removeTournamentForAllUsers(tournamentID, playerEmailList)
+        }
     }
 
     fun addTournamentForUser(tournamentID: String) {
-        repository.addTournamentForUser(tournamentID)
+        viewModelScope.launch {
+            repository.addTournamentForUser(tournamentID)
+        }
     }
 }

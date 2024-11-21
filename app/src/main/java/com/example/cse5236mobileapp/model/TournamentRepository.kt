@@ -24,21 +24,27 @@ class TournamentRepository {
     private val dbUser = user?.email ?: "No email"
 
     // Method to add tournament to database for user
-    fun addTournamentToDatabase(tournament: Tournament): String {
-        // Generating a random key for the tournament here
-        val uuid = UUID.randomUUID().toString()
+    suspend fun addTournamentToDatabase(tournament: Tournament): String {
+            // Generating a random key for the tournament here
+            val uuid = UUID.randomUUID().toString()
 
-        // Adding the tournament to the remote firestore
-        database.collection("Tournaments").document(uuid).set(tournament)
+        withContext(Dispatchers.IO) {
+            try {
+                // Adding the tournament to the remote firestore
+                database.collection("Tournaments").document(uuid).set(tournament).await()
 
-
-        val userTournaments = mapOf(uuid to "Admin")
-        //val userAccount = user?.email ?: "No email"
-        database.collection("Users").document(dbUser).set(userTournaments, SetOptions.merge())
-
-        // Calling method here to add users to tournamentViewModel
-
-        return uuid
+                val userTournaments = mapOf(uuid to "Admin")
+                //val userAccount = user?.email ?: "No email"
+                database.collection("Users").document(dbUser)
+                    .set(userTournaments, SetOptions.merge()).await()
+                Log.d(TAG, "Successfully added tournament, $uuid, to database.")
+            }
+            catch (e: Exception) {
+                Log.e(TAG, "Failure to add tournament, $uuid, to database.")
+            }
+        }
+            // Calling method here to add users to tournamentViewModel
+            return uuid
     }
 
     // Method to modify tournament attribute
