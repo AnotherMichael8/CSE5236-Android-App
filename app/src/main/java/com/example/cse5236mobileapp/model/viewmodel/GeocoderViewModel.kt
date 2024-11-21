@@ -3,8 +3,9 @@ package com.example.cse5236mobileapp.model.viewmodel
 import android.content.Context
 import android.location.Geocoder
 import android.util.Log
-//import android.location.Location
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.TournamentIdentifier
 import com.google.android.gms.maps.model.LatLng
@@ -13,9 +14,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.async
 import java.io.IOException
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
-class GeocoderViewModel(val context: Context) {
+class GeocoderViewModel(val context: Context): ViewModel() {
 
     companion object {
         private const val TAG = "GeocoderViewModel"
@@ -50,22 +54,39 @@ class GeocoderViewModel(val context: Context) {
                 val publicTourneys = mutableListOf<TournamentIdentifier>()
                 //val tournamentGeocoded = mutableMapOf<Tournament, LatLng>()
                 if (documents != null) {
-                    for (doc in documents) {
-                        val tourneyIdentifierId= doc.id
-                        val currentTourney = doc.toObject<Tournament>()
-                        val tournamentInfo = TournamentIdentifier(tournamentId = tourneyIdentifierId, tournament = currentTourney)
-                        val geocode = addressGeocoded(currentTourney.address)
 
-                        // TODO: Check if tourney has space in it
-                        if(geocode != null) {
-                            if (!currentTourney.isTournamentFull()) {
-                                if (!currentTourney.isUserAPlayer(user)) {
+                    viewModelScope.launch {
+
+                        // Documents are being processed concurrently now
+                        val deferredResults = documents.map { doc ->
+                            async {
+                                val tourneyIdentifierId = doc.id
+                                val currentTourney = doc.toObject<Tournament>()
+                                val tournamentInfo = TournamentIdentifier(
+                                    tournamentId = tourneyIdentifierId,
+                                    tournament = currentTourney
+                                )
+                                val geocode = addressGeocoded(currentTourney.address)
+
+                                if (geocode != null &&
+                                    !currentTourney.isTournamentFull() &&
+                                    !currentTourney.isUserAPlayer(user)) {
                                     tournamentInfo.tournament.latLng = geocode
-                                    publicTourneys.add(tournamentInfo)
+                                    tournamentInfo
+                                } else {
+                                    null
                                 }
                             }
                         }
+
+                        // Wait for all coroutines to complete
+                        val results = deferredResults.mapNotNull { it.await() }
+                        publicTourneys.addAll(results)
+
+                        // Update LiveData with the results
+                        publicTournamentLive.value = publicTourneys
                     }
+
                 }
                 //geocoderLive.value = tournamentGeocoded
                 publicTournamentLive.value = publicTourneys
@@ -88,14 +109,4 @@ class GeocoderViewModel(val context: Context) {
             null
         }
     }
-    //TODO: can be deleted
-//    fun getDistance(userLocation: LatLng, tourneyLocation: LatLng): Double {
-//        var results = floatArrayOf()
-//        Location.distanceBetween(userLocation.latitude, userLocation.longitude, tourneyLocation.latitude, tourneyLocation.longitude, results)
-//        return metersToMiles(results[0])
-//    }
-//
-//    private fun metersToMiles(distanceMeters: Float): Double {
-//        return distanceMeters * .000621371
-//    }
 }
