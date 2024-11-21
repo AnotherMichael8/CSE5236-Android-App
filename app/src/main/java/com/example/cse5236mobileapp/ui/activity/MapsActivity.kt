@@ -230,10 +230,10 @@ class MapsActivity : AppCompatActivity(),
         Log.i(TAG, "Destroying MapsActivity")
         internetMonitor.stopMonitoring()
         mMap.clear()
-        geocoding.publicTournamentLive.removeObservers(this)
+        geocoding?.publicTournamentLive?.removeObservers(this)
         mMap.setOnMyLocationButtonClickListener(null)
         mMap.setOnMyLocationClickListener(null)
-        geocoding.destroyViewModel()
+        geocoding?.destroyViewModel()
         rvPublicTournaments.adapter = null
         rvPublicTournaments.layoutManager = null
     }
