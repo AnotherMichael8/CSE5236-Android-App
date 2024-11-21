@@ -128,11 +128,13 @@ class TournamentUserViewModel : ViewModel() {
 
     // Calling addUserToDatabase from repository
     fun addUser(email: String, password: String, username: String, onComplete: (Boolean) -> Unit) {
-        repository.addUserToDatabase(email, password, username) { success ->
-            if (success) {
-                onComplete(true)
-            } else {
-                onComplete(false)
+        viewModelScope.launch {
+            repository.addUserToDatabase(email, password, username) { success ->
+                if (success) {
+                    onComplete(true)
+                } else {
+                    onComplete(false)
+                }
             }
         }
     }

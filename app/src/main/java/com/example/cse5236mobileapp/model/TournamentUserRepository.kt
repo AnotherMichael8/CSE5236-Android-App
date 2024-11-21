@@ -26,16 +26,16 @@ class TournamentUserRepository {
 
 
     // Method to add user to database
-    fun addUserToDatabase(
+    suspend fun addUserToDatabase(
         email: String, password: String, username: String, onComplete: (Boolean) -> Unit
     ) {
-        // Adding the tournament to the remote firestore
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
+        withContext(Dispatchers.IO) {
+            try {
+                // Adding the tournament to the remote firestore
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).await()
 
                 modifyUserDisplayName(auth.currentUser!!, username) { success ->
                     if (success) {
-
                         database.collection("Users").document(email).set(mapOf<String, String>())
                         database.collection("Users").document(email)
                             .set(mapOf("username" to username))
@@ -51,12 +51,11 @@ class TournamentUserRepository {
                         onComplete(false)
                     }
                 }
-
-
-            }.addOnFailureListener { e ->
+            } catch (e: Exception) {
                 Log.e(TAG, "User failed to be created: $e")
                 onComplete(false)
             }
+        }
     }
 
 
