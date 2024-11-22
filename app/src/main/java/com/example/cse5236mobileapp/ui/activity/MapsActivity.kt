@@ -40,7 +40,7 @@ class MapsActivity : AppCompatActivity(),
     Internet.NetworkStateListener {
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var binding: ActivityMapsBinding
+    private var binding: ActivityMapsBinding? = null
 
     private lateinit var internetMonitor: Internet
 
@@ -62,7 +62,7 @@ class MapsActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
         internetMonitor = Internet(this)
         internetMonitor.startMonitoring(this)
@@ -78,12 +78,12 @@ class MapsActivity : AppCompatActivity(),
         mapFragment.getMapAsync(this)
 
         rvPublicTournaments = findViewById<RecyclerView>(R.id.rvPublicTournaments)
-        locationTournamentAdapter = LocationTournamentAdapter(this)
+        locationTournamentAdapter = LocationTournamentAdapter(weakActivityReference)
         rvPublicTournaments.adapter = locationTournamentAdapter
-        rvPublicTournaments.layoutManager = LinearLayoutManager(this)
+        rvPublicTournaments.layoutManager = LinearLayoutManager(weakActivityReference)
 
         if(geocoding != null){
-            geocoding!!.publicTournamentLive.observe(this) { geocodes ->
+            geocoding?.publicTournamentLive?.observe(this) { geocodes ->
                 locationTournamentAdapter.updatePublicTournaments(geocodes)
                 geocodeStore = geocodes
             }
@@ -132,13 +132,13 @@ class MapsActivity : AppCompatActivity(),
             Log.i(TAG, "User rejected permission request")
 
         } else {
-            binding.loadingSpinner.visibility = View.VISIBLE
+            binding?.loadingSpinner?.visibility = View.VISIBLE
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if(location != null) {
                     val userLat = location.latitude
                     val userLon = location.longitude
                     val currentLatLng = LatLng(userLat, userLon)
-                    binding.loadingSpinner.visibility = View.GONE
+                    binding?.loadingSpinner?.visibility = View.GONE
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
                     locationTournamentAdapter.updateUserCurrentLocation(location)
                     Log.i(TAG, "Using last known location: <$userLat, $userLon>")
@@ -233,6 +233,7 @@ class MapsActivity : AppCompatActivity(),
         geocoding?.publicTournamentLive?.removeObservers(this)
         mMap.setOnMyLocationButtonClickListener(null)
         mMap.setOnMyLocationClickListener(null)
+        binding = null
         geocoding?.destroyViewModel()
         rvPublicTournaments.adapter = null
         rvPublicTournaments.layoutManager = null
