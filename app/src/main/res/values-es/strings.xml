@@ -72,4 +72,9 @@
     <string name="title_activity_maps">MapsActivity</string>
     <!--  CHANGE ENGLISH TO SPANISH IN SPANISH FILE  -->
     <string name="lang_button">Ingles?</string>
+    <string name="enter_amount_of_players">Ingrese la cantidad de jugadores</string>
+    <string name="enter_event_type">Introduzca el tipo de evento</string>
+    <string name="date_and_time">Fecha y hora</string>
+    <string name="public_or_private">Público o privado</string>
+    <string name="rules_no_colon">Reglas</string>
 </resources>

@@ -7,7 +7,7 @@
     <string name="view_button">View</string>
     <string name="settings_button_desc">Settings</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="username_registration_text">Username</string>
     <string name="password_registration_text">Password</string>
     <string name="reenter_password_registration_text">Re-enter Password</string>
@@ -37,9 +37,9 @@
     <string name="placeholder_text">Placeholder</string>
     <string name="timeResource">Time:</string>
     <string name="dateResource">Date:</string>
-    <string name="date_placeholder">../../..</string>
-    <string name="time_placeholder">..:.. am</string>
-    <string name="numPlayersPlaceholder">#</string>
+    <string name="date_placeholder" translatable="false">../../..</string>
+    <string name="time_placeholder" translatable="false">..:.. am</string>
+    <string name="numPlayersPlaceholder" translatable="false">#</string>
     <string name="tournament_name_placeholder">Tournament Name</string>
     <string name="address_placeholder">Address:</string>
     <string name="rules">Rules:</string>
@@ -47,7 +47,7 @@
     <string name="round">Round #</string>
     <string name="round_name_placeholder">Semifinal</string>
     <string name="players">Players:</string>
-    <string name="jyablok_placeholder">jyablok</string>
+    <string name="jyablok_placeholder" translatable="false">jyablok</string>
     <string name="enter_tournament_join_code">Enter Tournament Join Code</string>
     <string name="join_tournament">Join Tournament</string>
     <string name="my_tournaments">My Tournaments</string>
@@ -63,7 +63,7 @@
     <string-array name="event_types_array">
         <item>Single Elimination</item>
     </string-array>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_maps" translatable="false">MapsActivity</string>
     <!--  CHANGE ENGLISH TO SPANISH IN SPANISH FILE  -->
     <string name="lang_button">Espanol</string>
     <string name="join_with_code">Join With Code</string>
@@ -74,4 +74,10 @@
     <string name="welcome_txt">Welcome: </string>
     <string name="tournament_name">Tournament Name</string>
     <string name="greatest_tournment">GREATEST TOURNMENT</string>
+    <string name="enter_amount_of_players">Enter Amount of Players</string>
+    <string name="enter_event_type">Enter Event Type</string>
+    <string name="date_and_time">Date and Time</string>
+    <string name="public_or_private">Public or Private</string>
+    <string name="players_no_colon">Players</string>
+    <string name="rules_no_colon">Rules</string>
 </resources>

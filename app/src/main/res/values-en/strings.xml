@@ -72,4 +72,9 @@
     <string name="title_activity_maps">MapsActivity</string>
     <!--  CHANGE ENGLISH TO SPANISH IN SPANISH FILE  -->
     <string name="lang_button">Set to Spanish?</string>
+    <string name="enter_amount_of_players">Enter Amount of Players</string>
+    <string name="enter_event_type">Enter Event Type</string>
+    <string name="date_and_time">Date and Time</string>
+    <string name="public_or_private">Public or Private</string>
+    <string name="rules_no_colon">Rules</string>
 </resources>

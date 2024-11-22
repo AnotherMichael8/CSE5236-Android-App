@@ -28,8 +28,8 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
-                android:text="Back"
-                android:textSize="12dp"
+                android:text="@string/back_button_text"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:gravity="center"
-                android:text="Enter Amount of Players"
+                android:text="@string/enter_amount_of_players"
                 app:layout_constraintBottom_toTopOf="@+id/textViewEventType"
                 app:layout_constraintEnd_toStartOf="@+id/spinnerPlayers"
                 app:layout_constraintStart_toStartOf="@+id/etTournamentName"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
-                android:text="Enter Event Type"
+                android:text="@string/enter_event_type"
                 app:layout_constraintBottom_toTopOf="@+id/textViewDate"
                 app:layout_constraintStart_toStartOf="@+id/textViewPlayers"
                 app:layout_constraintTop_toBottomOf="@+id/textViewPlayers" />
@@ -102,7 +102,7 @@
                 android:id="@+id/textViewDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date and Time"
+                android:text="@string/date_and_time"
                 app:layout_constraintBottom_toTopOf="@+id/etDate"
                 app:layout_constraintStart_toStartOf="@+id/etDate" />
 
@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Address"
+                android:text="@string/modify_address_text"
                 app:layout_constraintBottom_toTopOf="@+id/etAddress"
                 app:layout_constraintStart_toStartOf="@+id/etAddress" />
 
@@ -151,7 +151,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:background="@drawable/outline"
-                android:hint="Address"
+                android:hint="@string/modify_address_text"
                 android:inputType="textPostalAddress"
                 android:paddingStart="6dp"
                 app:layout_constraintBottom_toTopOf="@+id/tvPlayers"
@@ -162,7 +162,7 @@
                 android:id="@+id/textViewPublicPrivate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Public or Private"
+                android:text="@string/public_or_private"
                 app:layout_constraintBottom_toTopOf="@+id/rgPublicPrivate"
                 app:layout_constraintStart_toStartOf="@+id/rgPublicPrivate" />
 
@@ -170,7 +170,7 @@
                 android:id="@+id/tvPlayers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Players"
+                android:text="@string/players_no_colon"
                 app:layout_constraintBottom_toTopOf="@id/etPlayers"
                 app:layout_constraintStart_toStartOf="@+id/etPlayers" />
 
@@ -183,7 +183,7 @@
                 android:background="@drawable/outline"
                 android:hint="Player 1, Player 2, Player 3, ..."
                 android:inputType="text"
-                android:paddingStart="6dp"
+                android:paddingStart="6sp"
                 android:paddingTop="6dp"
                 app:layout_constraintBottom_toTopOf="@+id/textViewPublicPrivate"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -193,7 +193,7 @@
                 android:id="@+id/textViewRules"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rules"
+                android:text="@string/rules_no_colon"
                 app:layout_constraintBottom_toTopOf="@+id/etRules"
                 app:layout_constraintStart_toStartOf="@+id/etRules" />
 
@@ -205,9 +205,9 @@
                 android:layout_marginEnd="12dp"
                 android:background="@drawable/outline"
                 android:gravity="top"
-                android:hint="Rules"
+                android:hint="@string/rules_no_colon"
                 android:inputType="textMultiLine"
-                android:paddingStart="6dp"
+                android:paddingStart="6sp"
                 android:paddingTop="6dp"
                 app:layout_constraintBottom_toTopOf="@+id/tourCreatorBtnSubmit"
                 app:layout_constraintStart_toStartOf="@+id/textViewRules"
@@ -217,7 +217,7 @@
                 android:id="@+id/tourCreatorBtnSubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Submit"
+                android:text="@string/submit_button_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/etRules"
