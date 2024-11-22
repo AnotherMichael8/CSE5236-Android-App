@@ -96,14 +96,13 @@ class LocationTournamentAdapter (
             }
         }
     }
-    // Optional: Clean up resources in onViewRecycled
     override fun onViewRecycled(holder: PublicTournamentViewHolder) {
         super.onViewRecycled(holder)
-        holder.btJoin.setOnClickListener(null) // Detach listeners
+        holder.btJoin.setOnClickListener(null)
         holder.itemView.setOnClickListener(null)
     }
 
-    // Ensure proper nullification in Activity/Fragment's onDestroy()
+    // Ensure proper nullification in Activity onDestroy()
     override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
         super.onDetachedFromRecyclerView(recyclerView)
         // Clean up global references in Adapter
