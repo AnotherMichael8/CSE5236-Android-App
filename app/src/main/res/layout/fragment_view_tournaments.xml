@@ -87,7 +87,7 @@
                 android:id="@+id/btnGoToJoinCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Join With Code"
+                android:text="@string/join_with_code"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

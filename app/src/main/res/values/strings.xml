@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CSE5236 Mobile App</string>
+    <string name="app_name" translatable="false">CSE5236 Mobile App</string>
     <string name="title">Bracket Maker</string>
     <string name="logout_button">Log Out</string>
     <string name="create_button">Create</string>
@@ -15,7 +15,6 @@
     <string name="account_settings_text">Account Settings</string>
     <string name="new_username_text">New Username</string>
     <string name="new_password_text">New Password</string>
-    <string name="reenter_new_password_">Re-enter New Password</string>
     <string name="email">Email</string>
     <string name="log_in">Log In</string>
     <string name="create_account">Create Account</string>
@@ -36,9 +35,9 @@
     <string name="placeholder_text">Placeholder</string>
     <string name="timeResource">Time:</string>
     <string name="dateResource">Date:</string>
-    <string name="date_placeholder">../../..</string>
-    <string name="time_placeholder">..:.. am</string>
-    <string name="numPlayersPlaceholder">#</string>
+    <string name="date_placeholder" translatable="false">../../..</string>
+    <string name="time_placeholder" translatable="false">..:.. am</string>
+    <string name="numPlayersPlaceholder" translatable="false">#</string>
     <string name="tournament_name_placeholder">Tournament Name</string>
     <string name="address_placeholder">Address:</string>
     <string name="rules">Rules:</string>
@@ -46,7 +45,7 @@
     <string name="round">Round #</string>
     <string name="round_name_placeholder">Semifinal</string>
     <string name="players">Players:</string>
-    <string name="jyablok_placeholder">jyablok</string>
+    <string name="jyablok_placeholder" translatable="false">jyablok</string>
     <string name="enter_tournament_join_code">Enter Tournament Join Code</string>
     <string name="join_tournament">Join Tournament</string>
     <string name="my_tournaments">My Tournaments</string>
@@ -64,6 +63,13 @@
     </string-array>
     <string name="title_activity_maps">MapsActivity</string>
     <!--  CHANGE ENGLISH TO SPANISH IN SPANISH FILE  -->
-    <string name="lang_button">Set to Spanish?</string>
+    <string name="lang_button">Espanol</string>
     <string name="location_button">Locations</string>
+    <string name="reenter_new_password_">Re-enter New Password</string>
+    <string name="join_with_code">Join With Code</string>
+    <string name="finalize_game">Finalize Game</string>
+    <string name="unfinalize_game">Unfinalize Game</string>
+    <string name="join">Join</string>
+    <string name="games">Games</string>
+    <string name="welcome_txt">Welcome: </string>
 </resources>

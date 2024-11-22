@@ -84,7 +84,7 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                 }
             }
             val tournamentGames = Button(requireContext()).apply{
-                text = "Games"
+                text = context.getString(R.string.games)
                 setPadding(16, 16, 16, 16) // Add some padding
                 textSize = 18f // Set text size
                 // Optional: Set OnClickListener if needed

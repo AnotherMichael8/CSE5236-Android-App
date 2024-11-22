@@ -21,6 +21,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+private const val s = "Welcome:"
+
 class HomeScreenActivity : AppCompatActivity() {
     lateinit var user: Account
     lateinit var currentUser: FirebaseUser
@@ -112,6 +114,7 @@ class HomeScreenActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     fun updateWelcomeText(displayName: String) {
-        findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "Welcome: $displayName"
+        var welcome = this.getString(R.string.welcome_txt)
+        findViewById<TextView>(R.id.txtHomeScreenWelcome).text = "${welcome} $displayName"
     }
 }
