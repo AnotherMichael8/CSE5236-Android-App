@@ -64,8 +64,11 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.location)
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.rules)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
+    testImplementation("junit:junit:4.13.2")
     androidTestImplementation(libs.androidx.espresso.core)
     implementation("com.google.maps.android:android-maps-utils:2.2.5")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
@@ -85,4 +88,6 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
     implementation("com.google.maps.android:android-maps-utils:2.2.5")
+
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.8.1")
 }

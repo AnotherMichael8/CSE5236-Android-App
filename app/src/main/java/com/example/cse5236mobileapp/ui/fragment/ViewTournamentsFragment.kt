@@ -6,14 +6,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.TournamentIdentifier
-import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
 class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
     companion object {
@@ -31,9 +26,9 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
 
 
         // Livedata from viewModel
-        tournamentViewModel.userTournamentLive.observe(viewLifecycleOwner, Observer { tournaments ->
+        tournamentViewModel.userTournamentLive.observe(viewLifecycleOwner) { tournaments ->
             updateView(tournamentContainer, tournaments)
-        })
+        }
 
         // TODO: val docRef = database.collection("Tournaments").document("IDs for Tournaments (Template")
 
@@ -44,14 +39,13 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
 
         val backButton = view.findViewById<Button>(R.id.viewTournamentBackButton)
         val joinTournamentButton = view.findViewById<Button>(R.id.btnGoToJoinCode)
-        val user = FirebaseAuth.getInstance().currentUser
 
-        backButton.setOnClickListener(){
+        backButton.setOnClickListener{
             parentFragmentManager.popBackStack()
             Log.i(TAG, "Going to Home Screen from Account Settings")
         }
 
-        joinTournamentButton.setOnClickListener() {
+        joinTournamentButton.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, JoinTournamentFragment())
                 .addToBackStack(null)
                 .commit()
@@ -60,7 +54,7 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
     }
 
     // Function to reduce duplication by updating the view with tournament data
-    fun updateView(tournamentContainer: LinearLayout, tournaments: List<TournamentIdentifier>) {
+    private fun updateView(tournamentContainer: LinearLayout, tournaments: List<TournamentIdentifier>) {
         // Clear the container first, to avoid duplicate views on repeated updates
         tournamentContainer.removeAllViews()
 
@@ -90,13 +84,15 @@ class ViewTournamentsFragment : Fragment(R.layout.fragment_view_tournaments) {
                 }
             }
             val tournamentGames = Button(requireContext()).apply{
-                text = "Games"
+                text = context.getString(R.string.games)
                 setPadding(16, 16, 16, 16) // Add some padding
                 textSize = 18f // Set text size
                 // Optional: Set OnClickListener if needed
                 setOnClickListener {
                     // Handle click event
-                    parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewGamesFragment(tournament))
+                    val viewGameFragment = ViewGamesFragment()
+                    ViewGamesFragment.setTournamentIdentifier(tournament)
+                    parentFragmentManager.beginTransaction().replace(R.id.frgHomeScreenContainer, ViewGamesFragment())
                         .addToBackStack(null)
                         .commit()
                 }

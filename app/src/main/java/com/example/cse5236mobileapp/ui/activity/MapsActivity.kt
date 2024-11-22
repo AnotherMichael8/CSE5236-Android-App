@@ -3,53 +3,55 @@ package com.example.cse5236mobileapp.ui.activity
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationRequest
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
-
+import com.example.cse5236mobileapp.databinding.ActivityMapsBinding
+import com.example.cse5236mobileapp.model.LocationTournamentAdapter
+import com.example.cse5236mobileapp.model.OnTournamentClickListener
+import com.example.cse5236mobileapp.model.Tournament
+import com.example.cse5236mobileapp.model.TournamentIdentifier
+import com.example.cse5236mobileapp.model.viewmodel.GeocoderViewModel
+import com.example.cse5236mobileapp.utility.Internet
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
+import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.example.cse5236mobileapp.databinding.ActivityMapsBinding
-import com.example.cse5236mobileapp.model.LocationTournamentAdapter
-import com.example.cse5236mobileapp.model.OnTournamentClickListener
-import com.example.cse5236mobileapp.model.TournamentIdentifier
-import com.example.cse5236mobileapp.model.ViewGameAdapter
-import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
-import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
-import com.example.cse5236mobileapp.model.Tournament
-import com.example.cse5236mobileapp.model.viewmodel.GeocoderViewModel
-import com.example.cse5236mobileapp.utils.PermissionUtils
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener
-import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener
+import java.lang.ref.WeakReference
 
 class MapsActivity : AppCompatActivity(),
     OnMyLocationButtonClickListener,
     OnMyLocationClickListener, OnMapReadyCallback,
-    OnRequestPermissionsResultCallback, OnTournamentClickListener{
+    OnRequestPermissionsResultCallback, OnTournamentClickListener,
+    Internet.NetworkStateListener {
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var binding: ActivityMapsBinding
-    private val tournamentViewModel = TournamentViewModel()
+    private var binding: ActivityMapsBinding? = null
 
-    private var geocoding = GeocoderViewModel(this)
+    private lateinit var internetMonitor: Internet
+
+    private var geocoding: GeocoderViewModel? = null
+
+    private val weakContext = WeakReference(this)
+    private val weakActivityReference = weakContext.get()
 
     private var geocodeStore = listOf<TournamentIdentifier>()
     private lateinit var locationTournamentAdapter : LocationTournamentAdapter
+    private lateinit var rvPublicTournaments : RecyclerView
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1001
@@ -60,22 +62,32 @@ class MapsActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
 
         binding = ActivityMapsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        internetMonitor = Internet(this)
+        internetMonitor.startMonitoring(this)
+
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        if(weakActivityReference != null) {
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(weakActivityReference.applicationContext)
+        } else {
+            Log.e(TAG,"MapsActivity is null")
+        }
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.location_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        val rvPublicTournaments = findViewById<RecyclerView>(R.id.rvPublicTournaments)
-        locationTournamentAdapter = LocationTournamentAdapter(this)
+        rvPublicTournaments = findViewById<RecyclerView>(R.id.rvPublicTournaments)
+        locationTournamentAdapter = LocationTournamentAdapter(weakActivityReference)
         rvPublicTournaments.adapter = locationTournamentAdapter
-        rvPublicTournaments.layoutManager = LinearLayoutManager(this)
+        rvPublicTournaments.layoutManager = LinearLayoutManager(weakActivityReference)
 
-        geocoding.publicTournamentLive.observe(this, Observer { geocodes ->
-            locationTournamentAdapter.updatePublicTournaments(geocodes)
-            geocodeStore = geocodes
-        })
+        if(geocoding != null){
+            geocoding?.publicTournamentLive?.observe(this) { geocodes ->
+                locationTournamentAdapter.updatePublicTournaments(geocodes)
+                geocodeStore = geocodes
+            }
+        }
         val btBack = findViewById<Button>(R.id.btLocationBack)
         btBack.setOnClickListener {
             finish()
@@ -112,40 +124,43 @@ class MapsActivity : AppCompatActivity(),
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(
-                    android.Manifest.permission.ACCESS_FINE_LOCATION,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
                 ),
                 LOCATION_PERMISSION_REQUEST_CODE
             )
             Log.i(TAG, "User rejected permission request")
 
         } else {
+            binding?.loadingSpinner?.visibility = View.VISIBLE
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if(location != null) {
                     val userLat = location.latitude
                     val userLon = location.longitude
                     val currentLatLng = LatLng(userLat, userLon)
+                    binding?.loadingSpinner?.visibility = View.GONE
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
                     locationTournamentAdapter.updateUserCurrentLocation(location)
-                    Log.i(TAG, "User Location retrieved: <$userLat, $userLon>")
+                    Log.i(TAG, "Using last known location: <$userLat, $userLon>")
                 } else {
-                    Log.e(TAG, "No user location")
+                    Log.e(TAG, "Last known location is unavailable")
+                    Toast.makeText(this, "Location unavailable. Please try again later.", Toast.LENGTH_LONG).show()
                 }
             }
             enableMyLocation()
-            googleMap.setOnMyLocationButtonClickListener(this)
-            googleMap.setOnMyLocationClickListener(this)
+            mMap.setOnMyLocationButtonClickListener(this)
+            mMap.setOnMyLocationClickListener(this)
             Log.i(TAG, "Finished setting up user map")
         }
 
-        googleMap.setOnMyLocationButtonClickListener(this)
-        googleMap.setOnMyLocationClickListener(this)
+        mMap.setOnMyLocationButtonClickListener(this)
+        mMap.setOnMyLocationClickListener(this)
 
         plotMarkers(geocodeStore)
     }
 
     private fun enableMyLocation() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return
         }
         mMap.isMyLocationEnabled = true
@@ -183,5 +198,44 @@ class MapsActivity : AppCompatActivity(),
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tournament.latLng!!, 15f))
             mMap.addMarker(MarkerOptions().position(tournament.latLng!!).title(tournament.tournamentName))
         }
+    }
+
+    // If network is still available then start or continue (not sure whether to start or continue) map functionality
+    override fun onNetworkAvailable() {
+        Log.i(TAG, "Network available")
+        runOnUiThread {
+            if (geocoding == null) {
+                geocoding = GeocoderViewModel(this)
+                geocoding!!.publicTournamentLive.observe(this) { geocodes ->
+                    locationTournamentAdapter.updatePublicTournaments(geocodes)
+                    geocodeStore = geocodes
+                }
+            }
+            // If the map is already ready, re-plot the markers
+            if (::mMap.isInitialized) {
+                plotMarkers(geocodeStore)
+            }
+        }
+    }
+
+    // If network is lost then must halt map functionality before it crashes
+    override fun onNetworkLost() {
+        Log.i(TAG, "Network lost")
+        Toast.makeText(this, "Network connection unavailable: Locations unable to be shown. Try reloading this activity later.", Toast.LENGTH_LONG).show()
+        geocoding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "Destroying MapsActivity")
+        internetMonitor.stopMonitoring()
+        mMap.clear()
+        geocoding?.publicTournamentLive?.removeObservers(this)
+        mMap.setOnMyLocationButtonClickListener(null)
+        mMap.setOnMyLocationClickListener(null)
+        binding = null
+        geocoding?.destroyViewModel()
+        rvPublicTournaments.adapter = null
+        rvPublicTournaments.layoutManager = null
     }
 }

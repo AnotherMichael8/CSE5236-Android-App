@@ -23,7 +23,7 @@ class ModifyTextFragment(private var modifyTournamentsFragment: ModifyTournament
         super.onViewCreated(view, savedInstanceState)
 
         // Initialize EditText
-        editText = view.findViewById<EditText>(R.id.modifyTextEditText)
+        editText = view.findViewById(R.id.modifyTextEditText)
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // You can leave this empty if you don't need it
@@ -37,7 +37,7 @@ class ModifyTextFragment(private var modifyTournamentsFragment: ModifyTournament
         })
 
         // Initialize EditText Text
-        editTextText = view.findViewById<TextView>(R.id.modifyBooleanText)
+        editTextText = view.findViewById(R.id.modifyBooleanText)
     }
 
     fun updateEditTextHintAndInputType(newHint: String, inputType: Int){

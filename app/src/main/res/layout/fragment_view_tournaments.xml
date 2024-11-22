@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/background"
     android:clickable="true"
     android:focusable="true">
 
@@ -25,12 +25,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <!-- Left Arrow -->
-            <ImageButton
-                android:id="@+id/tournamentViewLeftButton"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:padding="16dp"
-                android:src="@drawable/baseline_arrow_left_24" />
 
             <!-- Title Text -->
             <TextView
@@ -40,15 +34,11 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="@string/my_tournaments"
-                android:textSize="18sp" />
+                android:textColor="@color/google_purple"
+                android:textStyle="bold"
+                android:textSize="24sp" />
 
             <!-- Right Arrow -->
-            <ImageButton
-                android:id="@+id/tournamentViewRightButton"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:padding="16dp"
-                android:src="@drawable/baseline_arrow_right_24" />
         </LinearLayout>
 
         <ScrollView
@@ -58,8 +48,10 @@
             android:layout_weight="1"
             app:layout_constraintBottom_toTopOf="@id/viewTournamentsBackButtonHolder"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tournamentChronoLayout">
+            app:layout_constraintTop_toBottomOf="@id/tournamentChronoLayout"
+            app:layout_constraintVertical_bias="0.0">
 
             <LinearLayout
                 android:id="@+id/tournamentContainer"
@@ -97,7 +89,7 @@
                 android:id="@+id/btnGoToJoinCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Join With Code"
+                android:text="@string/join_with_code"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

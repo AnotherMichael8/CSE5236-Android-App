@@ -1,8 +1,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!--Background-->
-    <solid android:color="#E1E3F5" />
+    <solid android:color="@color/locations_list_background" />
     <!--Rounded Corners-->
     <corners android:radius="16dp" />
     <!--Outline-->
-    <stroke android:width="2dp" android:color="#C5C6D6" />
+    <stroke android:width="2dp" android:color="@color/google_purple" />
 </shape>

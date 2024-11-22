@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:textAlignment="center"
-    android:background="@color/white"
+    android:background="@color/background"
     android:clickable="true"
     android:focusable="true">
 
@@ -17,6 +17,8 @@
         android:text="@string/tournament_modify_text"
         android:textAlignment="center"
         android:textSize="34sp"
+        android:textColor="@color/google_purple"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

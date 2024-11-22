@@ -8,18 +8,14 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.PlayerNameAdapter
 import com.example.cse5236mobileapp.model.Tournament
 import com.example.cse5236mobileapp.model.TournamentIdentifier
-import com.example.cse5236mobileapp.model.TournamentUser
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
-import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.example.cse5236mobileapp.model.viewmodel.TournamentUsernameViewModel
-import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -29,7 +25,7 @@ import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 class TournamentInformationFragment(private val tournamentIdentifier: TournamentIdentifier) : Fragment() {
 
     private val tournamentGamesViewModel =  TournamentGamesViewModel(tournamentIdentifier.tournamentId)
-    private var tournamentUsernameViewModel = TournamentUsernameViewModel(mutableListOf<String>())
+    private var tournamentUsernameViewModel = TournamentUsernameViewModel(mutableListOf())
     private lateinit var playerNameAdapter: PlayerNameAdapter
 
 
@@ -47,23 +43,23 @@ class TournamentInformationFragment(private val tournamentIdentifier: Tournament
         playerNameRecyclerView.adapter = playerNameAdapter
         playerNameRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        tournamentUsernameViewModel.emailToUsername.observe(viewLifecycleOwner, Observer { tournamentMap ->
+        tournamentUsernameViewModel.emailToUsername.observe(viewLifecycleOwner) { tournamentMap ->
             if (tournamentMap != null) {
                 updatePlayerNames(tournamentMap.values.toList())
             }
-        })
+        }
 
 
-        tournamentGamesViewModel.tournamentLive.observe(viewLifecycleOwner, Observer { tournament ->
+        tournamentGamesViewModel.tournamentLive.observe(viewLifecycleOwner) { tournament ->
             if (tournament != null) {
                 tournamentUsernameViewModel.updateEmailList(tournament.players)
                 updateView(tournament, tournamentLayout)
             }
-        })
+        }
 
-        tournamentGamesViewModel.currentUserAdminPrivileges.observe(viewLifecycleOwner, Observer { priv ->
+        tournamentGamesViewModel.currentUserAdminPrivileges.observe(viewLifecycleOwner) { priv ->
             updateEditButton(priv, view)
-        })
+        }
 
         // TODO: Add on click listener for buttons
 

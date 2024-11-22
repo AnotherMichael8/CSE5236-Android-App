@@ -1,13 +1,9 @@
 package com.example.cse5236mobileapp.model
 
-import android.nfc.Tag
-import android.os.Handler
-import android.os.Looper
-import android.text.Editable
-import android.view.LayoutInflater
-import android.view.View
 import android.util.Log
 import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
@@ -15,7 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
-import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
+import kotlin.math.pow
 
 class ViewGameAdapter (
     private val tournamentIdentifier: TournamentIdentifier,
@@ -60,7 +56,7 @@ class ViewGameAdapter (
                 //val test1 = updatedGames[i].round == currentRound + 1
                 //val test2 = !(eachRoundGames[currentRound][roundItemCnt].equals(updatedGames[i]))
                 if (updatedGames[i].round == currentRound + 1) {
-                    if(!(eachRoundGames[currentRound][updatedGames[i].gamePosition].equals(updatedGames[i]))) {
+                    if(eachRoundGames[currentRound][updatedGames[i].gamePosition] != updatedGames[i]) {
                         if (updatedGames[i].gameStatus == "Final" && eachRoundGames[currentRound][updatedGames[i].gamePosition].gameStatus != "Final") {
                             addNextRoundGame(updatedGames[i].gamePosition, updatedGames[i])
                         }
@@ -77,32 +73,29 @@ class ViewGameAdapter (
     {
         for(i in 0..< numRounds)
         {
-            repeat(Math.pow(2.0, i.toDouble()).toInt())
+            repeat(2.0.pow(i.toDouble()).toInt())
             {
                 eachRoundGames[numRounds - 1 - i].add(Game(round = numRounds - i))
             }
         }
         for(i in updatedGames.indices)
         {
-            eachRoundGames[updatedGames[i].round - 1].set(updatedGames[i].gamePosition, updatedGames[i])
+            eachRoundGames[updatedGames[i].round - 1][updatedGames[i].gamePosition] = updatedGames[i]
         }
+        // TODO: Optimize these function calls
         notifyDataSetChanged()
     }
     private fun addNextRoundGame(position: Int, game: Game)
     {
         if(currentRound < numRounds - 1) {
-            var advancedPlayer = ""
-            if(game.teamOneScore > game.teamTwoScore)
-            {
-                advancedPlayer = game.teamOne
-            }
-            else
-            {
-                advancedPlayer = game.teamTwo
+            val advancedPlayer: String = if(game.teamOneScore > game.teamTwoScore) {
+                game.teamOne
+            } else {
+                game.teamTwo
             }
 
             val gameObject = eachRoundGames[currentRound + 1][position / 2]
-            val oldGame = Pair<String, String>(gameObject.teamOne, gameObject.teamTwo)
+            val oldGame = Pair(gameObject.teamOne, gameObject.teamTwo)
             if(position % 2 == 0) {
                 gameObject.teamOne = advancedPlayer
             }
@@ -118,6 +111,7 @@ class ViewGameAdapter (
         if(currentRound < numRounds - 1) {
             currentRound++
         }
+        // TODO: Optimize these function calls
         notifyDataSetChanged()
         return currentRound + 1
     }
@@ -126,15 +120,17 @@ class ViewGameAdapter (
         if(currentRound > 0){
             currentRound--
         }
+        // TODO: Optimize these function calls
         notifyDataSetChanged()
         return currentRound + 1
     }
     fun updateUserPrivileges(privileges : String)
     {
         this.privileges = privileges
+        // TODO: Optimize these function calls
         notifyDataSetChanged()
     }
-    private fun updatePlayerOneScore(curGame: Game, holder: GameViewHolder, position: Int)
+    private fun updatePlayerOneScore(curGame: Game, holder: GameViewHolder)
     {
         val newScore = holder.etPlayerOneScore.text.toString().trim().toIntOrNull()
         if (newScore != null) {
@@ -147,7 +143,7 @@ class ViewGameAdapter (
             Log.i("Adapter", "Invalid input for score")
         }
     }
-    private fun updatePlayerTwoScore(curGame: Game, holder: GameViewHolder, position: Int)
+    private fun updatePlayerTwoScore(curGame: Game, holder: GameViewHolder)
     {
         val newScore = holder.etPlayerTwoScore.text.toString().trim().toIntOrNull()
         if (newScore != null) {
@@ -203,6 +199,34 @@ class ViewGameAdapter (
                             notifyItemChanged(position)
                         }
                     }
+
+                    etPlayerOneScore.setOnKeyListener { _, keyCode, event ->
+                        if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                            updatePlayerOneScore(curGame, holder)
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    etPlayerOneScore.setOnFocusChangeListener { view, hasFocus ->
+                        if(!hasFocus && view.visibility == View.VISIBLE)
+                        {
+                            updatePlayerOneScore(curGame, holder)
+                        }
+                    }
+                    etPlayerTwoScore.setOnKeyListener { _, keyCode, event ->
+                        if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                            updatePlayerTwoScore(curGame, holder)
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    etPlayerTwoScore.setOnFocusChangeListener { view, hasFocus ->
+                        if (!hasFocus && view.visibility == View.VISIBLE) {
+                            updatePlayerTwoScore(curGame, holder)
+                        }
+                    }
                 }
                 else {
                     btFinalizeButton.visibility = View.INVISIBLE
@@ -226,35 +250,6 @@ class ViewGameAdapter (
                         }
                     }
                 }
-
-                etPlayerOneScore.setOnKeyListener { v, keyCode, event ->
-                    if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                        updatePlayerOneScore(curGame, holder, position)
-                        true
-                    } else {
-                        false
-                    }
-                }
-                etPlayerOneScore.setOnFocusChangeListener { view, hasFocus ->
-                    if(!hasFocus && view.visibility == View.VISIBLE)
-                    {
-                        updatePlayerOneScore(curGame, holder, position)
-                    }
-                }
-                etPlayerTwoScore.setOnKeyListener { v, keyCode, event ->
-                    if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                        updatePlayerTwoScore(curGame, holder, position)
-                        true
-                    } else {
-                        false
-                    }
-                }
-                etPlayerTwoScore.setOnFocusChangeListener { view, hasFocus ->
-                    if (!hasFocus && view.visibility == View.VISIBLE) {
-                        updatePlayerTwoScore(curGame, holder, position)
-                    }
-                }
-
             }
             else{
                 etPlayerOneScore.visibility = View.INVISIBLE
@@ -274,16 +269,14 @@ class ViewGameAdapter (
     private fun linkPlayerName(previousName: String): String {
         // Converting previous name to int
         val previousInt = previousName.toIntOrNull()
-        if (previousInt != null) {
+        return if (previousInt != null) {
             if (previousInt < players.size) {
-                return playerMap[players[previousInt]] ?: previousName
+                playerMap[players[previousInt]] ?: previousName
+            } else {
+                "TBD"
             }
-            else {
-                return "TBD"
-            }
-        }
-        else {
-            return playerMap[previousName] ?: previousName
+        } else {
+            playerMap[previousName] ?: previousName
         }
     }
 
@@ -292,8 +285,9 @@ class ViewGameAdapter (
     }
 
     fun updatePlayerMap(updatedPlayerMap: Map<String, String>) {
-        if(!playerMap.equals(updatedPlayerMap)) {
+        if(playerMap != updatedPlayerMap) {
             playerMap = updatedPlayerMap
+            // TODO: Optimize these function calls
             notifyDataSetChanged()
         }
     }

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="background">#F5F5F5</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="google_purple">#634E9E</color>
+    <color name="google_purple_opposite">#D0BCFF</color>
+    <color name="locations_list_background">#E1E3F5</color>
+    <color name="locations_list_small_box_background">#D1D4ED</color>
+    <color name="welcome_txt">#725AA8</color>
+    <color name="button_txt">@color/white</color>
 </resources>

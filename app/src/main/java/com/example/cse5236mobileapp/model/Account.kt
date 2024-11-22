@@ -5,12 +5,9 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.auth.ktx.userProfileChangeRequest
-import com.google.firebase.ktx.Firebase
 import java.io.Serializable
 
-class Account(val uid: String?, val username: String?) : Serializable {
+class Account : Serializable {
     companion object {
         fun checkCreateUserInfo(context: Context, username: String, password: String, reentered: String, displayName: String): Boolean {
             // Checking the three fields to see if they're empty
@@ -53,7 +50,7 @@ class Account(val uid: String?, val username: String?) : Serializable {
             return true
         }
 
-        fun login(auth: FirebaseAuth, context: Context, username: String, password: String, onResult: (Boolean) -> Unit) {
+        fun login(auth: FirebaseAuth, username: String, password: String, onResult: (Boolean) -> Unit) {
             auth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
