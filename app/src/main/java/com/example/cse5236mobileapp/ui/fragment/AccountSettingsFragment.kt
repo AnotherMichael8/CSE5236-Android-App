@@ -55,7 +55,6 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
         val newPasswordTextField = view.findViewById<EditText>(R.id.settingsEditPassword)
         val reenteredPasswordTextField = view.findViewById<EditText>(R.id.settingsReenterPassword)
         val deleteButton = view.findViewById<Button>(R.id.btnDeleteAccount)
-        val languageButton = view.findViewById<Button>(R.id.langButton)
 
         backButton.setOnClickListener{
             parentFragmentManager.beginTransaction().remove(this).commit()
@@ -85,16 +84,5 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
                 }
             }
         }
-
-        languageButton.setOnClickListener{
-            if(requireContext().resources.configuration.locales[0] == Locale.US){
-                val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags("es")
-                AppCompatDelegate.setApplicationLocales(appLocale)
-            } else {
-                val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags("en")
-                AppCompatDelegate.setApplicationLocales(appLocale)
-            }
-        }
-
     }
 }
