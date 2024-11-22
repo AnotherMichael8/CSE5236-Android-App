@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">CSE5236 Mobile App</string>
+    <string name="title">Generador de quiniela</string>
+    <string name="location_button">Ubicaciones</string>
+    <string name="logout_button">Salir</string>
+    <string name="create_button">Crear</string>
+    <string name="view_button">Ver</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="settings_button_desc">Ajustes</string>
+    <string name="hello_blank_fragment">\?</string>
+    <string name="username_registration_text">Nombre de usuario</string>
+    <string name="password_registration_text">Contraseña</string>
+    <string name="reenter_password_registration_text">Contraseña de nuevo</string>
+    <string name="submit_button_text">Entregar</string>
+    <string name="back_button_text">Atras</string>
+    <string name="account_settings_text">Ajustes de cuenta</string>
+    <string name="new_username_text">Nueva contraseña</string>
+    <string name="new_password_text">Nuevo usuario</string>
+    <string name="reenter_new_password_">Nueva contraseña otra vez</string>
+    <string name="email">Email</string>
+    <string name="log_in">Registro</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="delete_account">Borrar cuenta</string>
+    <string name="tournaments_today">Torneos hoy</string>
+    <string name="tournament_modify_text">Seleccione la propiedad para modificar</string>
+    <string name="modify_address_text">Direccion</string>
+    <string name="modify_date_text">Fecha</string>
+    <string name="modify_event_type_text">Tipo de evento</string>
+    <string name="modify_number_players_text">Numero de jugadores</string>
+    <string name="modify_rules_text">Reglas</string>
+    <string name="modify_time_text">Tiempo</string>
+    <string name="modify_tournament_name_text">Nombre de torneo</string>
+    <string name="modify_is_morning_text">Es mañana</string>
+    <string name="modify_is_private_text">Es privado</string>
+    <string name="delete_tournament_text">Borrar Torneo</string>
+    <string name="view_games_text">Juegos</string>
+    <string name="placeholder_text">Comodin</string>
+    <string name="timeResource">Tiempo:</string>
+    <string name="dateResource">Fecha:</string>
+    <string name="date_placeholder">../../..</string>
+    <string name="time_placeholder">..:.. am</string>
+    <string name="numPlayersPlaceholder">#</string>
+    <string name="tournament_name_placeholder">Nombre de Torneo</string>
+    <string name="address_placeholder">Direccion:</string>
+    <string name="rules">Reglas:</string>
+    <string name="sampleRuleStringPlaceholder">In the simplest terms, overtime occurs when the game is tied at the end of regulation (through four quarters), and the team that scores the most points in overtime wins the game. Unlike in the NFL, each team gets one possession from the opponent\'s 25-yard line to begin overtime. If either team outscores the other during the first overtime period, that team wins the game. If it remains tied at the end of the first overtime, another overtime period is played with each team again starting from the 25-yard line. If the game is still tied after two overtime periods, both teams alternate 2-point conversion attempts to determine a winner. Another rule that differs from NFL overtime is the clock. In college football, there is no game clock in overtime, as each team gets possession regardless of how long the previous series takes. There is still a play clock in overtime periods. If the game is tied at the end of regulation, the captain of the visiting team calls heads or tails. The side that wins the toss chooses whether to start on offense or defense, or which end of the field it will defend in the first overtime period. The side that loses the toss chooses from the remaining option. Typically, teams will choose to defend first in overtime for a very simple reason: They want to know how many points they\'ll need to score on their offensive possession. If the team that starts on offense scores a touchdown, the other team knows it can\'t settle for a field goal on its offensive possession. Conversely, if the initial team fails to score at all, a field goal would win it for the other team.</string>
+    <string name="round">No. Ronda</string>
+    <string name="round_name_placeholder">Semifinal</string>
+    <string name="players">Jugadores:</string>
+    <string name="jyablok_placeholder">jyablok</string>
+    <string name="enter_tournament_join_code">Escribe Codigo de Torneo</string>
+    <string name="join_tournament">Unir Torneo</string>
+    <string name="my_tournaments">Mis Torneos</string>
+    <string name="continue_txt">Continuar</string>
+    <string name="join_code">Codigo:</string>
+    <string name="join_with_code">Unir con Codigo</string>
+    <string name="finalize_game">Finalizar Juego</string>
+    <string name="unfinalize_game">Desfinalizar Juego</string>
+    <string name="join">Unir</string>
+    <string name="games">Juegos</string>
+    <string name="welcome_txt">"Bienvenido: "</string>
+    <string name="search_tournament_text">Buscar Torneo</string>
+    <string-array name="players_array">
+        <item>4</item>
+        <item>8</item>
+        <item>16</item>
+    </string-array>
+
+    <string-array name="event_types_array">
+        <item>Single Elimination</item>
+    </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
+    <!--  CHANGE ENGLISH TO SPANISH IN SPANISH FILE  -->
+    <string name="lang_button">Ingles?</string>
+</resources>
