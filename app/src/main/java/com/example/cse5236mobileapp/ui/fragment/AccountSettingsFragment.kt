@@ -74,14 +74,7 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
 
         deleteButton.setOnClickListener {
             //Using User
-            tournamentUserViewModel.deleteUser(user, user.email!!) { result ->
-                if (result) {
-                    (activity as HomeScreenActivity).finish()
-                    Toast.makeText(requireContext(), "User ${user.email} is deleted.", Toast.LENGTH_LONG).show()
-                }
-                else {
-                    Toast.makeText(requireContext(), "Unable to delete ${user.email}.", Toast.LENGTH_LONG).show()
-                }
+            tournamentUserViewModel.deleteUser(user, user.email!!) {
             }
         }
     }

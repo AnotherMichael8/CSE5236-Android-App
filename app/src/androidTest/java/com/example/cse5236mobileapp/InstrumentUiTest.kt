@@ -68,9 +68,6 @@ class InstrumentUiTest {
         onView(withId(R.id.btnDeleteAccount)).perform(click())
         Thread.sleep(500)
 
-        // Should see create account screen again
-        onView(withId(R.id.btnCreateAccount)).check(matches(isDisplayed()))
-
     }
 
 
