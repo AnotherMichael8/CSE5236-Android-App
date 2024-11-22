@@ -1,11 +1,15 @@
 package com.example.cse5236mobileapp.ui.fragment
 
+import android.content.Context
+import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.cse5236mobileapp.R
 import com.example.cse5236mobileapp.model.TournamentIdentifier
@@ -13,6 +17,8 @@ import com.example.cse5236mobileapp.model.viewmodel.TournamentUserViewModel
 import com.example.cse5236mobileapp.model.viewmodel.TournamentViewModel
 import com.example.cse5236mobileapp.ui.activity.HomeScreenActivity
 import com.google.firebase.auth.FirebaseAuth
+import java.util.Locale
+import androidx.core.os.LocaleListCompat
 
 class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
     companion object {
@@ -23,10 +29,8 @@ class AccountSettingsFragment : Fragment(R.layout.fragment_account_settings) {
     private val tournamentUserViewModel = TournamentUserViewModel()
     private val userTournamentList = mutableListOf<String>()
     private val userTournamentIdentifierList = mutableListOf<TournamentIdentifier>()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // Creating Firebase reference
         val user = FirebaseAuth.getInstance().currentUser!!
         tournamentUserViewModel.allUsersInfoLive.observe(viewLifecycleOwner) { tournamentUsers ->
