@@ -59,14 +59,14 @@ class InstrumentUiTest {
 
         // Creating account
         create_account(username, email, password)
-        Thread.sleep(1000)
+        Thread.sleep(5000)
         // Should be at home screen now
 
         // Navigate settings menu
         onView(withId(R.id.settingsButton)).perform(click())
-        Thread.sleep(500)
+        Thread.sleep(5000)
         onView(withId(R.id.btnDeleteAccount)).perform(click())
-        Thread.sleep(500)
+        Thread.sleep(5000)
 
     }
 
@@ -82,12 +82,13 @@ class InstrumentUiTest {
 
         // Navigate settings menu
         onView(withId(R.id.settingsButton)).perform(click())
-        Thread.sleep(50)
+        Thread.sleep(5000)
 
         // Fill in new username and submit
-        onView(withId(R.id.settingsEditUsername)).perform(typeText(newName))
+        onView(withId(R.id.settingsEditUsername)).perform(typeText(newName), closeSoftKeyboard())
+        Thread.sleep(5000)
         onView(withId(R.id.settingsSubmitButton)).perform(click())
-        Thread.sleep(500)
+        Thread.sleep(5000)
 
         // Verify new welcome text (livedata)
         onView(withId(R.id.txtHomeScreenWelcome)).check(matches(withText("Welcome: $newName")))
@@ -116,9 +117,10 @@ class InstrumentUiTest {
         onView(withId(R.id.ditUsername)).perform(typeText(email), closeSoftKeyboard())
         onView(withId(R.id.ditUserPassword)).perform(typeText(password), closeSoftKeyboard())
 
+        Thread.sleep(5000)
         onView(withId(R.id.btnLogIn)).perform(click())
 
-        Thread.sleep(1000)
+        Thread.sleep(5000)
     }
 
     private fun create_account(username: String, email: String, password: String) {
@@ -126,6 +128,8 @@ class InstrumentUiTest {
         onView(withId(R.id.ditCreateUsername)).perform(typeText(email), closeSoftKeyboard())
         onView(withId(R.id.ditCreatePassword)).perform(typeText(password), closeSoftKeyboard())
         onView(withId(R.id.ditReenterPassword)).perform(typeText(password), closeSoftKeyboard())
+        Thread.sleep(5000)
         onView(withId(R.id.btnCreateAccount)).perform(click())
+        Thread.sleep(5000)
     }
 }
