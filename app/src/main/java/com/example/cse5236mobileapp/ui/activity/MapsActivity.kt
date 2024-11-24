@@ -38,7 +38,7 @@ class MapsActivity : AppCompatActivity(),
     OnMyLocationClickListener, OnMapReadyCallback,
     OnRequestPermissionsResultCallback, OnTournamentClickListener,
     Internet.NetworkStateListener {
-    private lateinit var mMap: GoogleMap
+    private var mMap: GoogleMap? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var binding: ActivityMapsBinding? = null
 
@@ -139,7 +139,7 @@ class MapsActivity : AppCompatActivity(),
                     val userLon = location.longitude
                     val currentLatLng = LatLng(userLat, userLon)
                     binding?.loadingSpinner?.visibility = View.GONE
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+                    mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
                     locationTournamentAdapter.updateUserCurrentLocation(location)
                     Log.i(TAG, "Using last known location: <$userLat, $userLon>")
                 } else {
@@ -148,13 +148,13 @@ class MapsActivity : AppCompatActivity(),
                 }
             }
             enableMyLocation()
-            mMap.setOnMyLocationButtonClickListener(this)
-            mMap.setOnMyLocationClickListener(this)
+            mMap?.setOnMyLocationButtonClickListener(this)
+            mMap?.setOnMyLocationClickListener(this)
             Log.i(TAG, "Finished setting up user map")
         }
 
-        mMap.setOnMyLocationButtonClickListener(this)
-        mMap.setOnMyLocationClickListener(this)
+        mMap?.setOnMyLocationButtonClickListener(this)
+        mMap?.setOnMyLocationClickListener(this)
 
         plotMarkers(geocodeStore)
     }
@@ -163,7 +163,7 @@ class MapsActivity : AppCompatActivity(),
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return
         }
-        mMap.isMyLocationEnabled = true
+        mMap?.isMyLocationEnabled = true
     }
 
     override fun onMyLocationButtonClick(): Boolean {
@@ -184,7 +184,7 @@ class MapsActivity : AppCompatActivity(),
     private fun plotMarkers(geocodes: List<TournamentIdentifier>) {
         for (location in geocodes) {
             if(location.tournament.latLng != null) {
-                mMap.addMarker(
+                mMap?.addMarker(
                     MarkerOptions()
                         .position(location.tournament.latLng!!)
                         .title(location.tournament.tournamentName)
@@ -195,8 +195,8 @@ class MapsActivity : AppCompatActivity(),
 
     override fun onTournamentClick(tournament: Tournament){
         if(tournament.latLng != null){
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tournament.latLng!!, 15f))
-            mMap.addMarker(MarkerOptions().position(tournament.latLng!!).title(tournament.tournamentName))
+            mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(tournament.latLng!!, 15f))
+            mMap?.addMarker(MarkerOptions().position(tournament.latLng!!).title(tournament.tournamentName))
         }
     }
 
@@ -212,7 +212,7 @@ class MapsActivity : AppCompatActivity(),
                 }
             }
             // If the map is already ready, re-plot the markers
-            if (::mMap.isInitialized) {
+            if (::mMap != null) {
                 plotMarkers(geocodeStore)
             }
         }
@@ -229,10 +229,11 @@ class MapsActivity : AppCompatActivity(),
         super.onDestroy()
         Log.i(TAG, "Destroying MapsActivity")
         internetMonitor.stopMonitoring()
-        mMap.clear()
+        mMap?.clear()
         geocoding?.publicTournamentLive?.removeObservers(this)
-        mMap.setOnMyLocationButtonClickListener(null)
-        mMap.setOnMyLocationClickListener(null)
+        mMap?.setOnMyLocationButtonClickListener(null)
+        mMap?.setOnMyLocationClickListener(null)
+        mMap = null
         binding = null
         geocoding?.destroyViewModel()
         rvPublicTournaments.adapter = null

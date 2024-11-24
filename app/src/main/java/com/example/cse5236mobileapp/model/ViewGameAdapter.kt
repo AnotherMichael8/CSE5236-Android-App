@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cse5236mobileapp.R
+import com.example.cse5236mobileapp.model.LocationTournamentAdapter.PublicTournamentViewHolder
 import com.example.cse5236mobileapp.model.viewmodel.TournamentGamesViewModel
 import kotlin.math.pow
 
@@ -290,5 +291,27 @@ class ViewGameAdapter (
             // TODO: Optimize these function calls
             notifyDataSetChanged()
         }
+    }
+    override fun onViewRecycled(holder: GameViewHolder) {
+        super.onViewRecycled(holder)
+        holder.btUnfinalizeButton.setOnClickListener(null)
+        holder.btFinalizeButton.setOnClickListener(null)
+        holder.etPlayerOneScore.onFocusChangeListener = null
+        holder.etPlayerTwoScore.onFocusChangeListener = null
+        holder.etPlayerOneScore.setOnKeyListener(null)
+        holder.etPlayerTwoScore.setOnKeyListener(null)
+    }
+
+    // Ensure proper nullification in Activity onDestroy()
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        // Clean up global references in Adapter
+        eachRoundGames.forEach { it.clear()}
+        tournamentGamesViewModel.destroyViewModel()
+        players = emptyList()
+        playerMap = emptyMap()
+        recyclerView.adapter = null
+        recyclerView.layoutManager = null
+
     }
 }
