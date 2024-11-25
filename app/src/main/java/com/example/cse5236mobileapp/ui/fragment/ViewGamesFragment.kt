@@ -32,6 +32,7 @@ class ViewGamesFragment() : Fragment(R.layout.fragment_view_games) {
         TournamentGamesViewModel(tournamentIdentifier.tournamentId)
     private val tournamentUsernameViewModel = TournamentUsernameViewModel(mutableListOf())
     private lateinit var viewGameAdapter: ViewGameAdapter
+    private var rvGameView : RecyclerView? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,15 +47,15 @@ class ViewGamesFragment() : Fragment(R.layout.fragment_view_games) {
         val nextRoundButton = view.findViewById<ImageButton>(R.id.btnNextRound)
         val previousRoundButton = view.findViewById<ImageButton>(R.id.btnPreviousRound)
 
-        val rvGameView = view.findViewById<RecyclerView>(R.id.rvGameView)
+        rvGameView = view.findViewById<RecyclerView>(R.id.rvGameView)
 
         val numberRounds = tournamentIdentifier.tournament.getNumberOfRounds()
         btnGameViewRound.text = Game.getRoundDisplayer(1, numberRounds)
         previousRoundButton.visibility = View.INVISIBLE
 
         viewGameAdapter = ViewGameAdapter(tournamentIdentifier, numberRounds)
-        rvGameView.adapter = viewGameAdapter
-        rvGameView.layoutManager = LinearLayoutManager(requireContext())
+        rvGameView?.adapter = viewGameAdapter
+        rvGameView?.layoutManager = LinearLayoutManager(requireContext())
 
         tournamentUsernameViewModel.emailToUsername.observe(
             viewLifecycleOwner) { playerNameMap ->
@@ -105,6 +106,11 @@ class ViewGamesFragment() : Fragment(R.layout.fragment_view_games) {
                 nextRoundButton.visibility = View.VISIBLE
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        rvGameView?.adapter = null
     }
 
 

@@ -25,6 +25,10 @@ class ViewGameAdapter (
     private var players = listOf<String>()
     private var playerMap = mapOf<String, String>()
     private var privileges = "User"
+    private val clickListeners = mutableMapOf<Button, View.OnClickListener>()
+    private val keyListeners = mutableMapOf<EditText, View.OnKeyListener>()
+    private val focusListeners = mutableMapOf<EditText, View.OnFocusChangeListener>()
+
 
 
     class GameViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -185,7 +189,7 @@ class ViewGameAdapter (
                     tvPlayerTwoScore.visibility = View.INVISIBLE
                     tvPlayerOneScore.visibility = View.INVISIBLE
 
-                    btFinalizeButton.setOnClickListener {
+                    val finalClickListener = View.OnClickListener {
                         etPlayerOneScore.clearFocus()
                         etPlayerTwoScore.clearFocus()
                         if (curGame.gameStatus != "Final") {
@@ -200,8 +204,10 @@ class ViewGameAdapter (
                             notifyItemChanged(position)
                         }
                     }
+                    btFinalizeButton.setOnClickListener(finalClickListener)
+                    clickListeners[btFinalizeButton] = finalClickListener
 
-                    etPlayerOneScore.setOnKeyListener { _, keyCode, event ->
+                    val playerOneKeyListener = View.OnKeyListener { _, keyCode, event ->
                         if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                             updatePlayerOneScore(curGame, holder)
                             true
@@ -209,13 +215,19 @@ class ViewGameAdapter (
                             false
                         }
                     }
-                    etPlayerOneScore.setOnFocusChangeListener { view, hasFocus ->
+                    etPlayerOneScore.setOnKeyListener(playerOneKeyListener)
+                    keyListeners[etPlayerOneScore] = playerOneKeyListener
+
+                    val playerOneFocusListener = View.OnFocusChangeListener { view, hasFocus ->
                         if(!hasFocus && view.visibility == View.VISIBLE)
                         {
                             updatePlayerOneScore(curGame, holder)
                         }
                     }
-                    etPlayerTwoScore.setOnKeyListener { _, keyCode, event ->
+                    etPlayerOneScore.onFocusChangeListener = playerOneFocusListener
+                    focusListeners[etPlayerOneScore] = playerOneFocusListener
+
+                    val playerTwoKeyListener = View.OnKeyListener { _, keyCode, event ->
                         if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                             updatePlayerTwoScore(curGame, holder)
                             true
@@ -223,11 +235,16 @@ class ViewGameAdapter (
                             false
                         }
                     }
-                    etPlayerTwoScore.setOnFocusChangeListener { view, hasFocus ->
+                    etPlayerTwoScore.setOnKeyListener(playerTwoKeyListener)
+                    keyListeners[etPlayerTwoScore] = playerTwoKeyListener
+
+                    val playerTwoFocusListener = View.OnFocusChangeListener { view, hasFocus ->
                         if (!hasFocus && view.visibility == View.VISIBLE) {
                             updatePlayerTwoScore(curGame, holder)
                         }
                     }
+                    etPlayerTwoScore.onFocusChangeListener = playerTwoFocusListener
+                    focusListeners[etPlayerTwoScore] = playerTwoFocusListener
                 }
                 else {
                     btFinalizeButton.visibility = View.INVISIBLE
@@ -237,7 +254,7 @@ class ViewGameAdapter (
                     tvPlayerOneScore.visibility = View.VISIBLE
                     tvPlayerTwoScore.visibility = View.VISIBLE
 
-                    btUnfinalizeButton.setOnClickListener {
+                    val unfinalClickListener = View.OnClickListener {
                         if (curGame.gameStatus == "Final") {
                             val newGame = Game(curGame)
                             newGame.gameStatus = "In Progress"
@@ -250,6 +267,8 @@ class ViewGameAdapter (
                             notifyItemChanged(position)
                         }
                     }
+                    btUnfinalizeButton.setOnClickListener(unfinalClickListener)
+                    clickListeners[btUnfinalizeButton] = unfinalClickListener
                 }
             }
             else{
@@ -307,11 +326,27 @@ class ViewGameAdapter (
         super.onDetachedFromRecyclerView(recyclerView)
         // Clean up global references in Adapter
         eachRoundGames.forEach { it.clear()}
+        clearAllListeners()
         tournamentGamesViewModel.destroyViewModel()
         players = emptyList()
         playerMap = emptyMap()
-        recyclerView.adapter = null
+        //recyclerView.adapter = null
         recyclerView.layoutManager = null
+    }
+    private fun clearAllListeners() {
+        clickListeners.forEach { (button, _) ->
+            button.setOnClickListener(null)
+        }
+        clickListeners.clear()
 
+        keyListeners.forEach { (editText, _) ->
+            editText.setOnKeyListener(null)
+        }
+        keyListeners.clear()
+
+        focusListeners.forEach { (editText, _) ->
+            editText.onFocusChangeListener = null
+        }
+        focusListeners.clear()
     }
 }
